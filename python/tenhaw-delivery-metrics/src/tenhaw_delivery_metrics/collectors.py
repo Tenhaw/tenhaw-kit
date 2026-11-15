@@ -452,7 +452,9 @@ def collect_jira(
             since,
             until,
             sorted(mapping.items()),
-            hmac.new(f"{email}:{token}".encode(), b"tenhaw-kit-cache-principal-v1", hashlib.sha256).hexdigest(),
+            hmac.new(
+                f"{email}:{token}".encode(), b"tenhaw-kit-cache-principal-v1", hashlib.sha256
+            ).hexdigest(),
         ]
     )
     return _cached(identity, fetch, (token, email), cache, cache_dir, cache_ttl)
