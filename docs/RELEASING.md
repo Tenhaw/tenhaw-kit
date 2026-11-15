@@ -11,6 +11,14 @@ The source of truth is `Tenhaw/tenhaw-kit`. Nine npm distributions, four Python 
 5. Create six dedicated public satellite repositories: `Tenhaw/tenhaw-gemini` and `Tenhaw/template-<name>` for the five templates. Install a GitHub App on those six repositories with repository **Contents: write**, **Administration: write** and **Metadata: read**. Store `SATELLITES_APP_ID` and `SATELLITES_APP_PRIVATE_KEY` as Actions secrets. The App token is generated for a single run and revoked by the action's cleanup. The ordinary repository `GITHUB_TOKEN` cannot write to the satellites.
 6. Keep the source repository public. npm provenance is not generated from a private source repository. Enable secret scanning, push protection and Dependabot alerts in repository settings; configuration files do not establish those account settings.
 
+For the initial satellite launch, the authenticated `Tenhaw` owner can use the existing `gh` credential helper after the source PR is merged and all nine exact npm versions are public:
+
+```sh
+node scripts/sync-satellites.mjs --version 1.0.0 --local-bootstrap --apply
+```
+
+This explicit local mode checks the account, canonical origin, merged main-branch PR history, clean source checkout and every published internal package before synchronising source. It delegates Git authentication to `gh auth git-credential`, without extracting a token or changing global Git configuration. The GitHub App workflow remains the recurring release path.
+
 The release runner uses Node 22.23.1, verified npm 11.5.1 and uv 0.11.32. npm requires Node 22.14.0 or later and npm 11.5.1 or later for trusted publishing. Dependency installation caching is disabled in the release job. All third-party Actions are pinned to reviewed commit hashes.
 
 ## Prepare the reviewed version
@@ -52,9 +60,9 @@ If publication stops partway through, inspect which exact files are already publ
 
 `registry-publish.yml` is a separate manual workflow through the protected `release` environment. It requires the npm MCP package and the deployed remote endpoint to expose the exact requested version; `/health` must also identify the workflow source commit.
 
-For `com.tenhaw/kit`, configure the official DNS authentication record at the **apex `tenhaw.com`**, then store the corresponding Ed25519 hex seed as the environment secret `MCP_PRIVATE_KEY` and set repository variable `MCP_DNS_AUTH_CONFIGURED=true`. Keep private keys out of chat, repository files and command output. The workflow does not print the DNS login process or its credential-bearing errors, and removes its ephemeral registry session on completion. The upstream publisher currently accepts in-process DNS signing through its private-key argument; use a dedicated ephemeral hosted runner and retain the protected environment restriction.
+For `com.tenhaw/kit`, serve the public Ed25519 proof at **`https://tenhaw.com/.well-known/mcp-registry-auth`** with a direct 200 response. Store the corresponding 64-character hex seed as protected environment secret `MCP_PRIVATE_KEY`. Set repository variable `MCP_HTTP_AUTH_CONFIGURED=true` only after the live proof is verified. See [the identity record](REGISTRY_IDENTITY.md) for the public body and DNS boundary. The workflow derives the expected public proof from its protected key, fetches the endpoint without following redirects and verifies the exact body before `mcp-publisher login http --domain tenhaw.com --private-key <seed>`. Keep private keys out of chat, repository files and command output. Login output and credential-bearing errors are suppressed; the private key is removed from the child environment, and the ephemeral registry session is removed on completion. The current official publisher requires its in-process signing key as an argument; use a dedicated ephemeral hosted runner and retain the protected environment restriction.
 
-The publisher is pinned to official release `v1.8.9`. Its Linux archive is checked against the verified SHA-256 and its Sigstore bundle before extraction. Update the version, digest and signing identity together when upgrading. A failed or unconfigured DNS gate is a failed required operation, never a simulated registry submission. The workflow validates metadata, publishes, and checks the exact server name and version in the registry response. DNS authority and package publication are separate controls.
+The publisher is pinned to official release `v1.8.9`. Its Linux archive is checked against the verified SHA-256 and its Sigstore bundle before extraction. Update the version, digest and signing identity together when upgrading. A failed or unconfigured HTTP proof gate is a failed required operation, never a simulated registry submission. The workflow validates metadata, publishes, and checks the exact server name and version in the registry response. Domain proof, service DNS and package publication are separate controls.
 
 ## Supply chain and measurement
 

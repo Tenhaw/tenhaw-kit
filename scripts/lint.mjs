@@ -3,8 +3,12 @@ import { join } from 'node:path';
 const failures=[];
 const excluded=new Set(['node_modules','dist','.next','out','.git','.venv','.turbo','__pycache__','artifacts','coverage']);
 async function scan(root){for(const entry of await readdir(root,{withFileTypes:true})){if(excluded.has(entry.name))continue;const path=join(root,entry.name);if(entry.isDirectory()){await scan(path);continue;}if(!/\.(md|mdc|json|tsx?|py|toml|ya?ml)$/.test(path)||path.endsWith('pnpm-lock.yaml')||path.endsWith('uv.lock'))continue;
-  const text=await readFile(path,'utf8');if(text.includes('\u2014'))failures.push(`${path}: public copy contains an em dash`);
-  if(/\b(?:delve|seamless|game-changer|in today.s fast-paced|elevate)\b/i.test(text)&&/\.(md|mdc)$/.test(path))failures.push(`${path}: review the public copy for banned phrases`);
+  const text=await readFile(path,'utf8');
+  // CLAUDE.md is also a generated copy when templates are packed. Credentials still scan the complete text.
+  const agentFile=entry.name==='AGENTS.md'||entry.name==='CLAUDE.md';
+  const publicCopy=agentFile?text.replace(/^<!-- BEGIN:nextjs-agent-rules -->\r?\n[\s\S]*?^<!-- END:nextjs-agent-rules -->[ \t]*$/gm,''):text;
+  if(publicCopy.includes('\u2014'))failures.push(`${path}: public copy contains an em dash`);
+  if(/\b(?:delve|seamless|game-changer|in today.s fast-paced|elevate)\b/i.test(publicCopy)&&/\.(md|mdc)$/.test(path))failures.push(`${path}: review the public copy for banned phrases`);
   if(/(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9]{50,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----)/.test(text))failures.push(`${path}: potential credential material`);
 }}
 await scan('.');

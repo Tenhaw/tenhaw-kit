@@ -23,13 +23,13 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: Require the reviewed source and configured DNS identity
+      - name: Require the reviewed source and configured HTTP identity
         env:
-          DNS_CONFIGURED: ${{ vars.MCP_DNS_AUTH_CONFIGURED }}
+          HTTP_CONFIGURED: ${{ vars.MCP_HTTP_AUTH_CONFIGURED }}
         run: |
           test "$GITHUB_REPOSITORY" = Tenhaw/tenhaw-kit
           test "$GITHUB_REF" = refs/heads/main
-          test "$DNS_CONFIGURED" = true
+          test "$HTTP_CONFIGURED" = true
           jq --exit-status --arg version "$RELEASE_VERSION" '.name == "com.tenhaw/kit" and .version == $version' packages/mcp/server.json
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
@@ -58,13 +58,21 @@ jobs:
         run: |
           node --input-type=module - <<'JS'
           import {execFileSync} from 'node:child_process';
+          import {createPrivateKey,createPublicKey} from 'node:crypto';
           const key=process.env.MCP_PRIVATE_KEY;
           if(!key||!/^[0-9a-f]{64}$/i.test(key))throw new Error('Configure the protected release environment MCP_PRIVATE_KEY as an Ed25519 hex seed.');
-          const binary=process.env.RUNNER_TEMP+'/mcp-publisher';
-          try{execFileSync(binary,['login','dns','--domain','tenhaw.com','--private-key',key],{stdio:'ignore'});}
-          catch{throw new Error('DNS authentication failed. Check the apex TXT record and protected environment key; no private material was logged.');}
-          execFileSync(binary,['validate'],{cwd:'packages/mcp',stdio:'inherit'});
-          execFileSync(binary,['publish'],{cwd:'packages/mcp',stdio:'inherit'});
+          const privateKey=createPrivateKey({key:Buffer.concat([Buffer.from('302e020100300506032b657004220420','hex'),Buffer.from(key,'hex')]),type:'pkcs8',format:'der'});
+          const publicBytes=createPublicKey(privateKey).export({type:'spki',format:'der'}).subarray(-32);
+          const expected='v=MCPv1; k=ed25519; p='+publicBytes.toString('base64');
+          const proof=await fetch('https://tenhaw.com/.well-known/mcp-registry-auth',{headers:{Accept:'text/plain','User-Agent':'mcp-registry/1.0'},redirect:'error',signal:AbortSignal.timeout(10000)});
+          if(proof.status!==200)throw new Error('The public HTTP identity proof must return 200 without redirects.');
+          const record=await proof.text();
+          if(Buffer.byteLength(record)>4096||record.trim()!==expected)throw new Error('The public HTTP proof does not match the protected signing key.');
+          const binary=process.env.RUNNER_TEMP+'/mcp-publisher',publisherEnv={...process.env};delete publisherEnv.MCP_PRIVATE_KEY;
+          try{execFileSync(binary,['login','http','--domain','tenhaw.com','--private-key',key],{stdio:'ignore',env:publisherEnv});}
+          catch{throw new Error('HTTP authentication failed. Check the public well-known proof and protected environment key; no private material was logged.');}
+          execFileSync(binary,['validate'],{cwd:'packages/mcp',stdio:'inherit',env:publisherEnv});
+          execFileSync(binary,['publish'],{cwd:'packages/mcp',stdio:'inherit',env:publisherEnv});
           JS
       - name: Verify exact registry identity and version
         run: |
