@@ -1,0 +1,42 @@
+{
+  "name": "@tenhaw/opmodel",
+  "version": "1.0.0",
+  "description": "Validated teams, OKRs, roadmaps and team interactions",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "LICENSE-CONTENT"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts --format esm --dts",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tenhaw/core": "workspace:*"
+  },
+  "author": "Tenhaw (https://tenhaw.com)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tenhaw/tenhaw-kit.git",
+    "directory": "packages/opmodel"
+  },
+  "homepage": "https://kit.tenhaw.com/tools/opmodel",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

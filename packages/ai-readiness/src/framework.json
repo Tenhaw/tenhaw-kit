@@ -1,0 +1,1160 @@
+{
+  "version": "v1",
+  "minimumBandCoverage": 0.8,
+  "dimensions": [
+    {
+      "id": "strategy",
+      "label": "Strategy and value",
+      "weight": 0.2,
+      "questions": [
+        {
+          "id": "strategy-1",
+          "text": "Is there an agreed business outcome for AI investment?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Is there an agreed business outcome for AI investment?",
+            "medium": "Test consistent use and measure the outcome: Is there an agreed business outcome for AI investment?",
+            "high": "Review evidence and improve the practice: Is there an agreed business outcome for AI investment?"
+          }
+        },
+        {
+          "id": "strategy-2",
+          "text": "Are use cases prioritised against measurable value?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are use cases prioritised against measurable value?",
+            "medium": "Test consistent use and measure the outcome: Are use cases prioritised against measurable value?",
+            "high": "Review evidence and improve the practice: Are use cases prioritised against measurable value?"
+          }
+        },
+        {
+          "id": "strategy-3",
+          "text": "Does an accountable sponsor own the AI strategy?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Does an accountable sponsor own the AI strategy?",
+            "medium": "Test consistent use and measure the outcome: Does an accountable sponsor own the AI strategy?",
+            "high": "Review evidence and improve the practice: Does an accountable sponsor own the AI strategy?"
+          }
+        },
+        {
+          "id": "strategy-4",
+          "text": "Are investment assumptions reviewed using evidence?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are investment assumptions reviewed using evidence?",
+            "medium": "Test consistent use and measure the outcome: Are investment assumptions reviewed using evidence?",
+            "high": "Review evidence and improve the practice: Are investment assumptions reviewed using evidence?"
+          }
+        },
+        {
+          "id": "strategy-5",
+          "text": "Are decisions to scale or stop tied to agreed measures?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are decisions to scale or stop tied to agreed measures?",
+            "medium": "Test consistent use and measure the outcome: Are decisions to scale or stop tied to agreed measures?",
+            "high": "Review evidence and improve the practice: Are decisions to scale or stop tied to agreed measures?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "label": "Data foundations",
+      "weight": 0.2,
+      "questions": [
+        {
+          "id": "data-1",
+          "text": "Are required data sources identified and owned?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are required data sources identified and owned?",
+            "medium": "Test consistent use and measure the outcome: Are required data sources identified and owned?",
+            "high": "Review evidence and improve the practice: Are required data sources identified and owned?"
+          }
+        },
+        {
+          "id": "data-2",
+          "text": "Is data quality measured for the intended use?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Is data quality measured for the intended use?",
+            "medium": "Test consistent use and measure the outcome: Is data quality measured for the intended use?",
+            "high": "Review evidence and improve the practice: Is data quality measured for the intended use?"
+          }
+        },
+        {
+          "id": "data-3",
+          "text": "Are access controls and lawful use understood?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are access controls and lawful use understood?",
+            "medium": "Test consistent use and measure the outcome: Are access controls and lawful use understood?",
+            "high": "Review evidence and improve the practice: Are access controls and lawful use understood?"
+          }
+        },
+        {
+          "id": "data-4",
+          "text": "Can data lineage and changes be traced?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Can data lineage and changes be traced?",
+            "medium": "Test consistent use and measure the outcome: Can data lineage and changes be traced?",
+            "high": "Review evidence and improve the practice: Can data lineage and changes be traced?"
+          }
+        },
+        {
+          "id": "data-5",
+          "text": "Are data issues monitored and resolved by named roles?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are data issues monitored and resolved by named roles?",
+            "medium": "Test consistent use and measure the outcome: Are data issues monitored and resolved by named roles?",
+            "high": "Review evidence and improve the practice: Are data issues monitored and resolved by named roles?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "technology",
+      "label": "Technology and platforms",
+      "weight": 0.15,
+      "questions": [
+        {
+          "id": "technology-1",
+          "text": "Are model and platform choices documented against needs?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are model and platform choices documented against needs?",
+            "medium": "Test consistent use and measure the outcome: Are model and platform choices documented against needs?",
+            "high": "Review evidence and improve the practice: Are model and platform choices documented against needs?"
+          }
+        },
+        {
+          "id": "technology-2",
+          "text": "Are integrations tested in a controlled environment?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are integrations tested in a controlled environment?",
+            "medium": "Test consistent use and measure the outcome: Are integrations tested in a controlled environment?",
+            "high": "Review evidence and improve the practice: Are integrations tested in a controlled environment?"
+          }
+        },
+        {
+          "id": "technology-3",
+          "text": "Are reliability, cost and latency monitored?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are reliability, cost and latency monitored?",
+            "medium": "Test consistent use and measure the outcome: Are reliability, cost and latency monitored?",
+            "high": "Review evidence and improve the practice: Are reliability, cost and latency monitored?"
+          }
+        },
+        {
+          "id": "technology-4",
+          "text": "Are evaluation and rollback mechanisms in place?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are evaluation and rollback mechanisms in place?",
+            "medium": "Test consistent use and measure the outcome: Are evaluation and rollback mechanisms in place?",
+            "high": "Review evidence and improve the practice: Are evaluation and rollback mechanisms in place?"
+          }
+        },
+        {
+          "id": "technology-5",
+          "text": "Can the service be operated and changed without vendor lock-in?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Can the service be operated and changed without vendor lock-in?",
+            "medium": "Test consistent use and measure the outcome: Can the service be operated and changed without vendor lock-in?",
+            "high": "Review evidence and improve the practice: Can the service be operated and changed without vendor lock-in?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "people",
+      "label": "People and skills",
+      "weight": 0.15,
+      "questions": [
+        {
+          "id": "people-1",
+          "text": "Do affected colleagues understand the intended workflow?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Do affected colleagues understand the intended workflow?",
+            "medium": "Test consistent use and measure the outcome: Do affected colleagues understand the intended workflow?",
+            "high": "Review evidence and improve the practice: Do affected colleagues understand the intended workflow?"
+          }
+        },
+        {
+          "id": "people-2",
+          "text": "Are practical AI skills matched to the roles involved?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are practical AI skills matched to the roles involved?",
+            "medium": "Test consistent use and measure the outcome: Are practical AI skills matched to the roles involved?",
+            "high": "Review evidence and improve the practice: Are practical AI skills matched to the roles involved?"
+          }
+        },
+        {
+          "id": "people-3",
+          "text": "Are users involved in design and evaluation?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are users involved in design and evaluation?",
+            "medium": "Test consistent use and measure the outcome: Are users involved in design and evaluation?",
+            "high": "Review evidence and improve the practice: Are users involved in design and evaluation?"
+          }
+        },
+        {
+          "id": "people-4",
+          "text": "Is adoption supported with time, training and feedback?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Is adoption supported with time, training and feedback?",
+            "medium": "Test consistent use and measure the outcome: Is adoption supported with time, training and feedback?",
+            "high": "Review evidence and improve the practice: Is adoption supported with time, training and feedback?"
+          }
+        },
+        {
+          "id": "people-5",
+          "text": "Are skills and behaviour changes measured over time?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are skills and behaviour changes measured over time?",
+            "medium": "Test consistent use and measure the outcome: Are skills and behaviour changes measured over time?",
+            "high": "Review evidence and improve the practice: Are skills and behaviour changes measured over time?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "governance",
+      "label": "Governance, risk and compliance",
+      "weight": 0.15,
+      "questions": [
+        {
+          "id": "governance-1",
+          "text": "Are intended use and foreseeable harms documented?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are intended use and foreseeable harms documented?",
+            "medium": "Test consistent use and measure the outcome: Are intended use and foreseeable harms documented?",
+            "high": "Review evidence and improve the practice: Are intended use and foreseeable harms documented?"
+          }
+        },
+        {
+          "id": "governance-2",
+          "text": "Are accountable risk owners and review routes named?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are accountable risk owners and review routes named?",
+            "medium": "Test consistent use and measure the outcome: Are accountable risk owners and review routes named?",
+            "high": "Review evidence and improve the practice: Are accountable risk owners and review routes named?"
+          }
+        },
+        {
+          "id": "governance-3",
+          "text": "Are privacy, security and legal constraints assessed?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are privacy, security and legal constraints assessed?",
+            "medium": "Test consistent use and measure the outcome: Are privacy, security and legal constraints assessed?",
+            "high": "Review evidence and improve the practice: Are privacy, security and legal constraints assessed?"
+          }
+        },
+        {
+          "id": "governance-4",
+          "text": "Are human oversight and incident routes tested?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are human oversight and incident routes tested?",
+            "medium": "Test consistent use and measure the outcome: Are human oversight and incident routes tested?",
+            "high": "Review evidence and improve the practice: Are human oversight and incident routes tested?"
+          }
+        },
+        {
+          "id": "governance-5",
+          "text": "Are governance controls reviewed when the system changes?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are governance controls reviewed when the system changes?",
+            "medium": "Test consistent use and measure the outcome: Are governance controls reviewed when the system changes?",
+            "high": "Review evidence and improve the practice: Are governance controls reviewed when the system changes?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "delivery",
+      "label": "Delivery and operating model",
+      "weight": 0.15,
+      "questions": [
+        {
+          "id": "delivery-1",
+          "text": "Is a team accountable for delivering and running the service?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Is a team accountable for delivering and running the service?",
+            "medium": "Test consistent use and measure the outcome: Is a team accountable for delivering and running the service?",
+            "high": "Review evidence and improve the practice: Is a team accountable for delivering and running the service?"
+          }
+        },
+        {
+          "id": "delivery-2",
+          "text": "Is the work planned around outcomes and small increments?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Is the work planned around outcomes and small increments?",
+            "medium": "Test consistent use and measure the outcome: Is the work planned around outcomes and small increments?",
+            "high": "Review evidence and improve the practice: Is the work planned around outcomes and small increments?"
+          }
+        },
+        {
+          "id": "delivery-3",
+          "text": "Are delivery flow and service measures visible?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are delivery flow and service measures visible?",
+            "medium": "Test consistent use and measure the outcome: Are delivery flow and service measures visible?",
+            "high": "Review evidence and improve the practice: Are delivery flow and service measures visible?"
+          }
+        },
+        {
+          "id": "delivery-4",
+          "text": "Are operating responsibilities and handovers documented?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are operating responsibilities and handovers documented?",
+            "medium": "Test consistent use and measure the outcome: Are operating responsibilities and handovers documented?",
+            "high": "Review evidence and improve the practice: Are operating responsibilities and handovers documented?"
+          }
+        },
+        {
+          "id": "delivery-5",
+          "text": "Are improvements driven by feedback from production use?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are improvements driven by feedback from production use?",
+            "medium": "Test consistent use and measure the outcome: Are improvements driven by feedback from production use?",
+            "high": "Review evidence and improve the practice: Are improvements driven by feedback from production use?"
+          }
+        }
+      ]
+    }
+  ],
+  "bands": [
+    {
+      "name": "Exploring",
+      "minimum": 1,
+      "maximumExclusive": 1.8
+    },
+    {
+      "name": "Experimenting",
+      "minimum": 1.8,
+      "maximumExclusive": 2.6
+    },
+    {
+      "name": "Scaling",
+      "minimum": 2.6,
+      "maximumExclusive": 3.4
+    },
+    {
+      "name": "Embedded",
+      "minimum": 3.4,
+      "maximumExclusive": 4.2
+    },
+    {
+      "name": "Leading",
+      "minimum": 4.2,
+      "maximumExclusive": 5.000001
+    }
+  ],
+  "limitations": [
+    "Self-assessment, not a certification or legal advice.",
+    "Maturity bands require at least 80% response coverage."
+  ],
+  "contentCredit": "Tenhaw AI Readiness Framework, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), https://tenhaw.com."
+}

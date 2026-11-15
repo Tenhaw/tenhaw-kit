@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/roi-input.schema.json",
+  "type": "object",
+  "properties": {
+    "useCase": {
+      "type": "string",
+      "minLength": 1
+    },
+    "users": {
+      "type": "number",
+      "minimum": 0
+    },
+    "minutesPerTask": {
+      "type": "number",
+      "minimum": 0
+    },
+    "tasksPerUserPerMonth": {
+      "type": "number",
+      "minimum": 0
+    },
+    "savings": {
+      "type": "object",
+      "properties": {
+        "low": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "base": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "high": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "low",
+        "base",
+        "high"
+      ],
+      "additionalProperties": false
+    },
+    "hourlyCost": {
+      "type": "number",
+      "minimum": 0
+    },
+    "buildCost": {
+      "type": "number",
+      "minimum": 0
+    },
+    "monthlyRunCost": {
+      "type": "number",
+      "minimum": 0
+    },
+    "adoptionMonths": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1200
+    },
+    "horizonMonths": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1200
+    },
+    "annualDiscountRate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "cashRealisation": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    }
+  },
+  "required": [
+    "useCase",
+    "users",
+    "minutesPerTask",
+    "tasksPerUserPerMonth",
+    "savings",
+    "hourlyCost",
+    "buildCost",
+    "monthlyRunCost",
+    "adoptionMonths",
+    "horizonMonths",
+    "annualDiscountRate",
+    "cashRealisation",
+    "currency"
+  ],
+  "additionalProperties": false
+}

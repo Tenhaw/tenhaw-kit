@@ -1,0 +1,46 @@
+# Tenhaw Kit
+
+Building blocks for coding agents creating internal product, portfolio, delivery and AI transformation tools. Code is MIT. Authored framework content is CC BY 4.0.
+
+This source checkout is a release candidate. Public npm, PyPI, GitHub and domain availability must be verified through the release runbook before recommending installation from registries.
+
+## Use from source
+
+Node.js 22.14 or later:
+
+```sh
+pnpm install
+pnpm build
+node packages/cli/dist/index.js --help
+node packages/cli/dist/index.js readiness --questionnaire --json
+node packages/cli/dist/index.js mcp --json
+```
+
+Commands emit schema-validated JSON with --json. Errors go to stderr: 1 usage, 2 validation, 3 upstream API, 4 missing environment authentication. Scaffolding writes a new directory, preserves existing files and does not run installation scripts.
+
+## Choose a building block
+
+- @tenhaw/ai-readiness: 30-question evidence-backed self-assessment, dimension weights and response coverage. Maturity bands require at least 80% coverage. Supports assessment, not certification.
+- @tenhaw/delivery-metrics: five DORA measures and flow observations for one service, using explicit production evidence and timestamp boundaries. Missing observations remain unavailable.
+- @tenhaw/ai-roi: low/base/high cash flows, NPV, payback and sensitivity. Recovered staff capacity stays separate from realised cash savings.
+- @tenhaw/usecase-register: accountable owners, value and feasibility, dependencies and indicative governance gates. Risk labels are not legal advice.
+- @tenhaw/opmodel: team responsibilities, measurable OKRs, outcome-led roadmaps and interactions. Compose with the register and ROI model for portfolio tracking.
+- @tenhaw/core: shared JSON Schemas, report rendering and optional marketing attribution. Applicable content licence notices remain when promotion is suppressed.
+
+Python mirrors readiness, delivery and ROI calculations and provides tenhaw-py. Golden vectors compare canonical results across languages.
+
+## Agent interfaces and data boundaries
+
+The local stdio MCP provides eight tools, questionnaire and schema resources, and workflow prompts. The remote service provides six pure calculation tools. Remote delivery health accepts aggregate metrics reports only; customer credentials and raw repository events stay local.
+
+GitHub and Jira collectors run locally with read-only environment credentials when requested. No installed-tool telemetry is included. Browser-local starters include synthetic examples and local import/export. Add authentication and authorisation before introducing shared persistence or hosted collection.
+
+## Source references
+
+- [Installation and API catalogue](apps/docs/lib/reference.json)
+- [Full machine-readable reference and schemas](apps/docs/public/llms-full.txt)
+- [JSON Schema source](spec/schemas)
+- [Scoring vectors](spec/vectors)
+- [Agent workflows](plugins)
+- [Release verification](docs/RUNBOOK.md)
+- [Decisions and limitations](docs/DECISIONS.md)

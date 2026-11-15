@@ -1,0 +1,119 @@
+{
+  "teams": [
+    {
+      "id": "team-a",
+      "name": "Example Team A",
+      "type": "stream-aligned",
+      "size": 7,
+      "cognitiveLoad": "medium",
+      "platformDependencies": [
+        "platform"
+      ]
+    },
+    {
+      "id": "team-b",
+      "name": "Example Team B",
+      "type": "stream-aligned",
+      "size": 10,
+      "cognitiveLoad": "high",
+      "platformDependencies": [
+        "platform"
+      ]
+    },
+    {
+      "id": "platform",
+      "name": "Example Platform",
+      "type": "platform",
+      "size": 6,
+      "cognitiveLoad": "medium"
+    },
+    {
+      "id": "enablement",
+      "name": "Example Enablement",
+      "type": "enabling",
+      "size": 3,
+      "cognitiveLoad": "low"
+    }
+  ],
+  "okrs": [
+    {
+      "id": "okr-1",
+      "objective": "Reduce waiting time in the support workflow",
+      "teamId": "team-a",
+      "keyResults": [
+        {
+          "id": "kr-1",
+          "description": "Reduce median resolution time (hours)",
+          "baseline": 24,
+          "target": 12,
+          "current": 18,
+          "confidence": 0.7
+        },
+        {
+          "id": "kr-2",
+          "description": "Increase first-contact resolution (%)",
+          "baseline": 60,
+          "target": 80,
+          "current": 68,
+          "confidence": 0.6
+        }
+      ]
+    },
+    {
+      "id": "okr-2",
+      "objective": "Make platform onboarding self-service",
+      "teamId": "platform",
+      "keyResults": [
+        {
+          "id": "kr-3",
+          "description": "Reduce onboarding time (days)",
+          "baseline": 10,
+          "target": 2,
+          "current": 6,
+          "confidence": 0.8
+        }
+      ]
+    }
+  ],
+  "roadmap": [
+    {
+      "id": "r1",
+      "title": "Test the support search workflow",
+      "horizon": "now",
+      "teamId": "team-a",
+      "okrId": "okr-1",
+      "outcome": "Resolve routine queries without handoffs"
+    },
+    {
+      "id": "r2",
+      "title": "Self-service service catalogue",
+      "horizon": "next",
+      "teamId": "platform",
+      "okrId": "okr-2",
+      "outcome": "New teams can start without a manual ticket"
+    },
+    {
+      "id": "r3",
+      "title": "Explore knowledge quality feedback",
+      "horizon": "later",
+      "teamId": "team-a"
+    }
+  ],
+  "interactions": [
+    {
+      "from": "platform",
+      "to": "team-a",
+      "mode": "X-as-a-Service"
+    },
+    {
+      "from": "platform",
+      "to": "team-b",
+      "mode": "X-as-a-Service"
+    },
+    {
+      "from": "enablement",
+      "to": "team-a",
+      "mode": "facilitating"
+    }
+  ]
+}

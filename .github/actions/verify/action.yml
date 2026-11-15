@@ -1,0 +1,73 @@
+name: Verify release source and distributions
+description: Run the same required checks before CI acceptance and publication.
+runs:
+  using: composite
+  steps:
+    - name: Install locked dependencies
+      shell: bash
+      run: |
+        set -euo pipefail
+        pnpm install --frozen-lockfile
+        uv sync --frozen
+    - name: Check generated assets
+      shell: bash
+      run: |
+        set -euo pipefail
+        uv run python scripts/sync-python-assets.py --check
+        node scripts/generate-plugins.mjs
+        git diff --exit-code -- plugins .claude-plugin
+        test -z "$(git ls-files --others --exclude-standard -- plugins .claude-plugin)"
+    - name: Check libraries, CLI, MCP, schemas and language parity
+      shell: bash
+      run: pnpm check
+    - name: Check Python
+      shell: bash
+      run: |
+        set -euo pipefail
+        uv run pytest
+        uv run ruff check
+        uv run mypy
+    - name: Build both apps and all five templates
+      shell: bash
+      run: |
+        set -euo pipefail
+        pnpm build:apps
+        pnpm build:templates
+    - name: Install browser test runtime
+      shell: bash
+      run: pnpm --dir templates/ai-adoption-dashboard exec playwright install --with-deps chromium
+    - name: Test all template units and browser journeys
+      shell: bash
+      run: |
+        set -euo pipefail
+        for template in ai-adoption-dashboard delivery-metrics-dashboard ai-usecase-register product-operating-model ai-readiness-assessment; do
+          pnpm --dir "templates/$template" test
+          pnpm --dir "templates/$template" e2e
+        done
+    - name: Check clean npm installations and scaffold build
+      shell: bash
+      run: node scripts/pack-check.mjs
+    - name: Build and check Python distributions
+      shell: bash
+      run: |
+        set -euo pipefail
+        uv build --all-packages --out-dir artifacts/python
+        uv venv "$RUNNER_TEMP/python-wheel-smoke" --python 3.12
+        uv pip install --python "$RUNNER_TEMP/python-wheel-smoke/bin/python" artifacts/python/*.whl
+        "$RUNNER_TEMP/python-wheel-smoke/bin/python" -m tenhaw --version
+        "$RUNNER_TEMP/python-wheel-smoke/bin/python" - <<'PY'
+        from tenhaw_ai_readiness import load_framework, score_readiness
+        from tenhaw_ai_roi import estimate_project_cost
+        from tenhaw_delivery_metrics import compute_metrics
+        assert len(load_framework()["dimensions"]) == 6
+        assert score_readiness({"answers": []})["overall"] is None
+        assert estimate_project_cost({"stage": "poc"})["low"] == 16000
+        assert compute_metrics([], {"since": "2026-01-01T00:00:00Z", "until": "2026-02-01T00:00:00Z"})["metrics"]["changeLeadTime"]["value"] is None
+        PY
+    - name: Audit production dependencies
+      shell: bash
+      run: |
+        set -euo pipefail
+        pnpm audit --prod --audit-level high
+        uv export --frozen --no-dev --no-emit-workspace --format requirements.txt --output-file "$RUNNER_TEMP/tenhaw-requirements-audit.txt"
+        uv tool run --from pip-audit==2.9.0 pip-audit --require-hashes --no-deps -r "$RUNNER_TEMP/tenhaw-requirements-audit.txt"

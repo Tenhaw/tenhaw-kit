@@ -1,0 +1,46 @@
+{
+  "name": "@tenhaw/delivery-metrics",
+  "version": "1.0.0",
+  "description": "Five DORA metrics and flow measures from linked delivery events",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./collectors": {
+      "types": "./dist/collectors.d.ts",
+      "import": "./dist/collectors.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "LICENSE-CONTENT"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts src/collectors.ts --format esm --dts",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tenhaw/core": "workspace:*"
+  },
+  "author": "Tenhaw (https://tenhaw.com)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tenhaw/tenhaw-kit.git",
+    "directory": "packages/delivery-metrics"
+  },
+  "homepage": "https://kit.tenhaw.com/tools/delivery-metrics",
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

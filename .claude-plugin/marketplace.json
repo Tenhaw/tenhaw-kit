@@ -1,0 +1,14 @@
+{
+  "name": "tenhaw-kit",
+  "description": "Tenhaw agent workflows for internal product, portfolio, delivery and AI transformation tools",
+  "owner": {
+    "name": "Tenhaw"
+  },
+  "plugins": [
+    {
+      "name": "tenhaw",
+      "source": "./plugins/claude/tenhaw",
+      "description": "Building blocks for internal portfolio, product delivery and AI transformation tools"
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Exact reviewed version to publish, for example 1.0.0
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: tenhaw-kit-release
+  cancel-in-progress: false
+jobs:
+  verify:
+    name: Verify source and build immutable distributions
+    runs-on: ubuntu-24.04
+    timeout-minutes: 75
+    env:
+      CI: 'true'
+      NEXT_TELEMETRY_DISABLED: '1'
+      RELEASE_VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Require the reviewed main branch
+        run: |
+          test "$GITHUB_REPOSITORY" = Tenhaw/tenhaw-kit
+          test "$GITHUB_REF" = refs/heads/main
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.23.1
+          package-manager-cache: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: 0.11.32
+          enable-cache: false
+      - uses: ./.github/actions/verify
+      - name: Verify release versions without publishing
+        run: node scripts/publish.mjs --version "$RELEASE_VERSION" --dry-run
+      - name: Record the exact verified source
+        run: node -e 'require("node:fs").writeFileSync("artifacts/release-source.json",JSON.stringify({commit:process.env.GITHUB_SHA,version:process.env.RELEASE_VERSION})+"\n")'
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: verified-distributions-${{ inputs.version }}-${{ github.sha }}
+          path: artifacts/
+          if-no-files-found: error
+          retention-days: 30
+  publish-npm:
+    name: Publish npm with OIDC
+    needs: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: release
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      RELEASE_VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.23.1
+          package-manager-cache: false
+      - name: Install the verified OIDC-capable npm CLI
+        run: npm install --global npm@11.5.1 --ignore-scripts
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: verified-distributions-${{ inputs.version }}-${{ github.sha }}
+          path: artifacts/
+      - name: Verify artifact source identity
+        run: node -e 'const x=JSON.parse(require("node:fs").readFileSync("artifacts/release-source.json"));if(x.commit!==process.env.GITHUB_SHA||x.version!==process.env.RELEASE_VERSION)throw Error("Verified artifact/source mismatch")'
+      - name: Publish npm tarballs and verify exact integrity and provenance
+        run: node scripts/publish.mjs --version "$RELEASE_VERSION"
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: npm-release-evidence-${{ inputs.version }}-${{ github.sha }}
+          path: artifacts/npm-verification.json
+          if-no-files-found: warn
+          retention-days: 30
+  publish-python:
+    name: Publish PyPI with OIDC
+    needs: verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    environment: release
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      RELEASE_VERSION: ${{ inputs.version }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 22.23.1
+          package-manager-cache: false
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: verified-distributions-${{ inputs.version }}-${{ github.sha }}
+          path: artifacts/
+      - name: Verify artifact source identity
+        run: node -e 'const x=JSON.parse(require("node:fs").readFileSync("artifacts/release-source.json"));if(x.commit!==process.env.GITHUB_SHA||x.version!==process.env.RELEASE_VERSION)throw Error("Verified artifact/source mismatch")'
+      - name: Publish Python distributions with attestations
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
+        with:
+          packages-dir: artifacts/python/
+          attestations: true
+          skip-existing: true
+      - name: Verify exact Python versions and distribution attestations
+        run: node scripts/publish.mjs --version "$RELEASE_VERSION" --verify-python
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: always()
+        with:
+          name: pypi-release-evidence-${{ inputs.version }}-${{ github.sha }}
+          path: artifacts/pypi-verification.json
+          if-no-files-found: warn
+          retention-days: 30
+  satellites:
+    name: Synchronise thin satellite repositories
+    needs: [publish-npm, publish-python]
+    uses: ./.github/workflows/sync-satellites.yml
+    with:
+      version: ${{ inputs.version }}
+      ref: ${{ github.sha }}
+    secrets:
+      SATELLITES_APP_ID: ${{ secrets.SATELLITES_APP_ID }}
+      SATELLITES_APP_PRIVATE_KEY: ${{ secrets.SATELLITES_APP_PRIVATE_KEY }}
+  github-release:
+    name: Record the verified release
+    needs: [publish-npm, publish-python, satellites]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Create the release for this exact source commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          tag="v$RELEASE_VERSION"
+          if gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json tagName >/dev/null 2>&1; then
+            test "$(gh api "repos/$GITHUB_REPOSITORY/commits/$tag" --jq .sha)" = "$GITHUB_SHA"
+          else
+            gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "Tenhaw Kit $RELEASE_VERSION" --notes "Verified npm and Python distributions from commit $GITHUB_SHA. Release evidence is attached to the Actions run. Registry and hosting status are tracked separately."
+          fi

@@ -1,0 +1,30 @@
+{
+  "version": "v1",
+  "asOf": "2026-11-15",
+  "limitations": "Indicative assessment support, not legal advice. Obligations depend on intended use, provider/deployer role, jurisdiction and application dates. Transparency obligations can apply alongside high-risk obligations.",
+  "tiers": [
+    {
+      "id": "prohibited",
+      "action": "Stop and obtain qualified legal review."
+    },
+    {
+      "id": "high",
+      "action": "Require governance and qualified legal review before approval."
+    },
+    {
+      "id": "limited",
+      "action": "Review applicable transparency duties."
+    },
+    {
+      "id": "minimal",
+      "action": "Document the intended use and review changes."
+    },
+    {
+      "id": "unknown",
+      "action": "Assess the intended use before approval."
+    }
+  ],
+  "sources": [
+    "https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai"
+  ]
+}

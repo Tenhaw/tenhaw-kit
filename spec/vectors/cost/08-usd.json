@@ -1,0 +1,25 @@
+{
+  "name": "usd",
+  "tool": "cost",
+  "input": {
+    "stage": "poc",
+    "currency": "USD"
+  },
+  "expected": {
+    "stage": "poc",
+    "currency": "USD",
+    "low": 16000,
+    "high": 32000,
+    "assumptions": {
+      "people": 2,
+      "dayRate": 800,
+      "workingDaysPerWeek": 5,
+      "weeksLow": 2,
+      "weeksHigh": 4
+    },
+    "limitations": [
+      "Editable assumptions, not a quote.",
+      "Excludes model, infrastructure and ongoing support costs."
+    ]
+  }
+}

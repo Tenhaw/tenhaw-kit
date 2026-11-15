@@ -1,0 +1,76 @@
+{
+  "name": "empty",
+  "tool": "readiness",
+  "input": {
+    "answers": []
+  },
+  "expected": {
+    "frameworkVersion": "v1",
+    "contentCredit": "Tenhaw AI Readiness Framework, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), https://tenhaw.com.",
+    "overall": null,
+    "band": null,
+    "coverage": 0,
+    "dimensions": [
+      {
+        "id": "strategy",
+        "label": "Strategy and value",
+        "weight": 0.2,
+        "score": null,
+        "answered": 0,
+        "total": 5,
+        "coverage": 0
+      },
+      {
+        "id": "data",
+        "label": "Data foundations",
+        "weight": 0.2,
+        "score": null,
+        "answered": 0,
+        "total": 5,
+        "coverage": 0
+      },
+      {
+        "id": "technology",
+        "label": "Technology and platforms",
+        "weight": 0.15,
+        "score": null,
+        "answered": 0,
+        "total": 5,
+        "coverage": 0
+      },
+      {
+        "id": "people",
+        "label": "People and skills",
+        "weight": 0.15,
+        "score": null,
+        "answered": 0,
+        "total": 5,
+        "coverage": 0
+      },
+      {
+        "id": "governance",
+        "label": "Governance, risk and compliance",
+        "weight": 0.15,
+        "score": null,
+        "answered": 0,
+        "total": 5,
+        "coverage": 0
+      },
+      {
+        "id": "delivery",
+        "label": "Delivery and operating model",
+        "weight": 0.15,
+        "score": null,
+        "answered": 0,
+        "total": 5,
+        "coverage": 0
+      }
+    ],
+    "gaps": [],
+    "recommendations": [],
+    "limitations": [
+      "Self-assessment, not a certification or legal advice.",
+      "Maturity bands require at least 80% response coverage."
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "large-team",
+  "tool": "opmodel",
+  "input": {
+    "teams": [
+      {
+        "id": "t1",
+        "name": "Example Team A",
+        "type": "stream-aligned",
+        "size": 10
+      }
+    ]
+  },
+  "expected": {
+    "model": {
+      "teams": [
+        {
+          "id": "t1",
+          "name": "Example Team A",
+          "type": "stream-aligned",
+          "size": 10
+        }
+      ],
+      "okrs": [],
+      "roadmap": [],
+      "interactions": [],
+      "products": []
+    },
+    "checks": [
+      {
+        "code": "team-size",
+        "entityId": "t1",
+        "message": "Review whether this team can maintain clear collaboration and ownership."
+      },
+      {
+        "code": "platform-dependency",
+        "entityId": "t1",
+        "message": "Confirm whether this stream-aligned team needs platform support."
+      }
+    ],
+    "limitations": [
+      "Team Topologies is a cited public model; no affiliation is implied.",
+      "Checks support a design conversation and are not organisational prescriptions."
+    ],
+    "sources": [
+      "https://teamtopologies.com/key-concepts"
+    ]
+  }
+}

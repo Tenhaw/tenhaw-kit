@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/readiness-questionnaire.schema.json",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "v1"
+    },
+    "dimensions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "minItems": 6,
+      "maxItems": 6
+    },
+    "bands": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "minimumBandCoverage": {
+      "const": 0.8
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contentCredit": {
+      "const": "Tenhaw AI Readiness Framework, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), https://tenhaw.com."
+    }
+  },
+  "required": [
+    "version",
+    "dimensions",
+    "bands",
+    "minimumBandCoverage",
+    "limitations",
+    "contentCredit"
+  ],
+  "additionalProperties": false
+}

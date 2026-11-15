@@ -1,0 +1,416 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/roi-report.schema.json",
+  "type": "object",
+  "properties": {
+    "currency": {
+      "type": "string"
+    },
+    "assumptions": {
+      "type": "object",
+      "properties": {
+        "cashRealisation": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "capacityIsCash": {
+          "const": false
+        }
+      },
+      "required": [
+        "cashRealisation",
+        "capacityIsCash"
+      ],
+      "additionalProperties": false
+    },
+    "scenarios": {
+      "type": "object",
+      "properties": {
+        "low": {
+          "type": "object",
+          "properties": {
+            "monthlyCashFlow": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "month": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "adoption": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "hoursSaved": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "potentialValue": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "cashBenefit": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "runCost": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "netCashFlow": {
+                    "type": "number"
+                  },
+                  "cumulativeCashFlow": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "month",
+                  "adoption",
+                  "hoursSaved",
+                  "potentialValue",
+                  "cashBenefit",
+                  "runCost",
+                  "netCashFlow",
+                  "cumulativeCashFlow"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "totalCashBenefit": {
+              "type": "number",
+              "minimum": 0
+            },
+            "totalRunCost": {
+              "type": "number",
+              "minimum": 0
+            },
+            "totalHoursSaved": {
+              "type": "number",
+              "minimum": 0
+            },
+            "recoveredCapacityHours": {
+              "type": "number",
+              "minimum": 0
+            },
+            "npv": {
+              "type": "number"
+            },
+            "paybackMonth": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "roiPercent": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "costPerTask": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "breakEvenAdoption": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            }
+          },
+          "required": [
+            "monthlyCashFlow",
+            "totalCashBenefit",
+            "totalRunCost",
+            "totalHoursSaved",
+            "recoveredCapacityHours",
+            "npv",
+            "paybackMonth",
+            "roiPercent",
+            "costPerTask",
+            "breakEvenAdoption"
+          ],
+          "additionalProperties": false
+        },
+        "base": {
+          "type": "object",
+          "properties": {
+            "monthlyCashFlow": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "month": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "adoption": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "hoursSaved": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "potentialValue": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "cashBenefit": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "runCost": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "netCashFlow": {
+                    "type": "number"
+                  },
+                  "cumulativeCashFlow": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "month",
+                  "adoption",
+                  "hoursSaved",
+                  "potentialValue",
+                  "cashBenefit",
+                  "runCost",
+                  "netCashFlow",
+                  "cumulativeCashFlow"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "totalCashBenefit": {
+              "type": "number",
+              "minimum": 0
+            },
+            "totalRunCost": {
+              "type": "number",
+              "minimum": 0
+            },
+            "totalHoursSaved": {
+              "type": "number",
+              "minimum": 0
+            },
+            "recoveredCapacityHours": {
+              "type": "number",
+              "minimum": 0
+            },
+            "npv": {
+              "type": "number"
+            },
+            "paybackMonth": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "roiPercent": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "costPerTask": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "breakEvenAdoption": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            }
+          },
+          "required": [
+            "monthlyCashFlow",
+            "totalCashBenefit",
+            "totalRunCost",
+            "totalHoursSaved",
+            "recoveredCapacityHours",
+            "npv",
+            "paybackMonth",
+            "roiPercent",
+            "costPerTask",
+            "breakEvenAdoption"
+          ],
+          "additionalProperties": false
+        },
+        "high": {
+          "type": "object",
+          "properties": {
+            "monthlyCashFlow": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "month": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "adoption": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "hoursSaved": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "potentialValue": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "cashBenefit": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "runCost": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "netCashFlow": {
+                    "type": "number"
+                  },
+                  "cumulativeCashFlow": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "month",
+                  "adoption",
+                  "hoursSaved",
+                  "potentialValue",
+                  "cashBenefit",
+                  "runCost",
+                  "netCashFlow",
+                  "cumulativeCashFlow"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "totalCashBenefit": {
+              "type": "number",
+              "minimum": 0
+            },
+            "totalRunCost": {
+              "type": "number",
+              "minimum": 0
+            },
+            "totalHoursSaved": {
+              "type": "number",
+              "minimum": 0
+            },
+            "recoveredCapacityHours": {
+              "type": "number",
+              "minimum": 0
+            },
+            "npv": {
+              "type": "number"
+            },
+            "paybackMonth": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "roiPercent": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "costPerTask": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "breakEvenAdoption": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            }
+          },
+          "required": [
+            "monthlyCashFlow",
+            "totalCashBenefit",
+            "totalRunCost",
+            "totalHoursSaved",
+            "recoveredCapacityHours",
+            "npv",
+            "paybackMonth",
+            "roiPercent",
+            "costPerTask",
+            "breakEvenAdoption"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "low",
+        "base",
+        "high"
+      ],
+      "additionalProperties": false
+    },
+    "topDrivers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "currency",
+    "assumptions",
+    "scenarios",
+    "topDrivers",
+    "limitations"
+  ],
+  "additionalProperties": false
+}

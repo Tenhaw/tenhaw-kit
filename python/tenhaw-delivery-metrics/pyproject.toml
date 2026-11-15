@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tenhaw-delivery-metrics"
+version = "1.0.0"
+description = "DORA and flow metrics with honest data coverage and local GitHub/Jira collectors."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Tenhaw", email = "hello@tenhaw.com" }]
+dependencies = ["jsonschema>=4.23", "httpx>=0.28"]
+keywords = ["dora-metrics", "delivery-metrics", "engineering-metrics", "github", "jira"]
+
+[project.urls]
+Homepage = "https://kit.tenhaw.com/tools/delivery-metrics"
+Repository = "https://github.com/Tenhaw/tenhaw-kit"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tenhaw_delivery_metrics"]

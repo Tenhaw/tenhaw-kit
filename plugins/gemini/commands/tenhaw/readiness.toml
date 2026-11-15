@@ -1,0 +1,2 @@
+description = "Assess AI readiness from explicit evidence with the Tenhaw skill."
+prompt = "Assess AI readiness from explicit evidence with the Tenhaw skill. {{args}}"

@@ -1,0 +1,42 @@
+{
+  "name": "unknown-risk",
+  "tool": "usecases",
+  "input": {
+    "useCases": [
+      {
+        "id": "u1",
+        "title": "Example",
+        "problem": "A repeated task",
+        "ownerRole": "Product lead",
+        "businessUnit": "Example Team A",
+        "value": 4,
+        "feasibility": 3,
+        "riskTier": "unknown",
+        "status": "idea"
+      }
+    ]
+  },
+  "expected": {
+    "useCases": [
+      {
+        "id": "u1",
+        "title": "Example",
+        "problem": "A repeated task",
+        "ownerRole": "Product lead",
+        "businessUnit": "Example Team A",
+        "value": 4,
+        "feasibility": 3,
+        "riskTier": "unknown",
+        "status": "idea",
+        "priority": 12,
+        "governanceGate": "review-required"
+      }
+    ],
+    "methodology": "Priority = value (0 to 5) multiplied by feasibility (0 to 5). Governance gates take precedence over score.",
+    "limitations": [
+      "Risk tiers are indicative, not legal advice.",
+      "Transparency obligations can apply alongside high-risk obligations.",
+      "Prohibited uses are blocked pending qualified legal review."
+    ]
+  }
+}

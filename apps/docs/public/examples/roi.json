@@ -1,0 +1,19 @@
+{
+  "useCase": "Example support workflow",
+  "users": 20,
+  "minutesPerTask": 15,
+  "tasksPerUserPerMonth": 30,
+  "savings": {
+    "low": 0.15,
+    "base": 0.25,
+    "high": 0.35
+  },
+  "hourlyCost": 50,
+  "buildCost": 10000,
+  "monthlyRunCost": 200,
+  "adoptionMonths": 3,
+  "horizonMonths": 12,
+  "annualDiscountRate": 0.1,
+  "cashRealisation": 0,
+  "currency": "GBP"
+}

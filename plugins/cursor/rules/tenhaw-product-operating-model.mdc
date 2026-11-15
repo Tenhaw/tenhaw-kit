@@ -1,0 +1,9 @@
+---
+description: Use when building an internal operating-model tool for product ownership, OKRs, roadmaps and team topology.
+globs: ""
+alwaysApply: false
+---
+
+Define teams with IDs, team types and accountable owners. Add measurable key results with baseline, target, current and confidence, roadmap items with now/next/later and intended outcomes, and team interactions. Validate ownership and dependency checks before rendering. Use `opmodel diagram --input model.json --format mermaid` for a topology map. Team Topologies is a cited model; the checks support a conversation, not organisational prescriptions.
+
+Run `npx -y tenhaw@1.0.0 opmodel validate --input model.json --json`. Use JSON results and check the host app’s build and tests.

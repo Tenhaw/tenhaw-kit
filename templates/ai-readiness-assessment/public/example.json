@@ -1,0 +1,154 @@
+{
+  "answers": [
+    {
+      "questionId": "strategy-1",
+      "score": 1,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "strategy-2",
+      "score": 2,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "strategy-3",
+      "score": 3,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "strategy-4",
+      "score": 4,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "strategy-5",
+      "score": 1,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "data-1",
+      "score": 2,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "data-2",
+      "score": 3,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "data-3",
+      "score": 4,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "data-4",
+      "score": 1,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "data-5",
+      "score": 2,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "technology-1",
+      "score": 3,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "technology-2",
+      "score": 4,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "technology-3",
+      "score": 1,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "technology-4",
+      "score": 2,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "technology-5",
+      "score": 3,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "people-1",
+      "score": 4,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "people-2",
+      "score": 1,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "people-3",
+      "score": 2,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "people-4",
+      "score": 3,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "people-5",
+      "score": 4,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "governance-1",
+      "score": 1,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "governance-2",
+      "score": 2,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "governance-3",
+      "score": 3,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "governance-4",
+      "score": 4,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "governance-5",
+      "score": 1,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "delivery-1",
+      "score": 2,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "delivery-2",
+      "score": 3,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "delivery-3",
+      "score": 4,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "delivery-4",
+      "score": 1,
+      "evidence": "Synthetic example. Replace with your evidence."
+    },
+    {
+      "questionId": "delivery-5",
+      "score": 2,
+      "evidence": "Synthetic example. Replace with your evidence."
+    }
+  ]
+}

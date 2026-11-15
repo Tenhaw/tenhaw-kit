@@ -1,0 +1,529 @@
+{
+  "name": "exploring",
+  "tool": "readiness",
+  "input": {
+    "answers": [
+      {
+        "questionId": "strategy-1",
+        "score": 1
+      },
+      {
+        "questionId": "strategy-2",
+        "score": 1
+      },
+      {
+        "questionId": "strategy-3",
+        "score": 1
+      },
+      {
+        "questionId": "strategy-4",
+        "score": 1
+      },
+      {
+        "questionId": "strategy-5",
+        "score": 1
+      },
+      {
+        "questionId": "data-1",
+        "score": 1
+      },
+      {
+        "questionId": "data-2",
+        "score": 1
+      },
+      {
+        "questionId": "data-3",
+        "score": 1
+      },
+      {
+        "questionId": "data-4",
+        "score": 1
+      },
+      {
+        "questionId": "data-5",
+        "score": 1
+      },
+      {
+        "questionId": "technology-1",
+        "score": 1
+      },
+      {
+        "questionId": "technology-2",
+        "score": 1
+      },
+      {
+        "questionId": "technology-3",
+        "score": 1
+      },
+      {
+        "questionId": "technology-4",
+        "score": 1
+      },
+      {
+        "questionId": "technology-5",
+        "score": 1
+      },
+      {
+        "questionId": "people-1",
+        "score": 1
+      },
+      {
+        "questionId": "people-2",
+        "score": 1
+      },
+      {
+        "questionId": "people-3",
+        "score": 1
+      },
+      {
+        "questionId": "people-4",
+        "score": 1
+      },
+      {
+        "questionId": "people-5",
+        "score": 1
+      },
+      {
+        "questionId": "governance-1",
+        "score": 1
+      },
+      {
+        "questionId": "governance-2",
+        "score": 1
+      },
+      {
+        "questionId": "governance-3",
+        "score": 1
+      },
+      {
+        "questionId": "governance-4",
+        "score": 1
+      },
+      {
+        "questionId": "governance-5",
+        "score": 1
+      },
+      {
+        "questionId": "delivery-1",
+        "score": 1
+      },
+      {
+        "questionId": "delivery-2",
+        "score": 1
+      },
+      {
+        "questionId": "delivery-3",
+        "score": 1
+      },
+      {
+        "questionId": "delivery-4",
+        "score": 1
+      },
+      {
+        "questionId": "delivery-5",
+        "score": 1
+      }
+    ]
+  },
+  "expected": {
+    "frameworkVersion": "v1",
+    "contentCredit": "Tenhaw AI Readiness Framework, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), https://tenhaw.com.",
+    "overall": 1,
+    "band": "Exploring",
+    "coverage": 1,
+    "dimensions": [
+      {
+        "id": "strategy",
+        "label": "Strategy and value",
+        "weight": 0.2,
+        "score": 1,
+        "answered": 5,
+        "total": 5,
+        "coverage": 1
+      },
+      {
+        "id": "data",
+        "label": "Data foundations",
+        "weight": 0.2,
+        "score": 1,
+        "answered": 5,
+        "total": 5,
+        "coverage": 1
+      },
+      {
+        "id": "technology",
+        "label": "Technology and platforms",
+        "weight": 0.15,
+        "score": 1,
+        "answered": 5,
+        "total": 5,
+        "coverage": 1
+      },
+      {
+        "id": "people",
+        "label": "People and skills",
+        "weight": 0.15,
+        "score": 1,
+        "answered": 5,
+        "total": 5,
+        "coverage": 1
+      },
+      {
+        "id": "governance",
+        "label": "Governance, risk and compliance",
+        "weight": 0.15,
+        "score": 1,
+        "answered": 5,
+        "total": 5,
+        "coverage": 1
+      },
+      {
+        "id": "delivery",
+        "label": "Delivery and operating model",
+        "weight": 0.15,
+        "score": 1,
+        "answered": 5,
+        "total": 5,
+        "coverage": 1
+      }
+    ],
+    "gaps": [
+      {
+        "questionId": "data-1",
+        "dimensionId": "data",
+        "score": 1,
+        "priority": 0.8,
+        "recommendation": "Agree an owner and gather evidence: Are required data sources identified and owned?"
+      },
+      {
+        "questionId": "data-2",
+        "dimensionId": "data",
+        "score": 1,
+        "priority": 0.8,
+        "recommendation": "Agree an owner and gather evidence: Is data quality measured for the intended use?"
+      },
+      {
+        "questionId": "data-3",
+        "dimensionId": "data",
+        "score": 1,
+        "priority": 0.8,
+        "recommendation": "Agree an owner and gather evidence: Are access controls and lawful use understood?"
+      },
+      {
+        "questionId": "data-4",
+        "dimensionId": "data",
+        "score": 1,
+        "priority": 0.8,
+        "recommendation": "Agree an owner and gather evidence: Can data lineage and changes be traced?"
+      },
+      {
+        "questionId": "data-5",
+        "dimensionId": "data",
+        "score": 1,
+        "priority": 0.8,
+        "recommendation": "Agree an owner and gather evidence: Are data issues monitored and resolved by named roles?"
+      },
+      {
+        "questionId": "strategy-1",
+        "dimensionId": "strategy",
+        "score": 1,
+        "priority": 0.8,
+        "recommendation": "Agree an owner and gather evidence: Is there an agreed business outcome for AI investment?"
+      },
+      {
+        "questionId": "strategy-2",
+        "dimensionId": "strategy",
+        "score": 1,
+        "priority": 0.8,
+        "recommendation": "Agree an owner and gather evidence: Are use cases prioritised against measurable value?"
+      },
+      {
+        "questionId": "strategy-3",
+        "dimensionId": "strategy",
+        "score": 1,
+        "priority": 0.8,
+        "recommendation": "Agree an owner and gather evidence: Does an accountable sponsor own the AI strategy?"
+      },
+      {
+        "questionId": "strategy-4",
+        "dimensionId": "strategy",
+        "score": 1,
+        "priority": 0.8,
+        "recommendation": "Agree an owner and gather evidence: Are investment assumptions reviewed using evidence?"
+      },
+      {
+        "questionId": "strategy-5",
+        "dimensionId": "strategy",
+        "score": 1,
+        "priority": 0.8,
+        "recommendation": "Agree an owner and gather evidence: Are decisions to scale or stop tied to agreed measures?"
+      },
+      {
+        "questionId": "delivery-1",
+        "dimensionId": "delivery",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Is a team accountable for delivering and running the service?"
+      },
+      {
+        "questionId": "delivery-2",
+        "dimensionId": "delivery",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Is the work planned around outcomes and small increments?"
+      },
+      {
+        "questionId": "delivery-3",
+        "dimensionId": "delivery",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Are delivery flow and service measures visible?"
+      },
+      {
+        "questionId": "delivery-4",
+        "dimensionId": "delivery",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Are operating responsibilities and handovers documented?"
+      },
+      {
+        "questionId": "delivery-5",
+        "dimensionId": "delivery",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Are improvements driven by feedback from production use?"
+      },
+      {
+        "questionId": "governance-1",
+        "dimensionId": "governance",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Are intended use and foreseeable harms documented?"
+      },
+      {
+        "questionId": "governance-2",
+        "dimensionId": "governance",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Are accountable risk owners and review routes named?"
+      },
+      {
+        "questionId": "governance-3",
+        "dimensionId": "governance",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Are privacy, security and legal constraints assessed?"
+      },
+      {
+        "questionId": "governance-4",
+        "dimensionId": "governance",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Are human oversight and incident routes tested?"
+      },
+      {
+        "questionId": "governance-5",
+        "dimensionId": "governance",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Are governance controls reviewed when the system changes?"
+      },
+      {
+        "questionId": "people-1",
+        "dimensionId": "people",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Do affected colleagues understand the intended workflow?"
+      },
+      {
+        "questionId": "people-2",
+        "dimensionId": "people",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Are practical AI skills matched to the roles involved?"
+      },
+      {
+        "questionId": "people-3",
+        "dimensionId": "people",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Are users involved in design and evaluation?"
+      },
+      {
+        "questionId": "people-4",
+        "dimensionId": "people",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Is adoption supported with time, training and feedback?"
+      },
+      {
+        "questionId": "people-5",
+        "dimensionId": "people",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Are skills and behaviour changes measured over time?"
+      },
+      {
+        "questionId": "technology-1",
+        "dimensionId": "technology",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Are model and platform choices documented against needs?"
+      },
+      {
+        "questionId": "technology-2",
+        "dimensionId": "technology",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Are integrations tested in a controlled environment?"
+      },
+      {
+        "questionId": "technology-3",
+        "dimensionId": "technology",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Are reliability, cost and latency monitored?"
+      },
+      {
+        "questionId": "technology-4",
+        "dimensionId": "technology",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Are evaluation and rollback mechanisms in place?"
+      },
+      {
+        "questionId": "technology-5",
+        "dimensionId": "technology",
+        "score": 1,
+        "priority": 0.6,
+        "recommendation": "Agree an owner and gather evidence: Can the service be operated and changed without vendor lock-in?"
+      }
+    ],
+    "recommendations": [
+      {
+        "questionId": "data-1",
+        "action": "Agree an owner and gather evidence: Are required data sources identified and owned?"
+      },
+      {
+        "questionId": "data-2",
+        "action": "Agree an owner and gather evidence: Is data quality measured for the intended use?"
+      },
+      {
+        "questionId": "data-3",
+        "action": "Agree an owner and gather evidence: Are access controls and lawful use understood?"
+      },
+      {
+        "questionId": "data-4",
+        "action": "Agree an owner and gather evidence: Can data lineage and changes be traced?"
+      },
+      {
+        "questionId": "data-5",
+        "action": "Agree an owner and gather evidence: Are data issues monitored and resolved by named roles?"
+      },
+      {
+        "questionId": "strategy-1",
+        "action": "Agree an owner and gather evidence: Is there an agreed business outcome for AI investment?"
+      },
+      {
+        "questionId": "strategy-2",
+        "action": "Agree an owner and gather evidence: Are use cases prioritised against measurable value?"
+      },
+      {
+        "questionId": "strategy-3",
+        "action": "Agree an owner and gather evidence: Does an accountable sponsor own the AI strategy?"
+      },
+      {
+        "questionId": "strategy-4",
+        "action": "Agree an owner and gather evidence: Are investment assumptions reviewed using evidence?"
+      },
+      {
+        "questionId": "strategy-5",
+        "action": "Agree an owner and gather evidence: Are decisions to scale or stop tied to agreed measures?"
+      },
+      {
+        "questionId": "delivery-1",
+        "action": "Agree an owner and gather evidence: Is a team accountable for delivering and running the service?"
+      },
+      {
+        "questionId": "delivery-2",
+        "action": "Agree an owner and gather evidence: Is the work planned around outcomes and small increments?"
+      },
+      {
+        "questionId": "delivery-3",
+        "action": "Agree an owner and gather evidence: Are delivery flow and service measures visible?"
+      },
+      {
+        "questionId": "delivery-4",
+        "action": "Agree an owner and gather evidence: Are operating responsibilities and handovers documented?"
+      },
+      {
+        "questionId": "delivery-5",
+        "action": "Agree an owner and gather evidence: Are improvements driven by feedback from production use?"
+      },
+      {
+        "questionId": "governance-1",
+        "action": "Agree an owner and gather evidence: Are intended use and foreseeable harms documented?"
+      },
+      {
+        "questionId": "governance-2",
+        "action": "Agree an owner and gather evidence: Are accountable risk owners and review routes named?"
+      },
+      {
+        "questionId": "governance-3",
+        "action": "Agree an owner and gather evidence: Are privacy, security and legal constraints assessed?"
+      },
+      {
+        "questionId": "governance-4",
+        "action": "Agree an owner and gather evidence: Are human oversight and incident routes tested?"
+      },
+      {
+        "questionId": "governance-5",
+        "action": "Agree an owner and gather evidence: Are governance controls reviewed when the system changes?"
+      },
+      {
+        "questionId": "people-1",
+        "action": "Agree an owner and gather evidence: Do affected colleagues understand the intended workflow?"
+      },
+      {
+        "questionId": "people-2",
+        "action": "Agree an owner and gather evidence: Are practical AI skills matched to the roles involved?"
+      },
+      {
+        "questionId": "people-3",
+        "action": "Agree an owner and gather evidence: Are users involved in design and evaluation?"
+      },
+      {
+        "questionId": "people-4",
+        "action": "Agree an owner and gather evidence: Is adoption supported with time, training and feedback?"
+      },
+      {
+        "questionId": "people-5",
+        "action": "Agree an owner and gather evidence: Are skills and behaviour changes measured over time?"
+      },
+      {
+        "questionId": "technology-1",
+        "action": "Agree an owner and gather evidence: Are model and platform choices documented against needs?"
+      },
+      {
+        "questionId": "technology-2",
+        "action": "Agree an owner and gather evidence: Are integrations tested in a controlled environment?"
+      },
+      {
+        "questionId": "technology-3",
+        "action": "Agree an owner and gather evidence: Are reliability, cost and latency monitored?"
+      },
+      {
+        "questionId": "technology-4",
+        "action": "Agree an owner and gather evidence: Are evaluation and rollback mechanisms in place?"
+      },
+      {
+        "questionId": "technology-5",
+        "action": "Agree an owner and gather evidence: Can the service be operated and changed without vendor lock-in?"
+      }
+    ],
+    "limitations": [
+      "Self-assessment, not a certification or legal advice.",
+      "Maturity bands require at least 80% response coverage."
+    ]
+  }
+}

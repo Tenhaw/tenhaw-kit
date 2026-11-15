@@ -1,0 +1,25 @@
+{
+  "name": "low-rate",
+  "tool": "cost",
+  "input": {
+    "stage": "poc",
+    "dayRate": 1
+  },
+  "expected": {
+    "stage": "poc",
+    "currency": "GBP",
+    "low": 20,
+    "high": 40,
+    "assumptions": {
+      "people": 2,
+      "dayRate": 1,
+      "workingDaysPerWeek": 5,
+      "weeksLow": 2,
+      "weeksHigh": 4
+    },
+    "limitations": [
+      "Editable assumptions, not a quote.",
+      "Excludes model, infrastructure and ongoing support costs."
+    ]
+  }
+}

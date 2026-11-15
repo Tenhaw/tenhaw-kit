@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/team.schema.json",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "stream-aligned",
+        "platform",
+        "enabling",
+        "complicated-subsystem"
+      ]
+    },
+    "size": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "cognitiveLoad": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "platformDependencies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "type",
+    "size"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,37 @@
+[project]
+name = "tenhaw-kit-workspace"
+version = "1.0.0"
+requires-python = ">=3.10"
+dependencies = ["tenhaw", "tenhaw-ai-readiness", "tenhaw-ai-roi", "tenhaw-delivery-metrics"]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = ["python/tenhaw", "python/tenhaw-ai-readiness", "python/tenhaw-ai-roi", "python/tenhaw-delivery-metrics"]
+
+[tool.uv.sources]
+tenhaw = { workspace = true }
+tenhaw-ai-readiness = { workspace = true }
+tenhaw-ai-roi = { workspace = true }
+tenhaw-delivery-metrics = { workspace = true }
+
+[dependency-groups]
+dev = ["pytest>=8.3", "ruff>=0.9", "mypy>=1.14", "build>=1.2", "types-jsonschema>=4.23", "respx>=0.22"]
+
+[tool.pytest.ini_options]
+testpaths = ["python/tests"]
+addopts = "-ra"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 110
+extend-exclude = ["node_modules", ".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+files = ["python/tenhaw/src", "python/tenhaw-ai-readiness/src", "python/tenhaw-ai-roi/src", "python/tenhaw-delivery-metrics/src", "scripts/vectors.py", "scripts/sync-python-assets.py"]

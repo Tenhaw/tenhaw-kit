@@ -1,0 +1,9 @@
+---
+description: Use when building an internal portfolio tracker that connects product outcomes, team ownership, initiatives, AI use cases and cash-realisation assumptions.
+globs: ""
+alwaysApply: false
+---
+
+Start from the operating-model template for accountable teams, objectives and roadmap horizons. Compose @tenhaw/opmodel with @tenhaw/usecase-register and @tenhaw/ai-roi to connect initiatives, dependencies, outcome KPIs and realised cash assumptions. Keep service-level delivery metrics as separate evidence. Store user-defined portfolio fields in the host product; do not invent a universal portfolio score. Choose a persistence and access-control design appropriate to the organisation before moving beyond browser-local data.
+
+Run `npx -y tenhaw@1.0.0 init product-operating-model internal-portfolio --yes --json`. Use JSON results and check the host app’s build and tests.

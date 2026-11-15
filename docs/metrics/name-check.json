@@ -1,0 +1,110 @@
+{
+  "checkedAt": "2026-11-15T19:44:15.093Z",
+  "results": [
+    {
+      "registry": "npm",
+      "name": "tenhaw",
+      "httpStatus": 404,
+      "status": "not registered; availability is not guaranteed",
+      "version": null,
+      "owner": null
+    },
+    {
+      "registry": "npm",
+      "name": "create-tenhaw",
+      "httpStatus": 404,
+      "status": "not registered; availability is not guaranteed",
+      "version": null,
+      "owner": null
+    },
+    {
+      "registry": "npm",
+      "name": "@tenhaw/core",
+      "httpStatus": 404,
+      "status": "not registered; availability is not guaranteed",
+      "version": null,
+      "owner": null
+    },
+    {
+      "registry": "npm",
+      "name": "@tenhaw/ai-readiness",
+      "httpStatus": 404,
+      "status": "not registered; availability is not guaranteed",
+      "version": null,
+      "owner": null
+    },
+    {
+      "registry": "npm",
+      "name": "@tenhaw/delivery-metrics",
+      "httpStatus": 404,
+      "status": "not registered; availability is not guaranteed",
+      "version": null,
+      "owner": null
+    },
+    {
+      "registry": "npm",
+      "name": "@tenhaw/ai-roi",
+      "httpStatus": 404,
+      "status": "not registered; availability is not guaranteed",
+      "version": null,
+      "owner": null
+    },
+    {
+      "registry": "npm",
+      "name": "@tenhaw/usecase-register",
+      "httpStatus": 404,
+      "status": "not registered; availability is not guaranteed",
+      "version": null,
+      "owner": null
+    },
+    {
+      "registry": "npm",
+      "name": "@tenhaw/opmodel",
+      "httpStatus": 404,
+      "status": "not registered; availability is not guaranteed",
+      "version": null,
+      "owner": null
+    },
+    {
+      "registry": "npm",
+      "name": "@tenhaw/mcp",
+      "httpStatus": 404,
+      "status": "not registered; availability is not guaranteed",
+      "version": null,
+      "owner": null
+    },
+    {
+      "registry": "pypi",
+      "name": "tenhaw",
+      "httpStatus": 404,
+      "status": "not registered; availability is not guaranteed",
+      "version": null,
+      "owner": null
+    },
+    {
+      "registry": "pypi",
+      "name": "tenhaw-ai-readiness",
+      "httpStatus": 404,
+      "status": "not registered; availability is not guaranteed",
+      "version": null,
+      "owner": null
+    },
+    {
+      "registry": "pypi",
+      "name": "tenhaw-delivery-metrics",
+      "httpStatus": 404,
+      "status": "not registered; availability is not guaranteed",
+      "version": null,
+      "owner": null
+    },
+    {
+      "registry": "pypi",
+      "name": "tenhaw-ai-roi",
+      "httpStatus": 404,
+      "status": "not registered; availability is not guaranteed",
+      "version": null,
+      "owner": null
+    }
+  ],
+  "note": "No names were claimed. A pending PyPI publisher does not reserve a name. A 404 is not proof that a name is publishable. Verify account and scope ownership before publication."
+}

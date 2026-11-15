@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/project-cost-report.schema.json",
+  "type": "object",
+  "properties": {
+    "stage": {
+      "enum": [
+        "poc",
+        "pilot",
+        "production"
+      ]
+    },
+    "currency": {
+      "type": "string"
+    },
+    "low": {
+      "type": "number",
+      "minimum": 0
+    },
+    "high": {
+      "type": "number",
+      "minimum": 0
+    },
+    "assumptions": {
+      "type": "object",
+      "properties": {
+        "people": {
+          "type": "number",
+          "minimum": 0
+        },
+        "dayRate": {
+          "type": "number",
+          "minimum": 0
+        },
+        "workingDaysPerWeek": {
+          "const": 5
+        },
+        "weeksLow": {
+          "type": "number",
+          "minimum": 0
+        },
+        "weeksHigh": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "people",
+        "dayRate",
+        "workingDaysPerWeek",
+        "weeksLow",
+        "weeksHigh"
+      ],
+      "additionalProperties": false
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "stage",
+    "currency",
+    "low",
+    "high",
+    "assumptions",
+    "limitations"
+  ],
+  "additionalProperties": false
+}

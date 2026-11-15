@@ -1,0 +1,25 @@
+{
+  "name": "fixed-duration",
+  "tool": "cost",
+  "input": {
+    "stage": "pilot",
+    "durationWeeks": 3
+  },
+  "expected": {
+    "stage": "pilot",
+    "currency": "GBP",
+    "low": 36000,
+    "high": 36000,
+    "assumptions": {
+      "people": 3,
+      "dayRate": 800,
+      "workingDaysPerWeek": 5,
+      "weeksLow": 3,
+      "weeksHigh": 3
+    },
+    "limitations": [
+      "Editable assumptions, not a quote.",
+      "Excludes model, infrastructure and ongoing support costs."
+    ]
+  }
+}

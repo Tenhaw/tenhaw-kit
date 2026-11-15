@@ -1,0 +1,172 @@
+{
+  "name": "flow-items",
+  "tool": "delivery",
+  "input": [
+    {
+      "id": "w1",
+      "type": "work-item",
+      "startedAt": "2026-01-03T00:00:00Z",
+      "completedAt": "2026-01-05T00:00:00Z",
+      "activeMinutes": 720,
+      "service": "a"
+    },
+    {
+      "id": "w2",
+      "type": "work-item",
+      "startedAt": "2026-01-03T00:00:00Z",
+      "completedAt": "2026-02-02T00:00:00Z",
+      "activeMinutes": 720,
+      "service": "a"
+    }
+  ],
+  "config": {
+    "since": "2026-01-01T00:00:00Z",
+    "until": "2026-02-01T00:00:00Z"
+  },
+  "expected": {
+    "period": {
+      "since": "2026-01-01T00:00:00Z",
+      "until": "2026-02-01T00:00:00Z"
+    },
+    "metrics": {
+      "deploymentFrequency": {
+        "value": null,
+        "unit": "deployments/day",
+        "sampleSize": 0,
+        "period": {
+          "since": "2026-01-01T00:00:00Z",
+          "until": "2026-02-01T00:00:00Z"
+        },
+        "dataSource": "supplied events",
+        "caveats": [
+          "No observed production deployments in the requested period."
+        ]
+      },
+      "changeLeadTime": {
+        "value": null,
+        "unit": "hours",
+        "sampleSize": 0,
+        "period": {
+          "since": "2026-01-01T00:00:00Z",
+          "until": "2026-02-01T00:00:00Z"
+        },
+        "dataSource": "supplied events",
+        "caveats": [
+          "No linked commit-to-production observations."
+        ]
+      },
+      "changeFailRate": {
+        "value": null,
+        "unit": "percent",
+        "sampleSize": 0,
+        "period": {
+          "since": "2026-01-01T00:00:00Z",
+          "until": "2026-02-01T00:00:00Z"
+        },
+        "dataSource": "supplied events",
+        "caveats": [
+          "No observed production deployments in the requested period."
+        ]
+      },
+      "failedDeploymentRecoveryTime": {
+        "value": null,
+        "unit": "hours",
+        "sampleSize": 0,
+        "period": {
+          "since": "2026-01-01T00:00:00Z",
+          "until": "2026-02-01T00:00:00Z"
+        },
+        "dataSource": "supplied events",
+        "caveats": [
+          "No linked incidents with observed restoration."
+        ]
+      },
+      "deploymentReworkRate": {
+        "value": null,
+        "unit": "percent",
+        "sampleSize": 0,
+        "period": {
+          "since": "2026-01-01T00:00:00Z",
+          "until": "2026-02-01T00:00:00Z"
+        },
+        "dataSource": "supplied events",
+        "caveats": [
+          "Every deployment needs explicit rework classification."
+        ]
+      },
+      "cycleTime": {
+        "value": 48,
+        "unit": "hours",
+        "sampleSize": 1,
+        "period": {
+          "since": "2026-01-01T00:00:00Z",
+          "until": "2026-02-01T00:00:00Z"
+        },
+        "dataSource": "supplied events",
+        "caveats": []
+      },
+      "throughput": {
+        "value": 0.225806,
+        "unit": "items/week",
+        "sampleSize": 1,
+        "period": {
+          "since": "2026-01-01T00:00:00Z",
+          "until": "2026-02-01T00:00:00Z"
+        },
+        "dataSource": "supplied events",
+        "caveats": []
+      },
+      "wip": {
+        "value": 1,
+        "unit": "items at period end",
+        "sampleSize": 2,
+        "period": {
+          "since": "2026-01-01T00:00:00Z",
+          "until": "2026-02-01T00:00:00Z"
+        },
+        "dataSource": "supplied events",
+        "caveats": []
+      },
+      "flowEfficiency": {
+        "value": 25,
+        "unit": "percent",
+        "sampleSize": 1,
+        "period": {
+          "since": "2026-01-01T00:00:00Z",
+          "until": "2026-02-01T00:00:00Z"
+        },
+        "dataSource": "supplied events",
+        "caveats": []
+      },
+      "prReviewTime": {
+        "value": null,
+        "unit": "hours",
+        "sampleSize": 0,
+        "period": {
+          "since": "2026-01-01T00:00:00Z",
+          "until": "2026-02-01T00:00:00Z"
+        },
+        "dataSource": "supplied events",
+        "caveats": [
+          "No merged pull requests with a first review timestamp."
+        ]
+      },
+      "prSize": {
+        "value": null,
+        "unit": "changed lines",
+        "sampleSize": 0,
+        "period": {
+          "since": "2026-01-01T00:00:00Z",
+          "until": "2026-02-01T00:00:00Z"
+        },
+        "dataSource": "supplied events",
+        "caveats": [
+          "No merged pull requests with additions and deletions."
+        ]
+      }
+    },
+    "caveats": [
+      "Metrics describe one service and the supplied event window; missing links remain unavailable."
+    ]
+  }
+}

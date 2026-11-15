@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/usecase-register.schema.json",
+  "type": "object",
+  "properties": {
+    "useCases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "problem": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ownerRole": {
+            "type": "string",
+            "minLength": 1
+          },
+          "businessUnit": {
+            "type": "string",
+            "minLength": 1
+          },
+          "value": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 5
+          },
+          "feasibility": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 5
+          },
+          "riskTier": {
+            "type": "string",
+            "enum": [
+              "prohibited",
+              "high",
+              "limited",
+              "minimal",
+              "unknown"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "idea",
+              "assessed",
+              "approved",
+              "PoC",
+              "pilot",
+              "production",
+              "retired"
+            ]
+          },
+          "dataRequired": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dataSensitivity": {
+            "type": "string",
+            "enum": [
+              "public",
+              "internal",
+              "confidential",
+              "restricted"
+            ]
+          },
+          "valueHypothesis": {
+            "type": "string"
+          },
+          "valueEstimate": {
+            "type": "object"
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "kpis": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reviewDate": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "problem",
+          "ownerRole",
+          "businessUnit",
+          "value",
+          "feasibility",
+          "riskTier",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 10000
+    }
+  },
+  "required": [
+    "useCases"
+  ],
+  "additionalProperties": false
+}

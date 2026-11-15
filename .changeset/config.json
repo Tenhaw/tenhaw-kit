@@ -1,0 +1,11 @@
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.1.1/schema.json",
+  "changelog": false,
+  "commit": false,
+  "fixed": [["tenhaw", "create-tenhaw", "@tenhaw/core", "@tenhaw/ai-readiness", "@tenhaw/delivery-metrics", "@tenhaw/ai-roi", "@tenhaw/usecase-register", "@tenhaw/opmodel", "@tenhaw/mcp"]],
+  "linked": [],
+  "access": "public",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": []
+}

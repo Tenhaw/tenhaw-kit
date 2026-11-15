@@ -1,0 +1,44 @@
+{
+  "name": "escaped-label",
+  "tool": "opmodel",
+  "input": {
+    "teams": [
+      {
+        "id": "odd ]",
+        "name": "Example <script>\"",
+        "type": "stream-aligned",
+        "size": 5
+      }
+    ]
+  },
+  "expected": {
+    "model": {
+      "teams": [
+        {
+          "id": "odd ]",
+          "name": "Example <script>\"",
+          "type": "stream-aligned",
+          "size": 5
+        }
+      ],
+      "okrs": [],
+      "roadmap": [],
+      "interactions": [],
+      "products": []
+    },
+    "checks": [
+      {
+        "code": "platform-dependency",
+        "entityId": "odd ]",
+        "message": "Confirm whether this stream-aligned team needs platform support."
+      }
+    ],
+    "limitations": [
+      "Team Topologies is a cited public model; no affiliation is implied.",
+      "Checks support a design conversation and are not organisational prescriptions."
+    ],
+    "sources": [
+      "https://teamtopologies.com/key-concepts"
+    ]
+  }
+}

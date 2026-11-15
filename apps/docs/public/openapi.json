@@ -1,0 +1,890 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Tenhaw Kit calculation API",
+    "version": "1.0.0",
+    "description": "No tokens or raw delivery events. Calculation input is transient."
+  },
+  "servers": [
+    {
+      "url": "https://mcp.tenhaw.com"
+    }
+  ],
+  "paths": {
+    "/api/v1/readiness/score": {
+      "post": {
+        "operationId": "assess_ai_readiness",
+        "summary": "assess ai readiness",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://kit.tenhaw.com/schemas/readiness-response.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validated deterministic result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "result"
+                  ],
+                  "properties": {
+                    "result": {
+                      "$ref": "https://kit.tenhaw.com/schemas/readiness-report.schema.json"
+                    },
+                    "generator": {
+                      "type": "object",
+                      "required": [
+                        "generator",
+                        "version",
+                        "url"
+                      ],
+                      "properties": {
+                        "generator": {
+                          "type": "string"
+                        },
+                        "version": {
+                          "type": "string"
+                        },
+                        "url": {
+                          "type": "string",
+                          "format": "uri"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        }
+      }
+    },
+    "/api/v1/delivery/health": {
+      "post": {
+        "operationId": "score_delivery_health",
+        "summary": "score delivery health",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "period": {
+                    "type": "object",
+                    "properties": {
+                      "since": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "until": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    },
+                    "required": [
+                      "since",
+                      "until"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "metrics": {
+                    "type": "object",
+                    "properties": {
+                      "deploymentFrequency": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": [
+                              "number",
+                              "null"
+                            ],
+                            "minimum": 0
+                          },
+                          "unit": {
+                            "const": "deployments/day"
+                          },
+                          "sampleSize": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "period": {
+                            "type": "object",
+                            "properties": {
+                              "since": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "until": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            },
+                            "required": [
+                              "since",
+                              "until"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "dataSource": {
+                            "const": "supplied events"
+                          },
+                          "caveats": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit",
+                          "sampleSize",
+                          "period",
+                          "dataSource",
+                          "caveats"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "changeLeadTime": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": [
+                              "number",
+                              "null"
+                            ],
+                            "minimum": 0
+                          },
+                          "unit": {
+                            "const": "hours"
+                          },
+                          "sampleSize": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "period": {
+                            "type": "object",
+                            "properties": {
+                              "since": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "until": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            },
+                            "required": [
+                              "since",
+                              "until"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "dataSource": {
+                            "const": "supplied events"
+                          },
+                          "caveats": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit",
+                          "sampleSize",
+                          "period",
+                          "dataSource",
+                          "caveats"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "changeFailRate": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": [
+                              "number",
+                              "null"
+                            ],
+                            "minimum": 0,
+                            "maximum": 100
+                          },
+                          "unit": {
+                            "const": "percent"
+                          },
+                          "sampleSize": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "period": {
+                            "type": "object",
+                            "properties": {
+                              "since": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "until": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            },
+                            "required": [
+                              "since",
+                              "until"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "dataSource": {
+                            "const": "supplied events"
+                          },
+                          "caveats": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit",
+                          "sampleSize",
+                          "period",
+                          "dataSource",
+                          "caveats"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "failedDeploymentRecoveryTime": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": [
+                              "number",
+                              "null"
+                            ],
+                            "minimum": 0
+                          },
+                          "unit": {
+                            "const": "hours"
+                          },
+                          "sampleSize": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "period": {
+                            "type": "object",
+                            "properties": {
+                              "since": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "until": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            },
+                            "required": [
+                              "since",
+                              "until"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "dataSource": {
+                            "const": "supplied events"
+                          },
+                          "caveats": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit",
+                          "sampleSize",
+                          "period",
+                          "dataSource",
+                          "caveats"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "deploymentReworkRate": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": [
+                              "number",
+                              "null"
+                            ],
+                            "minimum": 0,
+                            "maximum": 100
+                          },
+                          "unit": {
+                            "const": "percent"
+                          },
+                          "sampleSize": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "period": {
+                            "type": "object",
+                            "properties": {
+                              "since": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "until": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            },
+                            "required": [
+                              "since",
+                              "until"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "dataSource": {
+                            "const": "supplied events"
+                          },
+                          "caveats": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit",
+                          "sampleSize",
+                          "period",
+                          "dataSource",
+                          "caveats"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "cycleTime": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": [
+                              "number",
+                              "null"
+                            ],
+                            "minimum": 0
+                          },
+                          "unit": {
+                            "const": "hours"
+                          },
+                          "sampleSize": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "period": {
+                            "type": "object",
+                            "properties": {
+                              "since": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "until": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            },
+                            "required": [
+                              "since",
+                              "until"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "dataSource": {
+                            "const": "supplied events"
+                          },
+                          "caveats": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit",
+                          "sampleSize",
+                          "period",
+                          "dataSource",
+                          "caveats"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "throughput": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": [
+                              "number",
+                              "null"
+                            ],
+                            "minimum": 0
+                          },
+                          "unit": {
+                            "const": "items/week"
+                          },
+                          "sampleSize": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "period": {
+                            "type": "object",
+                            "properties": {
+                              "since": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "until": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            },
+                            "required": [
+                              "since",
+                              "until"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "dataSource": {
+                            "const": "supplied events"
+                          },
+                          "caveats": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit",
+                          "sampleSize",
+                          "period",
+                          "dataSource",
+                          "caveats"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "wip": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": [
+                              "number",
+                              "null"
+                            ],
+                            "minimum": 0
+                          },
+                          "unit": {
+                            "const": "items at period end"
+                          },
+                          "sampleSize": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "period": {
+                            "type": "object",
+                            "properties": {
+                              "since": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "until": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            },
+                            "required": [
+                              "since",
+                              "until"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "dataSource": {
+                            "const": "supplied events"
+                          },
+                          "caveats": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit",
+                          "sampleSize",
+                          "period",
+                          "dataSource",
+                          "caveats"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "flowEfficiency": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": [
+                              "number",
+                              "null"
+                            ],
+                            "minimum": 0,
+                            "maximum": 100
+                          },
+                          "unit": {
+                            "const": "percent"
+                          },
+                          "sampleSize": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "period": {
+                            "type": "object",
+                            "properties": {
+                              "since": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "until": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            },
+                            "required": [
+                              "since",
+                              "until"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "dataSource": {
+                            "const": "supplied events"
+                          },
+                          "caveats": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit",
+                          "sampleSize",
+                          "period",
+                          "dataSource",
+                          "caveats"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "prReviewTime": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": [
+                              "number",
+                              "null"
+                            ],
+                            "minimum": 0
+                          },
+                          "unit": {
+                            "const": "hours"
+                          },
+                          "sampleSize": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "period": {
+                            "type": "object",
+                            "properties": {
+                              "since": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "until": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            },
+                            "required": [
+                              "since",
+                              "until"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "dataSource": {
+                            "const": "supplied events"
+                          },
+                          "caveats": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit",
+                          "sampleSize",
+                          "period",
+                          "dataSource",
+                          "caveats"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "prSize": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": [
+                              "number",
+                              "null"
+                            ],
+                            "minimum": 0
+                          },
+                          "unit": {
+                            "const": "changed lines"
+                          },
+                          "sampleSize": {
+                            "type": "integer",
+                            "minimum": 0
+                          },
+                          "period": {
+                            "type": "object",
+                            "properties": {
+                              "since": {
+                                "type": "string",
+                                "format": "date-time"
+                              },
+                              "until": {
+                                "type": "string",
+                                "format": "date-time"
+                              }
+                            },
+                            "required": [
+                              "since",
+                              "until"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "dataSource": {
+                            "const": "supplied events"
+                          },
+                          "caveats": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          "value",
+                          "unit",
+                          "sampleSize",
+                          "period",
+                          "dataSource",
+                          "caveats"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "deploymentFrequency",
+                      "changeLeadTime",
+                      "changeFailRate",
+                      "failedDeploymentRecoveryTime",
+                      "deploymentReworkRate",
+                      "cycleTime",
+                      "throughput",
+                      "wip",
+                      "flowEfficiency",
+                      "prReviewTime",
+                      "prSize"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "caveats": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "generator": {
+                    "type": "object",
+                    "properties": {
+                      "generator": {
+                        "const": "Tenhaw Kit"
+                      },
+                      "version": {
+                        "type": "string"
+                      },
+                      "url": {
+                        "type": "string",
+                        "format": "uri"
+                      }
+                    },
+                    "required": [
+                      "generator",
+                      "version",
+                      "url"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "period",
+                  "metrics",
+                  "caveats"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validated deterministic result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "result"
+                  ],
+                  "properties": {
+                    "result": {
+                      "$ref": "https://kit.tenhaw.com/schemas/delivery-health.schema.json"
+                    },
+                    "generator": {
+                      "type": "object",
+                      "required": [
+                        "generator",
+                        "version",
+                        "url"
+                      ],
+                      "properties": {
+                        "generator": {
+                          "type": "string"
+                        },
+                        "version": {
+                          "type": "string"
+                        },
+                        "url": {
+                          "type": "string",
+                          "format": "uri"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        }
+      }
+    },
+    "/api/v1/roi/estimate": {
+      "post": {
+        "operationId": "estimate_ai_roi",
+        "summary": "estimate ai roi",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "https://kit.tenhaw.com/schemas/roi-input.schema.json"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Validated deterministic result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "result"
+                  ],
+                  "properties": {
+                    "result": {
+                      "$ref": "https://kit.tenhaw.com/schemas/roi-report.schema.json"
+                    },
+                    "generator": {
+                      "type": "object",
+                      "required": [
+                        "generator",
+                        "version",
+                        "url"
+                      ],
+                      "properties": {
+                        "generator": {
+                          "type": "string"
+                        },
+                        "version": {
+                          "type": "string"
+                        },
+                        "url": {
+                          "type": "string",
+                          "format": "uri"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "413": {
+            "description": "Request too large"
+          },
+          "429": {
+            "description": "Rate limit exceeded"
+          }
+        }
+      }
+    }
+  }
+}

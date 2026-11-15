@@ -1,0 +1,24 @@
+{
+  "name": "empty",
+  "tool": "opmodel",
+  "input": {
+    "teams": []
+  },
+  "expected": {
+    "model": {
+      "teams": [],
+      "okrs": [],
+      "roadmap": [],
+      "interactions": [],
+      "products": []
+    },
+    "checks": [],
+    "limitations": [
+      "Team Topologies is a cited public model; no affiliation is implied.",
+      "Checks support a design conversation and are not organisational prescriptions."
+    ],
+    "sources": [
+      "https://teamtopologies.com/key-concepts"
+    ]
+  }
+}

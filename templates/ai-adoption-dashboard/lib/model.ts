@@ -1,0 +1,9 @@
+import { finite, list, parseCsv, record, text } from "./io";
+export type Team = { team:string; members:number; licensed:number; active:number; useCases:number; sentiment:number };
+export const example:Team[]=[{team:"Example Team A",members:24,licensed:20,active:16,useCases:5,sentiment:4.1},{team:"Example Team B",members:18,licensed:18,active:9,useCases:3,sentiment:3.6},{team:"Example Team C",members:32,licensed:24,active:20,useCases:8,sentiment:4.3},{team:"Example Team D",members:12,licensed:10,active:4,useCases:2,sentiment:3.2}];
+export function validateTeams(value:unknown):Team[] {
+ const result=list(value,"teams").map((item,i)=>{const row=record(item,`teams[${i}]`);const entry={team:text(row.team,`teams[${i}].team`),members:finite(row.members,"members"),licensed:finite(row.licensed,"licensed"),active:finite(row.active,"active"),useCases:finite(row.useCases,"useCases"),sentiment:finite(row.sentiment,"sentiment",1,5)};if(entry.active>entry.licensed||entry.licensed>entry.members)throw new Error(`teams[${i}]: active <= licensed <= members is required.`);if([entry.members,entry.licensed,entry.active,entry.useCases].some(n=>!Number.isInteger(n)))throw new Error(`teams[${i}]: counts must be whole numbers.`);return entry;});
+ if(new Set(result.map(row=>row.team)).size!==result.length)throw new Error("Each team needs a unique name.");return result;
+}
+export function importTeams(source:string,format:string){return validateTeams(format==="csv"?parseCsv(source):JSON.parse(source));}
+export function summarise(teams:Team[]){const members=teams.reduce((s,t)=>s+t.members,0),licensed=teams.reduce((s,t)=>s+t.licensed,0),active=teams.reduce((s,t)=>s+t.active,0),useCases=teams.reduce((s,t)=>s+t.useCases,0);return {members,licensed,active,useCases,utilisation:licensed?active/licensed*100:null,adoption:members?active/members*100:null,sentiment:teams.length?teams.reduce((s,t)=>s+t.sentiment,0)/teams.length:null};}

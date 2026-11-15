@@ -1,0 +1,24 @@
+{
+  "name": "pilot",
+  "tool": "cost",
+  "input": {
+    "stage": "pilot"
+  },
+  "expected": {
+    "stage": "pilot",
+    "currency": "GBP",
+    "low": 48000,
+    "high": 96000,
+    "assumptions": {
+      "people": 3,
+      "dayRate": 800,
+      "workingDaysPerWeek": 5,
+      "weeksLow": 4,
+      "weeksHigh": 8
+    },
+    "limitations": [
+      "Editable assumptions, not a quote.",
+      "Excludes model, infrastructure and ongoing support costs."
+    ]
+  }
+}

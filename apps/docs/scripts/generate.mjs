@@ -1,0 +1,34 @@
+import { readFile,writeFile,mkdir,cp,readdir } from 'node:fs/promises';
+import { resolve,dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+const app=resolve(dirname(fileURLToPath(import.meta.url)),'..'),root=resolve(app,'../..'),publicDir=resolve(app,'public');
+await mkdir(publicDir,{recursive:true});await cp(resolve(root,'spec/schemas'),resolve(publicDir,'schemas'),{recursive:true});
+const reference=JSON.parse(await readFile(resolve(app,'lib/reference.json'),'utf8'));
+const names=reference.tools.map(tool=>tool.slug);
+const refs=names.map(name=>`- [${name}](https://kit.tenhaw.com/tools/${name}/): install, API and methodology.`).join('\n');
+const intro='# Tenhaw Kit\n\nLocal-first agent tools for AI readiness, delivery performance, AI business cases, use-case registers and operating models. MIT code, CC BY 4.0 framework content. No installed-tool telemetry.\n\n';
+const llms=intro+'## Install\n\n```sh\nnpx tenhaw@latest --help\ncodex mcp add tenhaw -- npx -y @tenhaw/mcp\n```\n\n## References\n\n'+refs+'\n- [MCP](https://kit.tenhaw.com/mcp/): local and remote data boundaries.\n- [OpenAPI](https://kit.tenhaw.com/openapi.json)\n- [Full reference](https://kit.tenhaw.com/llms-full.txt)\n- [Source](https://github.com/Tenhaw/tenhaw-kit)\n';
+await writeFile(resolve(publicDir,'llms.txt'),llms);
+let full=llms+'\n## Agent installation\n\n'+Object.entries(reference.install).map(([client,command])=>`### ${client}\n\n${command}\n`).join('\n');
+for(const tool of reference.tools)full+=`\n## ${tool.title}\n\nWhen to use: ${tool.use}\n\nInstall: npm install ${tool.pkg}\n\nCLI: npx tenhaw@latest ${tool.command}\n\nAPI: ${tool.api}\n\nMethodology: ${tool.method}\n\n${tool.snippet}\n`;
+full+='\n## Schemas\n\n';
+for(const name of await readdir(resolve(root,'spec/schemas'))){full+=`### ${name}\n\n`+await readFile(resolve(root,'spec/schemas',name),'utf8')+'\n';}
+const framework=JSON.parse(await readFile(resolve(root,'spec/content/readiness-framework.v1.json'),'utf8'));
+full+='\n## Readiness methodology and question bank\n\n'+JSON.stringify(framework,null,2)+'\n';
+await writeFile(resolve(publicDir,'llms-full.txt'),full);
+const schema=name=>({$ref:`https://kit.tenhaw.com/schemas/${name}.schema.json`});
+// The transport accepts the CLI's optional metadata while keeping pure reports closed.
+const deliveryTransport=JSON.parse(await readFile(resolve(root,'spec/schemas/delivery-report.schema.json'),'utf8'));
+delete deliveryTransport.$id;delete deliveryTransport.$schema;
+deliveryTransport.properties.generator={type:'object',properties:{generator:{const:'Tenhaw Kit'},version:{type:'string'},url:{type:'string',format:'uri'}},required:['generator','version','url'],additionalProperties:false};
+const inputSchema=input=>input==='delivery-report'?deliveryTransport:schema(input);
+const outputSchema=output=>schema(output);
+const wrapped=output=>({type:'object',required:['result'],properties:{result:outputSchema(output),generator:{type:'object',required:['generator','version','url'],properties:{generator:{type:'string'},version:{type:'string'},url:{type:'string',format:'uri'}}}}});
+const operation=(id,input,output)=>({post:{operationId:id,summary:id.replaceAll('_',' '),requestBody:{required:true,content:{'application/json':{schema:inputSchema(input)}}},responses:{200:{description:'Validated deterministic result',content:{'application/json':{schema:wrapped(output)}}},400:{description:'Invalid input'},413:{description:'Request too large'},429:{description:'Rate limit exceeded'}}}});
+await writeFile(resolve(publicDir,'openapi.json'),JSON.stringify({openapi:'3.1.0',info:{title:'Tenhaw Kit calculation API',version:'1.0.0',description:'No tokens or raw delivery events. Calculation input is transient.'},servers:[{url:'https://mcp.tenhaw.com'}],paths:{'/api/v1/readiness/score':operation('assess_ai_readiness','readiness-response','readiness-report'),'/api/v1/delivery/health':operation('score_delivery_health','delivery-report','delivery-health'),'/api/v1/roi/estimate':operation('estimate_ai_roi','roi-input','roi-report')}},null,2)+'\n');
+await mkdir(resolve(publicDir,'examples'),{recursive:true});
+await writeFile(resolve(publicDir,'examples/readiness.json'),JSON.stringify({answers:framework.dimensions.flatMap(d=>d.questions.map(q=>({questionId:q.id,score:3,evidence:'Synthetic example.'})))},null,2)+'\n');
+await writeFile(resolve(publicDir,'examples/roi.json'),JSON.stringify({useCase:'Example support workflow',users:20,minutesPerTask:15,tasksPerUserPerMonth:30,savings:{low:.15,base:.25,high:.35},hourlyCost:50,buildCost:10000,monthlyRunCost:200,adoptionMonths:3,horizonMonths:12,annualDiscountRate:.1,cashRealisation:0,currency:'GBP'},null,2)+'\n');
+const routes=['',...reference.pages.map(path=>path+'/')];
+await writeFile(resolve(publicDir,'sitemap.xml'),'<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+routes.map(route=>`<url><loc>https://kit.tenhaw.com/${route}</loc></url>`).join('')+'</urlset>\n');
+await writeFile(resolve(publicDir,'robots.txt'),'User-agent: *\nAllow: /\nSitemap: https://kit.tenhaw.com/sitemap.xml\n');
