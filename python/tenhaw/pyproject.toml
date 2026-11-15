@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tenhaw"
+version = "1.0.0"
+description = "Agent-friendly CLI for AI readiness, AI ROI and delivery metrics."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Tenhaw", email = "hello@tenhaw.com" }]
+dependencies = ["tenhaw-ai-readiness==1.0.0", "tenhaw-ai-roi==1.0.0", "tenhaw-delivery-metrics==1.0.0"]
+keywords = ["ai-readiness", "ai-roi", "delivery-metrics", "internal-tools", "tenhaw"]
+
+[project.scripts]
+tenhaw-py = "tenhaw.cli:main"
+
+[project.urls]
+Homepage = "https://kit.tenhaw.com"
+Repository = "https://github.com/Tenhaw/tenhaw-kit"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tenhaw"]
+
+[tool.uv.sources]
+tenhaw-ai-readiness = { workspace = true }
+tenhaw-ai-roi = { workspace = true }
+tenhaw-delivery-metrics = { workspace = true }

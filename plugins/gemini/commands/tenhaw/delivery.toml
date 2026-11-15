@@ -1,0 +1,2 @@
+description = "Assess one service from supplied delivery events using Tenhaw Kit."
+prompt = "Assess one service from supplied delivery events using Tenhaw Kit. {{args}}"

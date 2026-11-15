@@ -1,0 +1,1 @@
+export default function Home(){return <main><h1>Tenhaw Kit MCP</h1><p>Connect your agent to <code>/mcp</code>. Read the <a href="https://kit.tenhaw.com/mcp">tool reference</a>.</p><p>For private repository events, use the local stdio server. Remote delivery scoring accepts aggregate metrics only.</p></main>;}

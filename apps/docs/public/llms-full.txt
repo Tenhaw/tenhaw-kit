@@ -1,0 +1,4800 @@
+# Tenhaw Kit
+
+Local-first agent tools for AI readiness, delivery performance, AI business cases, use-case registers and operating models. MIT code, CC BY 4.0 framework content. No installed-tool telemetry.
+
+## Install
+
+```sh
+npx tenhaw@latest --help
+codex mcp add tenhaw -- npx -y @tenhaw/mcp
+```
+
+## References
+
+- [ai-readiness](https://kit.tenhaw.com/tools/ai-readiness/): install, API and methodology.
+- [delivery-metrics](https://kit.tenhaw.com/tools/delivery-metrics/): install, API and methodology.
+- [ai-roi](https://kit.tenhaw.com/tools/ai-roi/): install, API and methodology.
+- [usecase-register](https://kit.tenhaw.com/tools/usecase-register/): install, API and methodology.
+- [opmodel](https://kit.tenhaw.com/tools/opmodel/): install, API and methodology.
+- [MCP](https://kit.tenhaw.com/mcp/): local and remote data boundaries.
+- [OpenAPI](https://kit.tenhaw.com/openapi.json)
+- [Full reference](https://kit.tenhaw.com/llms-full.txt)
+- [Source](https://github.com/Tenhaw/tenhaw-kit)
+
+## Agent installation
+
+### claude
+
+claude mcp add tenhaw -- npx -y @tenhaw/mcp
+
+### codex
+
+codex mcp add tenhaw -- npx -y @tenhaw/mcp
+
+### gemini
+
+gemini extensions install https://github.com/Tenhaw/tenhaw-gemini
+
+### cursor
+
+{"mcpServers":{"tenhaw":{"command":"npx","args":["-y","@tenhaw/mcp"]}}}
+
+### vscode
+
+code --add-mcp '{"name":"tenhaw","command":"npx","args":["-y","@tenhaw/mcp"]}'
+
+## AI readiness assessment
+
+When to use: Assess organisational AI readiness from evidence-backed answers across six dimensions.
+
+Install: npm install @tenhaw/ai-readiness
+
+CLI: npx tenhaw@latest readiness --input answers.json --json
+
+API: scoreReadiness({ answers: [{ questionId: 'strategy-1', score: 3 }] })
+
+Methodology: Thirty anchored questions. Dimension means are combined using explicit weights and renormalised over answered dimensions. Response coverage is reported separately; bands are withheld below 80% coverage. Empty responses produce an unavailable score. This is self-assessment support, not certification or legal advice.
+
+import { scoreReadiness } from '@tenhaw/ai-readiness';
+console.log(scoreReadiness({ answers: [{ questionId: 'strategy-1', score: 3 }] }));
+
+## Delivery metrics
+
+When to use: Calculate five DORA metrics and flow observations for one service from linked delivery events.
+
+Install: npm install @tenhaw/delivery-metrics
+
+CLI: npx tenhaw@latest delivery-metrics --from-file events.json --since 2026-10-01T00:00:00Z --until 2026-11-01T00:00:00Z --json
+
+API: computeMetrics(events, { since, until, service })
+
+Methodology: Observed production deployments, linked commits and incidents underpin five DORA metrics. Tags and merges are excluded as deployment proxies. Missing evidence remains unavailable. Periods are half-open [since, until), timestamps require timezones, and services are computed separately. Health output is informational, with data improvement prompts and no invented composite ranking.
+
+import { computeMetrics } from '@tenhaw/delivery-metrics';
+const report = computeMetrics([], { since: '2026-10-01T00:00:00Z', until: '2026-11-01T00:00:00Z' });
+console.log(report.metrics.changeFailRate); // value: null
+
+## AI ROI and project cost
+
+When to use: Compare low, base and high AI business-case assumptions without treating recovered staff capacity as cash by default.
+
+Install: npm install @tenhaw/ai-roi
+
+CLI: npx tenhaw@latest roi --input roi.json --json
+
+API: calculateRoi(input); estimateProjectCost({ stage: 'poc' })
+
+Methodology: Monthly cash flows include adoption, explicit cash realisation, build cost, ongoing cost and discounting. Cash realisation defaults to zero in examples. Capacity hours remain separate. NPV discounts monthly flows by (1 + annual rate)^(month / 12). Payback is null if cumulative cash flow never breaks even. All cost defaults are editable assumptions, not quotes or financial advice.
+
+import { calculateRoi } from '@tenhaw/ai-roi';
+// Complete input: /examples/roi.json
+const report = calculateRoi(input);
+console.log(report.scenarios.base.npv);
+
+## AI use-case register
+
+When to use: Keep use-case ownership, value, feasibility and governance review together in a structured register.
+
+Install: npm install @tenhaw/usecase-register
+
+CLI: npx tenhaw@latest usecases prioritise --input register.json --json
+
+API: prioritiseUseCases({ useCases }); exportRegister(report, 'csv')
+
+Methodology: Priority is value multiplied by feasibility, each between 0 and 5. Prohibited indicative uses are blocked; high or unknown risk requires review. Governance gates precede score ordering. Risk descriptions are indicative, not legal advice. Transparency obligations may coexist with high-risk obligations.
+
+import { prioritiseUseCases } from '@tenhaw/usecase-register';
+console.log(prioritiseUseCases({ useCases: [] }));
+
+## Product operating model
+
+When to use: Validate team ownership, outcome-led roadmaps, OKRs and team interactions.
+
+Install: npm install @tenhaw/opmodel
+
+CLI: npx tenhaw@latest opmodel validate model.json --json
+
+API: generateOperatingModel({ teams, okrs, roadmap, interactions }); renderMermaid(report)
+
+Methodology: Team types and interactions reference Team Topologies without affiliation. Checks identify missing ownership, outcomes and support declarations. They prompt design conversations rather than prescribe an organisation. Key-result progress is (current - baseline) / (target - baseline), supporting decreasing targets.
+
+import { generateOperatingModel } from '@tenhaw/opmodel';
+console.log(generateOperatingModel({ teams: [] }));
+
+## Schemas
+
+### delivery-events.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/delivery-events.schema.json",
+  "type": "array",
+  "items": {
+    "oneOf": [
+      {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "const": "commit"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "service": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "timestamp",
+          "service"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "const": "deployment"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "service": {
+            "type": "string",
+            "minLength": 1
+          },
+          "environment": {
+            "type": "string",
+            "minLength": 1
+          },
+          "commitIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "success",
+              "failed"
+            ]
+          },
+          "rework": {
+            "type": "boolean"
+          },
+          "proxy": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "timestamp",
+          "service",
+          "environment",
+          "commitIds",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "const": "incident"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "restoredAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "service": {
+            "type": "string",
+            "minLength": 1
+          },
+          "deploymentId": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "startedAt",
+          "service",
+          "deploymentId"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "const": "work-item"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "service": {
+            "type": "string",
+            "minLength": 1
+          },
+          "activeMinutes": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "startedAt",
+          "service"
+        ],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "const": "pull-request"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "firstReviewAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "mergedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "service": {
+            "type": "string",
+            "minLength": 1
+          },
+          "additions": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "deletions": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "createdAt",
+          "service"
+        ],
+        "additionalProperties": false
+      }
+    ]
+  },
+  "maxItems": 50000
+}
+
+### delivery-health.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/delivery-health.schema.json",
+  "type": "object",
+  "properties": {
+    "status": {
+      "const": "informational"
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "deploymentFrequency": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "unit": {
+              "const": "deployments/day"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "changeLeadTime": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "unit": {
+              "const": "hours"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "changeFailRate": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 100
+            },
+            "unit": {
+              "const": "percent"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "failedDeploymentRecoveryTime": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "unit": {
+              "const": "hours"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "deploymentReworkRate": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 100
+            },
+            "unit": {
+              "const": "percent"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "cycleTime": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "unit": {
+              "const": "hours"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "throughput": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "unit": {
+              "const": "items/week"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "wip": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "unit": {
+              "const": "items at period end"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "flowEfficiency": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 100
+            },
+            "unit": {
+              "const": "percent"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "prReviewTime": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "unit": {
+              "const": "hours"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "prSize": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "unit": {
+              "const": "changed lines"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "deploymentFrequency",
+        "changeLeadTime",
+        "changeFailRate",
+        "failedDeploymentRecoveryTime",
+        "deploymentReworkRate",
+        "cycleTime",
+        "throughput",
+        "wip",
+        "flowEfficiency",
+        "prReviewTime",
+        "prSize"
+      ],
+      "additionalProperties": false
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "maxItems": 3
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    }
+  },
+  "required": [
+    "status",
+    "metrics",
+    "actions",
+    "limitations",
+    "sources"
+  ],
+  "additionalProperties": false
+}
+
+### delivery-report.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/delivery-report.schema.json",
+  "type": "object",
+  "properties": {
+    "period": {
+      "type": "object",
+      "properties": {
+        "since": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "until": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "since",
+        "until"
+      ],
+      "additionalProperties": false
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "deploymentFrequency": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "unit": {
+              "const": "deployments/day"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "changeLeadTime": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "unit": {
+              "const": "hours"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "changeFailRate": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 100
+            },
+            "unit": {
+              "const": "percent"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "failedDeploymentRecoveryTime": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "unit": {
+              "const": "hours"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "deploymentReworkRate": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 100
+            },
+            "unit": {
+              "const": "percent"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "cycleTime": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "unit": {
+              "const": "hours"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "throughput": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "unit": {
+              "const": "items/week"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "wip": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "unit": {
+              "const": "items at period end"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "flowEfficiency": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0,
+              "maximum": 100
+            },
+            "unit": {
+              "const": "percent"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "prReviewTime": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "unit": {
+              "const": "hours"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        },
+        "prSize": {
+          "type": "object",
+          "properties": {
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "unit": {
+              "const": "changed lines"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "since": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "until": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              },
+              "required": [
+                "since",
+                "until"
+              ],
+              "additionalProperties": false
+            },
+            "dataSource": {
+              "const": "supplied events"
+            },
+            "caveats": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "value",
+            "unit",
+            "sampleSize",
+            "period",
+            "dataSource",
+            "caveats"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "deploymentFrequency",
+        "changeLeadTime",
+        "changeFailRate",
+        "failedDeploymentRecoveryTime",
+        "deploymentReworkRate",
+        "cycleTime",
+        "throughput",
+        "wip",
+        "flowEfficiency",
+        "prReviewTime",
+        "prSize"
+      ],
+      "additionalProperties": false
+    },
+    "caveats": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "period",
+    "metrics",
+    "caveats"
+  ],
+  "additionalProperties": false
+}
+
+### interaction.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/interaction.schema.json",
+  "type": "object",
+  "properties": {
+    "from": {
+      "type": "string",
+      "minLength": 1
+    },
+    "to": {
+      "type": "string",
+      "minLength": 1
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "collaboration",
+        "X-as-a-Service",
+        "facilitating"
+      ]
+    }
+  },
+  "required": [
+    "from",
+    "to",
+    "mode"
+  ],
+  "additionalProperties": false
+}
+
+### okr.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/okr.schema.json",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "teamId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "keyResults": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "baseline": {
+            "type": "number"
+          },
+          "target": {
+            "type": "number"
+          },
+          "current": {
+            "type": "number"
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": [
+          "id",
+          "description",
+          "baseline",
+          "target",
+          "current",
+          "confidence"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "id",
+    "objective",
+    "keyResults"
+  ],
+  "additionalProperties": false
+}
+
+### opmodel-report.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/opmodel-report.schema.json",
+  "type": "object",
+  "properties": {
+    "model": {
+      "type": "object",
+      "properties": {
+        "teams": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "stream-aligned",
+                  "platform",
+                  "enabling",
+                  "complicated-subsystem"
+                ]
+              },
+              "size": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "cognitiveLoad": {
+                "type": "string",
+                "enum": [
+                  "low",
+                  "medium",
+                  "high"
+                ]
+              },
+              "platformDependencies": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "type",
+              "size"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "okrs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "objective": {
+                "type": "string",
+                "minLength": 1
+              },
+              "teamId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "keyResults": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "description": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "baseline": {
+                      "type": "number"
+                    },
+                    "target": {
+                      "type": "number"
+                    },
+                    "current": {
+                      "type": "number"
+                    },
+                    "confidence": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    },
+                    "progress": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "description",
+                    "baseline",
+                    "target",
+                    "current",
+                    "confidence",
+                    "progress"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "id",
+              "objective",
+              "keyResults"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "roadmap": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "title": {
+                "type": "string",
+                "minLength": 1
+              },
+              "horizon": {
+                "type": "string",
+                "enum": [
+                  "now",
+                  "next",
+                  "later"
+                ]
+              },
+              "outcome": {
+                "type": "string"
+              },
+              "teamId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "okrId": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "id",
+              "title",
+              "horizon"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "interactions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "type": "string",
+                "minLength": 1
+              },
+              "to": {
+                "type": "string",
+                "minLength": 1
+              },
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "collaboration",
+                  "X-as-a-Service",
+                  "facilitating"
+                ]
+              }
+            },
+            "required": [
+              "from",
+              "to",
+              "mode"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "products": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "name": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "id",
+              "name"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "teams",
+        "okrs",
+        "roadmap",
+        "interactions",
+        "products"
+      ],
+      "additionalProperties": false
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "entityId": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "entityId",
+          "message"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "model",
+    "checks",
+    "limitations",
+    "sources"
+  ],
+  "additionalProperties": false
+}
+
+### opmodel.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/opmodel.schema.json",
+  "type": "object",
+  "properties": {
+    "teams": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "stream-aligned",
+              "platform",
+              "enabling",
+              "complicated-subsystem"
+            ]
+          },
+          "size": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "cognitiveLoad": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "platformDependencies": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "type",
+          "size"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "okrs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "objective": {
+            "type": "string",
+            "minLength": 1
+          },
+          "teamId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "keyResults": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "baseline": {
+                  "type": "number"
+                },
+                "target": {
+                  "type": "number"
+                },
+                "current": {
+                  "type": "number"
+                },
+                "confidence": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 1
+                }
+              },
+              "required": [
+                "id",
+                "description",
+                "baseline",
+                "target",
+                "current",
+                "confidence"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "objective",
+          "keyResults"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "roadmap": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "horizon": {
+            "type": "string",
+            "enum": [
+              "now",
+              "next",
+              "later"
+            ]
+          },
+          "outcome": {
+            "type": "string"
+          },
+          "teamId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "okrId": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "horizon"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "interactions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "from": {
+            "type": "string",
+            "minLength": 1
+          },
+          "to": {
+            "type": "string",
+            "minLength": 1
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "collaboration",
+              "X-as-a-Service",
+              "facilitating"
+            ]
+          }
+        },
+        "required": [
+          "from",
+          "to",
+          "mode"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "products": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "teams"
+  ],
+  "additionalProperties": false
+}
+
+### project-cost-input.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/project-cost-input.schema.json",
+  "type": "object",
+  "properties": {
+    "stage": {
+      "enum": [
+        "poc",
+        "pilot",
+        "production"
+      ]
+    },
+    "people": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "durationWeeks": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "dayRate": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    }
+  },
+  "required": [
+    "stage"
+  ],
+  "additionalProperties": false
+}
+
+### project-cost-report.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/project-cost-report.schema.json",
+  "type": "object",
+  "properties": {
+    "stage": {
+      "enum": [
+        "poc",
+        "pilot",
+        "production"
+      ]
+    },
+    "currency": {
+      "type": "string"
+    },
+    "low": {
+      "type": "number",
+      "minimum": 0
+    },
+    "high": {
+      "type": "number",
+      "minimum": 0
+    },
+    "assumptions": {
+      "type": "object",
+      "properties": {
+        "people": {
+          "type": "number",
+          "minimum": 0
+        },
+        "dayRate": {
+          "type": "number",
+          "minimum": 0
+        },
+        "workingDaysPerWeek": {
+          "const": 5
+        },
+        "weeksLow": {
+          "type": "number",
+          "minimum": 0
+        },
+        "weeksHigh": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "people",
+        "dayRate",
+        "workingDaysPerWeek",
+        "weeksLow",
+        "weeksHigh"
+      ],
+      "additionalProperties": false
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "stage",
+    "currency",
+    "low",
+    "high",
+    "assumptions",
+    "limitations"
+  ],
+  "additionalProperties": false
+}
+
+### readiness-questionnaire.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/readiness-questionnaire.schema.json",
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": "v1"
+    },
+    "dimensions": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      },
+      "minItems": 6,
+      "maxItems": 6
+    },
+    "bands": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "minimumBandCoverage": {
+      "const": 0.8
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contentCredit": {
+      "const": "Tenhaw AI Readiness Framework, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), https://tenhaw.com."
+    }
+  },
+  "required": [
+    "version",
+    "dimensions",
+    "bands",
+    "minimumBandCoverage",
+    "limitations",
+    "contentCredit"
+  ],
+  "additionalProperties": false
+}
+
+### readiness-report.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/readiness-report.schema.json",
+  "type": "object",
+  "properties": {
+    "frameworkVersion": {
+      "const": "v1"
+    },
+    "overall": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 1,
+      "maximum": 5
+    },
+    "band": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "Exploring",
+        "Experimenting",
+        "Scaling",
+        "Embedded",
+        "Leading",
+        null
+      ]
+    },
+    "coverage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "dimensions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "weight": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "score": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 5
+          },
+          "answered": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "total": {
+            "const": 5
+          },
+          "coverage": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "weight",
+          "score",
+          "answered",
+          "total",
+          "coverage"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 6,
+      "maxItems": 6
+    },
+    "gaps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "questionId": {
+            "type": "string"
+          },
+          "dimensionId": {
+            "type": "string"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2
+          },
+          "priority": {
+            "type": "number",
+            "minimum": 0
+          },
+          "recommendation": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "questionId",
+          "dimensionId",
+          "score",
+          "priority",
+          "recommendation"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "recommendations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "questionId": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "questionId",
+          "action"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "contentCredit": {
+      "const": "Tenhaw AI Readiness Framework, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), https://tenhaw.com."
+    }
+  },
+  "required": [
+    "frameworkVersion",
+    "overall",
+    "band",
+    "coverage",
+    "dimensions",
+    "gaps",
+    "recommendations",
+    "limitations",
+    "contentCredit"
+  ],
+  "additionalProperties": false
+}
+
+### readiness-response.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/readiness-response.schema.json",
+  "type": "object",
+  "properties": {
+    "answers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "questionId": {
+            "type": "string",
+            "pattern": "^(strategy|data|technology|people|governance|delivery)-[1-5]$"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "evidence": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "questionId",
+          "score"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 30
+    }
+  },
+  "required": [
+    "answers"
+  ],
+  "additionalProperties": false
+}
+
+### roadmap-item.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/roadmap-item.schema.json",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "horizon": {
+      "type": "string",
+      "enum": [
+        "now",
+        "next",
+        "later"
+      ]
+    },
+    "outcome": {
+      "type": "string"
+    },
+    "teamId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "okrId": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "horizon"
+  ],
+  "additionalProperties": false
+}
+
+### roi-input.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/roi-input.schema.json",
+  "type": "object",
+  "properties": {
+    "useCase": {
+      "type": "string",
+      "minLength": 1
+    },
+    "users": {
+      "type": "number",
+      "minimum": 0
+    },
+    "minutesPerTask": {
+      "type": "number",
+      "minimum": 0
+    },
+    "tasksPerUserPerMonth": {
+      "type": "number",
+      "minimum": 0
+    },
+    "savings": {
+      "type": "object",
+      "properties": {
+        "low": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "base": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "high": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "required": [
+        "low",
+        "base",
+        "high"
+      ],
+      "additionalProperties": false
+    },
+    "hourlyCost": {
+      "type": "number",
+      "minimum": 0
+    },
+    "buildCost": {
+      "type": "number",
+      "minimum": 0
+    },
+    "monthlyRunCost": {
+      "type": "number",
+      "minimum": 0
+    },
+    "adoptionMonths": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 1200
+    },
+    "horizonMonths": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1200
+    },
+    "annualDiscountRate": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+    },
+    "cashRealisation": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "currency": {
+      "type": "string",
+      "pattern": "^[A-Z]{3}$"
+    }
+  },
+  "required": [
+    "useCase",
+    "users",
+    "minutesPerTask",
+    "tasksPerUserPerMonth",
+    "savings",
+    "hourlyCost",
+    "buildCost",
+    "monthlyRunCost",
+    "adoptionMonths",
+    "horizonMonths",
+    "annualDiscountRate",
+    "cashRealisation",
+    "currency"
+  ],
+  "additionalProperties": false
+}
+
+### roi-report.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/roi-report.schema.json",
+  "type": "object",
+  "properties": {
+    "currency": {
+      "type": "string"
+    },
+    "assumptions": {
+      "type": "object",
+      "properties": {
+        "cashRealisation": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "capacityIsCash": {
+          "const": false
+        }
+      },
+      "required": [
+        "cashRealisation",
+        "capacityIsCash"
+      ],
+      "additionalProperties": false
+    },
+    "scenarios": {
+      "type": "object",
+      "properties": {
+        "low": {
+          "type": "object",
+          "properties": {
+            "monthlyCashFlow": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "month": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "adoption": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "hoursSaved": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "potentialValue": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "cashBenefit": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "runCost": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "netCashFlow": {
+                    "type": "number"
+                  },
+                  "cumulativeCashFlow": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "month",
+                  "adoption",
+                  "hoursSaved",
+                  "potentialValue",
+                  "cashBenefit",
+                  "runCost",
+                  "netCashFlow",
+                  "cumulativeCashFlow"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "totalCashBenefit": {
+              "type": "number",
+              "minimum": 0
+            },
+            "totalRunCost": {
+              "type": "number",
+              "minimum": 0
+            },
+            "totalHoursSaved": {
+              "type": "number",
+              "minimum": 0
+            },
+            "recoveredCapacityHours": {
+              "type": "number",
+              "minimum": 0
+            },
+            "npv": {
+              "type": "number"
+            },
+            "paybackMonth": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "roiPercent": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "costPerTask": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "breakEvenAdoption": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            }
+          },
+          "required": [
+            "monthlyCashFlow",
+            "totalCashBenefit",
+            "totalRunCost",
+            "totalHoursSaved",
+            "recoveredCapacityHours",
+            "npv",
+            "paybackMonth",
+            "roiPercent",
+            "costPerTask",
+            "breakEvenAdoption"
+          ],
+          "additionalProperties": false
+        },
+        "base": {
+          "type": "object",
+          "properties": {
+            "monthlyCashFlow": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "month": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "adoption": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "hoursSaved": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "potentialValue": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "cashBenefit": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "runCost": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "netCashFlow": {
+                    "type": "number"
+                  },
+                  "cumulativeCashFlow": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "month",
+                  "adoption",
+                  "hoursSaved",
+                  "potentialValue",
+                  "cashBenefit",
+                  "runCost",
+                  "netCashFlow",
+                  "cumulativeCashFlow"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "totalCashBenefit": {
+              "type": "number",
+              "minimum": 0
+            },
+            "totalRunCost": {
+              "type": "number",
+              "minimum": 0
+            },
+            "totalHoursSaved": {
+              "type": "number",
+              "minimum": 0
+            },
+            "recoveredCapacityHours": {
+              "type": "number",
+              "minimum": 0
+            },
+            "npv": {
+              "type": "number"
+            },
+            "paybackMonth": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "roiPercent": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "costPerTask": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "breakEvenAdoption": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            }
+          },
+          "required": [
+            "monthlyCashFlow",
+            "totalCashBenefit",
+            "totalRunCost",
+            "totalHoursSaved",
+            "recoveredCapacityHours",
+            "npv",
+            "paybackMonth",
+            "roiPercent",
+            "costPerTask",
+            "breakEvenAdoption"
+          ],
+          "additionalProperties": false
+        },
+        "high": {
+          "type": "object",
+          "properties": {
+            "monthlyCashFlow": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "month": {
+                    "type": "integer",
+                    "minimum": 1
+                  },
+                  "adoption": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "hoursSaved": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "potentialValue": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "cashBenefit": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "runCost": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "netCashFlow": {
+                    "type": "number"
+                  },
+                  "cumulativeCashFlow": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "month",
+                  "adoption",
+                  "hoursSaved",
+                  "potentialValue",
+                  "cashBenefit",
+                  "runCost",
+                  "netCashFlow",
+                  "cumulativeCashFlow"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "totalCashBenefit": {
+              "type": "number",
+              "minimum": 0
+            },
+            "totalRunCost": {
+              "type": "number",
+              "minimum": 0
+            },
+            "totalHoursSaved": {
+              "type": "number",
+              "minimum": 0
+            },
+            "recoveredCapacityHours": {
+              "type": "number",
+              "minimum": 0
+            },
+            "npv": {
+              "type": "number"
+            },
+            "paybackMonth": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "roiPercent": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "costPerTask": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "breakEvenAdoption": {
+              "type": [
+                "number",
+                "null"
+              ],
+              "minimum": 0
+            }
+          },
+          "required": [
+            "monthlyCashFlow",
+            "totalCashBenefit",
+            "totalRunCost",
+            "totalHoursSaved",
+            "recoveredCapacityHours",
+            "npv",
+            "paybackMonth",
+            "roiPercent",
+            "costPerTask",
+            "breakEvenAdoption"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "low",
+        "base",
+        "high"
+      ],
+      "additionalProperties": false
+    },
+    "topDrivers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "currency",
+    "assumptions",
+    "scenarios",
+    "topDrivers",
+    "limitations"
+  ],
+  "additionalProperties": false
+}
+
+### team.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/team.schema.json",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "stream-aligned",
+        "platform",
+        "enabling",
+        "complicated-subsystem"
+      ]
+    },
+    "size": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "cognitiveLoad": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "platformDependencies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "id",
+    "name",
+    "type",
+    "size"
+  ],
+  "additionalProperties": false
+}
+
+### usecase-register-report.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/usecase-register-report.schema.json",
+  "type": "object",
+  "properties": {
+    "useCases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "problem": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ownerRole": {
+            "type": "string",
+            "minLength": 1
+          },
+          "businessUnit": {
+            "type": "string",
+            "minLength": 1
+          },
+          "value": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 5
+          },
+          "feasibility": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 5
+          },
+          "riskTier": {
+            "type": "string",
+            "enum": [
+              "prohibited",
+              "high",
+              "limited",
+              "minimal",
+              "unknown"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "idea",
+              "assessed",
+              "approved",
+              "PoC",
+              "pilot",
+              "production",
+              "retired"
+            ]
+          },
+          "dataRequired": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dataSensitivity": {
+            "type": "string",
+            "enum": [
+              "public",
+              "internal",
+              "confidential",
+              "restricted"
+            ]
+          },
+          "valueHypothesis": {
+            "type": "string"
+          },
+          "valueEstimate": {
+            "type": "object"
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "kpis": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reviewDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "priority": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 25
+          },
+          "governanceGate": {
+            "enum": [
+              "blocked",
+              "review-required",
+              "standard-review"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "problem",
+          "ownerRole",
+          "businessUnit",
+          "value",
+          "feasibility",
+          "riskTier",
+          "status",
+          "priority",
+          "governanceGate"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "methodology": {
+      "type": "string"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "useCases",
+    "methodology",
+    "limitations"
+  ],
+  "additionalProperties": false
+}
+
+### usecase-register.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/usecase-register.schema.json",
+  "type": "object",
+  "properties": {
+    "useCases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "problem": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ownerRole": {
+            "type": "string",
+            "minLength": 1
+          },
+          "businessUnit": {
+            "type": "string",
+            "minLength": 1
+          },
+          "value": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 5
+          },
+          "feasibility": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 5
+          },
+          "riskTier": {
+            "type": "string",
+            "enum": [
+              "prohibited",
+              "high",
+              "limited",
+              "minimal",
+              "unknown"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "idea",
+              "assessed",
+              "approved",
+              "PoC",
+              "pilot",
+              "production",
+              "retired"
+            ]
+          },
+          "dataRequired": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dataSensitivity": {
+            "type": "string",
+            "enum": [
+              "public",
+              "internal",
+              "confidential",
+              "restricted"
+            ]
+          },
+          "valueHypothesis": {
+            "type": "string"
+          },
+          "valueEstimate": {
+            "type": "object"
+          },
+          "dependencies": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "kpis": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reviewDate": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "problem",
+          "ownerRole",
+          "businessUnit",
+          "value",
+          "feasibility",
+          "riskTier",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "maxItems": 10000
+    }
+  },
+  "required": [
+    "useCases"
+  ],
+  "additionalProperties": false
+}
+
+### usecase.schema.json
+
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/usecase.schema.json",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "problem": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ownerRole": {
+      "type": "string",
+      "minLength": 1
+    },
+    "businessUnit": {
+      "type": "string",
+      "minLength": 1
+    },
+    "value": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "feasibility": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 5
+    },
+    "riskTier": {
+      "type": "string",
+      "enum": [
+        "prohibited",
+        "high",
+        "limited",
+        "minimal",
+        "unknown"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "idea",
+        "assessed",
+        "approved",
+        "PoC",
+        "pilot",
+        "production",
+        "retired"
+      ]
+    },
+    "dataRequired": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "dataSensitivity": {
+      "type": "string",
+      "enum": [
+        "public",
+        "internal",
+        "confidential",
+        "restricted"
+      ]
+    },
+    "valueHypothesis": {
+      "type": "string"
+    },
+    "valueEstimate": {
+      "type": "object"
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "kpis": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reviewDate": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "problem",
+    "ownerRole",
+    "businessUnit",
+    "value",
+    "feasibility",
+    "riskTier",
+    "status"
+  ],
+  "additionalProperties": false
+}
+
+
+## Readiness methodology and question bank
+
+{
+  "version": "v1",
+  "minimumBandCoverage": 0.8,
+  "dimensions": [
+    {
+      "id": "strategy",
+      "label": "Strategy and value",
+      "weight": 0.2,
+      "questions": [
+        {
+          "id": "strategy-1",
+          "text": "Is there an agreed business outcome for AI investment?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Is there an agreed business outcome for AI investment?",
+            "medium": "Test consistent use and measure the outcome: Is there an agreed business outcome for AI investment?",
+            "high": "Review evidence and improve the practice: Is there an agreed business outcome for AI investment?"
+          }
+        },
+        {
+          "id": "strategy-2",
+          "text": "Are use cases prioritised against measurable value?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are use cases prioritised against measurable value?",
+            "medium": "Test consistent use and measure the outcome: Are use cases prioritised against measurable value?",
+            "high": "Review evidence and improve the practice: Are use cases prioritised against measurable value?"
+          }
+        },
+        {
+          "id": "strategy-3",
+          "text": "Does an accountable sponsor own the AI strategy?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Does an accountable sponsor own the AI strategy?",
+            "medium": "Test consistent use and measure the outcome: Does an accountable sponsor own the AI strategy?",
+            "high": "Review evidence and improve the practice: Does an accountable sponsor own the AI strategy?"
+          }
+        },
+        {
+          "id": "strategy-4",
+          "text": "Are investment assumptions reviewed using evidence?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are investment assumptions reviewed using evidence?",
+            "medium": "Test consistent use and measure the outcome: Are investment assumptions reviewed using evidence?",
+            "high": "Review evidence and improve the practice: Are investment assumptions reviewed using evidence?"
+          }
+        },
+        {
+          "id": "strategy-5",
+          "text": "Are decisions to scale or stop tied to agreed measures?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are decisions to scale or stop tied to agreed measures?",
+            "medium": "Test consistent use and measure the outcome: Are decisions to scale or stop tied to agreed measures?",
+            "high": "Review evidence and improve the practice: Are decisions to scale or stop tied to agreed measures?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "data",
+      "label": "Data foundations",
+      "weight": 0.2,
+      "questions": [
+        {
+          "id": "data-1",
+          "text": "Are required data sources identified and owned?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are required data sources identified and owned?",
+            "medium": "Test consistent use and measure the outcome: Are required data sources identified and owned?",
+            "high": "Review evidence and improve the practice: Are required data sources identified and owned?"
+          }
+        },
+        {
+          "id": "data-2",
+          "text": "Is data quality measured for the intended use?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Is data quality measured for the intended use?",
+            "medium": "Test consistent use and measure the outcome: Is data quality measured for the intended use?",
+            "high": "Review evidence and improve the practice: Is data quality measured for the intended use?"
+          }
+        },
+        {
+          "id": "data-3",
+          "text": "Are access controls and lawful use understood?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are access controls and lawful use understood?",
+            "medium": "Test consistent use and measure the outcome: Are access controls and lawful use understood?",
+            "high": "Review evidence and improve the practice: Are access controls and lawful use understood?"
+          }
+        },
+        {
+          "id": "data-4",
+          "text": "Can data lineage and changes be traced?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Can data lineage and changes be traced?",
+            "medium": "Test consistent use and measure the outcome: Can data lineage and changes be traced?",
+            "high": "Review evidence and improve the practice: Can data lineage and changes be traced?"
+          }
+        },
+        {
+          "id": "data-5",
+          "text": "Are data issues monitored and resolved by named roles?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are data issues monitored and resolved by named roles?",
+            "medium": "Test consistent use and measure the outcome: Are data issues monitored and resolved by named roles?",
+            "high": "Review evidence and improve the practice: Are data issues monitored and resolved by named roles?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "technology",
+      "label": "Technology and platforms",
+      "weight": 0.15,
+      "questions": [
+        {
+          "id": "technology-1",
+          "text": "Are model and platform choices documented against needs?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are model and platform choices documented against needs?",
+            "medium": "Test consistent use and measure the outcome: Are model and platform choices documented against needs?",
+            "high": "Review evidence and improve the practice: Are model and platform choices documented against needs?"
+          }
+        },
+        {
+          "id": "technology-2",
+          "text": "Are integrations tested in a controlled environment?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are integrations tested in a controlled environment?",
+            "medium": "Test consistent use and measure the outcome: Are integrations tested in a controlled environment?",
+            "high": "Review evidence and improve the practice: Are integrations tested in a controlled environment?"
+          }
+        },
+        {
+          "id": "technology-3",
+          "text": "Are reliability, cost and latency monitored?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are reliability, cost and latency monitored?",
+            "medium": "Test consistent use and measure the outcome: Are reliability, cost and latency monitored?",
+            "high": "Review evidence and improve the practice: Are reliability, cost and latency monitored?"
+          }
+        },
+        {
+          "id": "technology-4",
+          "text": "Are evaluation and rollback mechanisms in place?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are evaluation and rollback mechanisms in place?",
+            "medium": "Test consistent use and measure the outcome: Are evaluation and rollback mechanisms in place?",
+            "high": "Review evidence and improve the practice: Are evaluation and rollback mechanisms in place?"
+          }
+        },
+        {
+          "id": "technology-5",
+          "text": "Can the service be operated and changed without vendor lock-in?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Can the service be operated and changed without vendor lock-in?",
+            "medium": "Test consistent use and measure the outcome: Can the service be operated and changed without vendor lock-in?",
+            "high": "Review evidence and improve the practice: Can the service be operated and changed without vendor lock-in?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "people",
+      "label": "People and skills",
+      "weight": 0.15,
+      "questions": [
+        {
+          "id": "people-1",
+          "text": "Do affected colleagues understand the intended workflow?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Do affected colleagues understand the intended workflow?",
+            "medium": "Test consistent use and measure the outcome: Do affected colleagues understand the intended workflow?",
+            "high": "Review evidence and improve the practice: Do affected colleagues understand the intended workflow?"
+          }
+        },
+        {
+          "id": "people-2",
+          "text": "Are practical AI skills matched to the roles involved?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are practical AI skills matched to the roles involved?",
+            "medium": "Test consistent use and measure the outcome: Are practical AI skills matched to the roles involved?",
+            "high": "Review evidence and improve the practice: Are practical AI skills matched to the roles involved?"
+          }
+        },
+        {
+          "id": "people-3",
+          "text": "Are users involved in design and evaluation?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are users involved in design and evaluation?",
+            "medium": "Test consistent use and measure the outcome: Are users involved in design and evaluation?",
+            "high": "Review evidence and improve the practice: Are users involved in design and evaluation?"
+          }
+        },
+        {
+          "id": "people-4",
+          "text": "Is adoption supported with time, training and feedback?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Is adoption supported with time, training and feedback?",
+            "medium": "Test consistent use and measure the outcome: Is adoption supported with time, training and feedback?",
+            "high": "Review evidence and improve the practice: Is adoption supported with time, training and feedback?"
+          }
+        },
+        {
+          "id": "people-5",
+          "text": "Are skills and behaviour changes measured over time?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are skills and behaviour changes measured over time?",
+            "medium": "Test consistent use and measure the outcome: Are skills and behaviour changes measured over time?",
+            "high": "Review evidence and improve the practice: Are skills and behaviour changes measured over time?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "governance",
+      "label": "Governance, risk and compliance",
+      "weight": 0.15,
+      "questions": [
+        {
+          "id": "governance-1",
+          "text": "Are intended use and foreseeable harms documented?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are intended use and foreseeable harms documented?",
+            "medium": "Test consistent use and measure the outcome: Are intended use and foreseeable harms documented?",
+            "high": "Review evidence and improve the practice: Are intended use and foreseeable harms documented?"
+          }
+        },
+        {
+          "id": "governance-2",
+          "text": "Are accountable risk owners and review routes named?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are accountable risk owners and review routes named?",
+            "medium": "Test consistent use and measure the outcome: Are accountable risk owners and review routes named?",
+            "high": "Review evidence and improve the practice: Are accountable risk owners and review routes named?"
+          }
+        },
+        {
+          "id": "governance-3",
+          "text": "Are privacy, security and legal constraints assessed?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are privacy, security and legal constraints assessed?",
+            "medium": "Test consistent use and measure the outcome: Are privacy, security and legal constraints assessed?",
+            "high": "Review evidence and improve the practice: Are privacy, security and legal constraints assessed?"
+          }
+        },
+        {
+          "id": "governance-4",
+          "text": "Are human oversight and incident routes tested?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are human oversight and incident routes tested?",
+            "medium": "Test consistent use and measure the outcome: Are human oversight and incident routes tested?",
+            "high": "Review evidence and improve the practice: Are human oversight and incident routes tested?"
+          }
+        },
+        {
+          "id": "governance-5",
+          "text": "Are governance controls reviewed when the system changes?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are governance controls reviewed when the system changes?",
+            "medium": "Test consistent use and measure the outcome: Are governance controls reviewed when the system changes?",
+            "high": "Review evidence and improve the practice: Are governance controls reviewed when the system changes?"
+          }
+        }
+      ]
+    },
+    {
+      "id": "delivery",
+      "label": "Delivery and operating model",
+      "weight": 0.15,
+      "questions": [
+        {
+          "id": "delivery-1",
+          "text": "Is a team accountable for delivering and running the service?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Is a team accountable for delivering and running the service?",
+            "medium": "Test consistent use and measure the outcome: Is a team accountable for delivering and running the service?",
+            "high": "Review evidence and improve the practice: Is a team accountable for delivering and running the service?"
+          }
+        },
+        {
+          "id": "delivery-2",
+          "text": "Is the work planned around outcomes and small increments?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Is the work planned around outcomes and small increments?",
+            "medium": "Test consistent use and measure the outcome: Is the work planned around outcomes and small increments?",
+            "high": "Review evidence and improve the practice: Is the work planned around outcomes and small increments?"
+          }
+        },
+        {
+          "id": "delivery-3",
+          "text": "Are delivery flow and service measures visible?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are delivery flow and service measures visible?",
+            "medium": "Test consistent use and measure the outcome: Are delivery flow and service measures visible?",
+            "high": "Review evidence and improve the practice: Are delivery flow and service measures visible?"
+          }
+        },
+        {
+          "id": "delivery-4",
+          "text": "Are operating responsibilities and handovers documented?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are operating responsibilities and handovers documented?",
+            "medium": "Test consistent use and measure the outcome: Are operating responsibilities and handovers documented?",
+            "high": "Review evidence and improve the practice: Are operating responsibilities and handovers documented?"
+          }
+        },
+        {
+          "id": "delivery-5",
+          "text": "Are improvements driven by feedback from production use?",
+          "anchors": [
+            {
+              "score": 1,
+              "label": "Not established",
+              "description": "No repeatable practice or supporting evidence is available."
+            },
+            {
+              "score": 2,
+              "label": "Ad hoc",
+              "description": "A few activities happen, with inconsistent ownership and limited evidence."
+            },
+            {
+              "score": 3,
+              "label": "Defined",
+              "description": "An agreed practice has an owner and is used for the intended scope."
+            },
+            {
+              "score": 4,
+              "label": "Measured",
+              "description": "The practice is consistently applied and reviewed using evidence."
+            },
+            {
+              "score": 5,
+              "label": "Improving",
+              "description": "Measured outcomes guide regular improvements and wider reuse."
+            }
+          ],
+          "recommendations": {
+            "low": "Agree an owner and gather evidence: Are improvements driven by feedback from production use?",
+            "medium": "Test consistent use and measure the outcome: Are improvements driven by feedback from production use?",
+            "high": "Review evidence and improve the practice: Are improvements driven by feedback from production use?"
+          }
+        }
+      ]
+    }
+  ],
+  "bands": [
+    {
+      "name": "Exploring",
+      "minimum": 1,
+      "maximumExclusive": 1.8
+    },
+    {
+      "name": "Experimenting",
+      "minimum": 1.8,
+      "maximumExclusive": 2.6
+    },
+    {
+      "name": "Scaling",
+      "minimum": 2.6,
+      "maximumExclusive": 3.4
+    },
+    {
+      "name": "Embedded",
+      "minimum": 3.4,
+      "maximumExclusive": 4.2
+    },
+    {
+      "name": "Leading",
+      "minimum": 4.2,
+      "maximumExclusive": 5.000001
+    }
+  ],
+  "limitations": [
+    "Self-assessment, not a certification or legal advice.",
+    "Maturity bands require at least 80% response coverage."
+  ],
+  "contentCredit": "Tenhaw AI Readiness Framework, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), https://tenhaw.com."
+}

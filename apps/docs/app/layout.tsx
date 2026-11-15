@@ -1,0 +1,5 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import "./globals.css";
+export const metadata:Metadata={metadataBase:new URL("https://kit.tenhaw.com"),title:{default:"Tenhaw Kit | Install and reference",template:"%s | Tenhaw Kit"},description:"Local-first AI readiness, delivery metrics, ROI, use-case and operating-model tools for coding agents.",robots:{index:true,follow:true}};
+export default function Layout({children}:{children:React.ReactNode}){return <html lang="en-GB"><body><a href="#content" className="skip">Skip to content</a><header><Link href="/" className="brand">tenhaw <span>/ kit</span></Link><nav aria-label="Reference"><Link href="/install/">Install</Link><Link href="/mcp/">MCP</Link><a href="/llms.txt">llms.txt</a><a href="https://github.com/Tenhaw/tenhaw-kit">Source</a></nav></header><main id="content">{children}</main><footer>MIT code. CC BY 4.0 framework content. <Link href="/privacy/">Privacy</Link></footer></body></html>;}

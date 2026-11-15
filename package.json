@@ -1,0 +1,38 @@
+{
+  "name": "tenhaw-kit-workspace",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "packageManager": "pnpm@11.25.0",
+  "engines": { "node": ">=22.14.0" },
+  "scripts": {
+    "build": "pnpm -r --filter './packages/**' build && node scripts/package-assets.mjs",
+    "build:apps": "pnpm -r --filter './apps/**' build",
+    "build:templates": "pnpm -r --filter './templates/**' build",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "node scripts/lint.mjs",
+    "spec:validate": "node --import tsx scripts/spec-validate.ts",
+    "vectors:ts": "node --import tsx scripts/vectors-ts.ts",
+    "vectors:parity": "node --import tsx scripts/parity.ts",
+    "check": "pnpm build && pnpm typecheck && pnpm test && pnpm spec:validate && pnpm vectors:parity && node scripts/validate-plugins.mjs && pnpm lint",
+    "changeset": "changeset",
+    "version:packages": "changeset version",
+    "release": "changeset publish",
+    "pack:check": "node scripts/pack-check.mjs",
+    "names:check": "node scripts/check-names.mjs"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.8",
+    "@types/node": "^22.19.0",
+    "@vitest/coverage-v8": "^3.2.4",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "json-schema-to-typescript": "^15.0.4",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.6",
+    "turbo": "^2.6.1",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
+  }
+}

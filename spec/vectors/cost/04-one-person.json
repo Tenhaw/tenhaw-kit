@@ -1,0 +1,25 @@
+{
+  "name": "one-person",
+  "tool": "cost",
+  "input": {
+    "stage": "poc",
+    "people": 1
+  },
+  "expected": {
+    "stage": "poc",
+    "currency": "GBP",
+    "low": 8000,
+    "high": 16000,
+    "assumptions": {
+      "people": 1,
+      "dayRate": 800,
+      "workingDaysPerWeek": 5,
+      "weeksLow": 2,
+      "weeksHigh": 4
+    },
+    "limitations": [
+      "Editable assumptions, not a quote.",
+      "Excludes model, infrastructure and ongoing support costs."
+    ]
+  }
+}

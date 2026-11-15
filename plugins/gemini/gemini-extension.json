@@ -1,0 +1,39 @@
+{
+  "name": "tenhaw",
+  "version": "1.0.0",
+  "description": "Agent tools for internal portfolio, delivery, product and AI transformation apps",
+  "mcpServers": {
+    "tenhaw": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@tenhaw/mcp@1.0.0"
+      ]
+    }
+  },
+  "contextFileName": "GEMINI.md",
+  "settings": [
+    {
+      "name": "GitHub token",
+      "description": "Optional read-only credential for requested local collection",
+      "envVar": "GITHUB_TOKEN",
+      "sensitive": true
+    },
+    {
+      "name": "Jira base URL",
+      "description": "Optional Jira Cloud HTTPS origin",
+      "envVar": "JIRA_BASE_URL"
+    },
+    {
+      "name": "Jira email",
+      "description": "Optional local collector account",
+      "envVar": "JIRA_EMAIL"
+    },
+    {
+      "name": "Jira API token",
+      "description": "Optional read-only credential",
+      "envVar": "JIRA_API_TOKEN",
+      "sensitive": true
+    }
+  ]
+}

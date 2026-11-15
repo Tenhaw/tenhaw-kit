@@ -1,0 +1,154 @@
+{
+  "answers": [
+    {
+      "questionId": "strategy-1",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "strategy-2",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "strategy-3",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "strategy-4",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "strategy-5",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "data-1",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "data-2",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "data-3",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "data-4",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "data-5",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "technology-1",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "technology-2",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "technology-3",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "technology-4",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "technology-5",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "people-1",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "people-2",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "people-3",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "people-4",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "people-5",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "governance-1",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "governance-2",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "governance-3",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "governance-4",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "governance-5",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "delivery-1",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "delivery-2",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "delivery-3",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "delivery-4",
+      "score": 3,
+      "evidence": "Synthetic example."
+    },
+    {
+      "questionId": "delivery-5",
+      "score": 3,
+      "evidence": "Synthetic example."
+    }
+  ]
+}

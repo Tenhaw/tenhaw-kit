@@ -1,0 +1,97 @@
+{
+  "name": "complete-roadmap",
+  "tool": "opmodel",
+  "input": {
+    "teams": [
+      {
+        "id": "t1",
+        "name": "Example Team A",
+        "type": "stream-aligned",
+        "size": 5
+      }
+    ],
+    "okrs": [
+      {
+        "id": "o1",
+        "objective": "Improve flow",
+        "teamId": "t1",
+        "keyResults": [
+          {
+            "id": "k1",
+            "description": "Reduce cycle time",
+            "baseline": 10,
+            "target": 5,
+            "current": 8,
+            "confidence": 0.7
+          }
+        ]
+      }
+    ],
+    "roadmap": [
+      {
+        "id": "r1",
+        "title": "Example",
+        "horizon": "next",
+        "teamId": "t1",
+        "okrId": "o1",
+        "outcome": "Shorter wait"
+      }
+    ]
+  },
+  "expected": {
+    "model": {
+      "teams": [
+        {
+          "id": "t1",
+          "name": "Example Team A",
+          "type": "stream-aligned",
+          "size": 5
+        }
+      ],
+      "okrs": [
+        {
+          "id": "o1",
+          "objective": "Improve flow",
+          "teamId": "t1",
+          "keyResults": [
+            {
+              "id": "k1",
+              "description": "Reduce cycle time",
+              "baseline": 10,
+              "target": 5,
+              "current": 8,
+              "confidence": 0.7,
+              "progress": 0.4
+            }
+          ]
+        }
+      ],
+      "roadmap": [
+        {
+          "id": "r1",
+          "title": "Example",
+          "horizon": "next",
+          "teamId": "t1",
+          "okrId": "o1",
+          "outcome": "Shorter wait"
+        }
+      ],
+      "interactions": [],
+      "products": []
+    },
+    "checks": [
+      {
+        "code": "platform-dependency",
+        "entityId": "t1",
+        "message": "Confirm whether this stream-aligned team needs platform support."
+      }
+    ],
+    "limitations": [
+      "Team Topologies is a cited public model; no affiliation is implied.",
+      "Checks support a design conversation and are not organisational prescriptions."
+    ],
+    "sources": [
+      "https://teamtopologies.com/key-concepts"
+    ]
+  }
+}

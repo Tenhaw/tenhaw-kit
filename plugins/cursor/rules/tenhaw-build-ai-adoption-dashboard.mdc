@@ -1,0 +1,9 @@
+---
+description: Use when scaffolding an internal dashboard for AI adoption by team, active users, licence utilisation and sentiment.
+globs: ""
+alwaysApply: false
+---
+
+Choose a new directory. Scaffolding preserves every existing path and never runs install scripts itself. Install dependencies with the user’s package manager, then run the project build and tests. The starter includes clearly synthetic examples and browser-local CSV/JSON data. Add authentication before introducing shared persistence or any server-side real-data routes. Explain the source and period of each metric. Never invent vendor usage data or add telemetry.
+
+Run `npx -y tenhaw@1.0.0 init ai-adoption-dashboard internal-adoption --yes --json`. Use JSON results and check the host app’s build and tests.

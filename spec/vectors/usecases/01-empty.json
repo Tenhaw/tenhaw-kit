@@ -1,0 +1,16 @@
+{
+  "name": "empty",
+  "tool": "usecases",
+  "input": {
+    "useCases": []
+  },
+  "expected": {
+    "useCases": [],
+    "methodology": "Priority = value (0 to 5) multiplied by feasibility (0 to 5). Governance gates take precedence over score.",
+    "limitations": [
+      "Risk tiers are indicative, not legal advice.",
+      "Transparency obligations can apply alongside high-risk obligations.",
+      "Prohibited uses are blocked pending qualified legal review."
+    ]
+  }
+}

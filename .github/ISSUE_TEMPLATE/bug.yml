@@ -1,0 +1,16 @@
+name: Bug report
+description: Report a reproducible calculation, integration or installation problem.
+body:
+  - type: textarea
+    id: behaviour
+    attributes:
+      label: Expected and observed behaviour
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal synthetic reproduction
+      description: Include package version and commands. Remove credentials, repository data and client information.
+    validations:
+      required: true

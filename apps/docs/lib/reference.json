@@ -1,0 +1,144 @@
+{
+  "guides": [
+    {
+      "slug": "ai-adoption-dashboard",
+      "title": "Build an AI adoption dashboard",
+      "template": "ai-adoption-dashboard",
+      "tool": null
+    },
+    {
+      "slug": "delivery-metrics-github-jira",
+      "title": "Collect delivery metrics from GitHub and Jira",
+      "template": "delivery-metrics-dashboard",
+      "tool": "delivery-metrics"
+    },
+    {
+      "slug": "ai-readiness-assessment",
+      "title": "Run an internal AI readiness assessment",
+      "template": "ai-readiness-assessment",
+      "tool": "ai-readiness"
+    },
+    {
+      "slug": "ai-usecase-roi-tracker",
+      "title": "Create a use-case and ROI tracker",
+      "template": "ai-usecase-register",
+      "tool": "usecase-register"
+    },
+    {
+      "slug": "product-operating-model",
+      "title": "Model OKRs, roadmaps and teams",
+      "template": "product-operating-model",
+      "tool": "opmodel"
+    },
+    {
+      "slug": "delivery-health-mcp",
+      "title": "Give an agent delivery-health tools",
+      "template": null,
+      "tool": "mcp"
+    }
+  ],
+  "install": {
+    "claude": "claude mcp add tenhaw -- npx -y @tenhaw/mcp",
+    "codex": "codex mcp add tenhaw -- npx -y @tenhaw/mcp",
+    "gemini": "gemini extensions install https://github.com/Tenhaw/tenhaw-gemini",
+    "cursor": "{\"mcpServers\":{\"tenhaw\":{\"command\":\"npx\",\"args\":[\"-y\",\"@tenhaw/mcp\"]}}}",
+    "vscode": "code --add-mcp '{\"name\":\"tenhaw\",\"command\":\"npx\",\"args\":[\"-y\",\"@tenhaw/mcp\"]}'"
+  },
+  "pages": [
+    "install",
+    "mcp",
+    "privacy",
+    "changelog",
+    "tools/ai-readiness",
+    "methodology/ai-readiness",
+    "tools/delivery-metrics",
+    "methodology/delivery-metrics",
+    "tools/ai-roi",
+    "methodology/ai-roi",
+    "tools/usecase-register",
+    "methodology/usecase-register",
+    "tools/opmodel",
+    "methodology/opmodel",
+    "templates/ai-adoption-dashboard",
+    "templates/delivery-metrics-dashboard",
+    "templates/ai-usecase-register",
+    "templates/product-operating-model",
+    "templates/ai-readiness-assessment",
+    "guides/ai-adoption-dashboard",
+    "guides/delivery-metrics-github-jira",
+    "guides/ai-readiness-assessment",
+    "guides/ai-usecase-roi-tracker",
+    "guides/product-operating-model",
+    "guides/delivery-health-mcp"
+  ],
+  "source": "https://github.com/Tenhaw/tenhaw-kit",
+  "templates": [
+    "ai-adoption-dashboard",
+    "delivery-metrics-dashboard",
+    "ai-usecase-register",
+    "product-operating-model",
+    "ai-readiness-assessment"
+  ],
+  "tools": [
+    {
+      "slug": "ai-readiness",
+      "title": "AI readiness assessment",
+      "pkg": "@tenhaw/ai-readiness",
+      "command": "readiness --input answers.json --json",
+      "api": "scoreReadiness({ answers: [{ questionId: 'strategy-1', score: 3 }] })",
+      "use": "Assess organisational AI readiness from evidence-backed answers across six dimensions.",
+      "method": "Thirty anchored questions. Dimension means are combined using explicit weights and renormalised over answered dimensions. Response coverage is reported separately; bands are withheld below 80% coverage. Empty responses produce an unavailable score. This is self-assessment support, not certification or legal advice.",
+      "schema": "readiness-response",
+      "mcp": "assess_ai_readiness",
+      "snippet": "import { scoreReadiness } from '@tenhaw/ai-readiness';\nconsole.log(scoreReadiness({ answers: [{ questionId: 'strategy-1', score: 3 }] }));"
+    },
+    {
+      "slug": "delivery-metrics",
+      "title": "Delivery metrics",
+      "pkg": "@tenhaw/delivery-metrics",
+      "command": "delivery-metrics --from-file events.json --since 2026-10-01T00:00:00Z --until 2026-11-01T00:00:00Z --json",
+      "api": "computeMetrics(events, { since, until, service })",
+      "use": "Calculate five DORA metrics and flow observations for one service from linked delivery events.",
+      "method": "Observed production deployments, linked commits and incidents underpin five DORA metrics. Tags and merges are excluded as deployment proxies. Missing evidence remains unavailable. Periods are half-open [since, until), timestamps require timezones, and services are computed separately. Health output is informational, with data improvement prompts and no invented composite ranking.",
+      "schema": "delivery-events",
+      "mcp": "score_delivery_health",
+      "snippet": "import { computeMetrics } from '@tenhaw/delivery-metrics';\nconst report = computeMetrics([], { since: '2026-10-01T00:00:00Z', until: '2026-11-01T00:00:00Z' });\nconsole.log(report.metrics.changeFailRate); // value: null"
+    },
+    {
+      "slug": "ai-roi",
+      "title": "AI ROI and project cost",
+      "pkg": "@tenhaw/ai-roi",
+      "command": "roi --input roi.json --json",
+      "api": "calculateRoi(input); estimateProjectCost({ stage: 'poc' })",
+      "use": "Compare low, base and high AI business-case assumptions without treating recovered staff capacity as cash by default.",
+      "method": "Monthly cash flows include adoption, explicit cash realisation, build cost, ongoing cost and discounting. Cash realisation defaults to zero in examples. Capacity hours remain separate. NPV discounts monthly flows by (1 + annual rate)^(month / 12). Payback is null if cumulative cash flow never breaks even. All cost defaults are editable assumptions, not quotes or financial advice.",
+      "schema": "roi-input",
+      "mcp": "estimate_ai_roi",
+      "snippet": "import { calculateRoi } from '@tenhaw/ai-roi';\n// Complete input: /examples/roi.json\nconst report = calculateRoi(input);\nconsole.log(report.scenarios.base.npv);"
+    },
+    {
+      "slug": "usecase-register",
+      "title": "AI use-case register",
+      "pkg": "@tenhaw/usecase-register",
+      "command": "usecases prioritise --input register.json --json",
+      "api": "prioritiseUseCases({ useCases }); exportRegister(report, 'csv')",
+      "use": "Keep use-case ownership, value, feasibility and governance review together in a structured register.",
+      "method": "Priority is value multiplied by feasibility, each between 0 and 5. Prohibited indicative uses are blocked; high or unknown risk requires review. Governance gates precede score ordering. Risk descriptions are indicative, not legal advice. Transparency obligations may coexist with high-risk obligations.",
+      "schema": "usecase-register",
+      "mcp": "generate_usecase_register",
+      "snippet": "import { prioritiseUseCases } from '@tenhaw/usecase-register';\nconsole.log(prioritiseUseCases({ useCases: [] }));"
+    },
+    {
+      "slug": "opmodel",
+      "title": "Product operating model",
+      "pkg": "@tenhaw/opmodel",
+      "command": "opmodel validate model.json --json",
+      "api": "generateOperatingModel({ teams, okrs, roadmap, interactions }); renderMermaid(report)",
+      "use": "Validate team ownership, outcome-led roadmaps, OKRs and team interactions.",
+      "method": "Team types and interactions reference Team Topologies without affiliation. Checks identify missing ownership, outcomes and support declarations. They prompt design conversations rather than prescribe an organisation. Key-result progress is (current - baseline) / (target - baseline), supporting decreasing targets.",
+      "schema": "opmodel",
+      "mcp": "generate_operating_model",
+      "snippet": "import { generateOperatingModel } from '@tenhaw/opmodel';\nconsole.log(generateOperatingModel({ teams: [] }));"
+    }
+  ]
+}

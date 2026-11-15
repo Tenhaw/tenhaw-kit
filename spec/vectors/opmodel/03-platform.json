@@ -1,0 +1,56 @@
+{
+  "name": "platform",
+  "tool": "opmodel",
+  "input": {
+    "teams": [
+      {
+        "id": "t1",
+        "name": "Example Team A",
+        "type": "stream-aligned",
+        "size": 5,
+        "platformDependencies": [
+          "p1"
+        ]
+      },
+      {
+        "id": "p1",
+        "name": "Platform",
+        "type": "platform",
+        "size": 4
+      }
+    ]
+  },
+  "expected": {
+    "model": {
+      "teams": [
+        {
+          "id": "p1",
+          "name": "Platform",
+          "type": "platform",
+          "size": 4
+        },
+        {
+          "id": "t1",
+          "name": "Example Team A",
+          "type": "stream-aligned",
+          "size": 5,
+          "platformDependencies": [
+            "p1"
+          ]
+        }
+      ],
+      "okrs": [],
+      "roadmap": [],
+      "interactions": [],
+      "products": []
+    },
+    "checks": [],
+    "limitations": [
+      "Team Topologies is a cited public model; no affiliation is implied.",
+      "Checks support a design conversation and are not organisational prescriptions."
+    ],
+    "sources": [
+      "https://teamtopologies.com/key-concepts"
+    ]
+  }
+}

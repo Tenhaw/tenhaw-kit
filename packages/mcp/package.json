@@ -1,0 +1,8 @@
+{
+  "name":"@tenhaw/mcp","version":"1.0.0","description":"Local and remote MCP building blocks for internal delivery, product and AI transformation tools",
+  "type":"module","bin":{"tenhaw-mcp":"dist/index.js"},"main":"./dist/server.js","types":"./dist/server.d.ts","exports":{".":{"types":"./dist/server.d.ts","import":"./dist/server.js"},"./tools":{"types":"./dist/tools.d.ts","import":"./dist/tools.js"},"./remote":{"types":"./dist/remote.d.ts","import":"./dist/remote.js"}},
+  "files":["dist","server.json","LICENSE","LICENSE-CONTENT"],"license":"MIT","author":"Tenhaw (https://tenhaw.com)","mcpName":"com.tenhaw/kit",
+  "homepage":"https://kit.tenhaw.com/mcp","repository":{"type":"git","url":"https://github.com/Tenhaw/tenhaw-kit.git","directory":"packages/mcp"},
+  "engines":{"node":">=22.14.0"},"publishConfig":{"access":"public","provenance":true},"scripts":{"build":"tsup src/index.ts src/server.ts src/tools.ts src/remote.ts --format esm --dts --clean"},
+  "dependencies":{"@modelcontextprotocol/server":"^2.0.0","zod":"^4.2.0","@tenhaw/core":"workspace:*","@tenhaw/ai-readiness":"workspace:*","@tenhaw/delivery-metrics":"workspace:*","@tenhaw/ai-roi":"workspace:*","@tenhaw/usecase-register":"workspace:*","@tenhaw/opmodel":"workspace:*","tenhaw":"workspace:*"}
+}

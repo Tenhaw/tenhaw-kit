@@ -1,0 +1,26 @@
+{
+  "name": "fractional",
+  "tool": "cost",
+  "input": {
+    "stage": "poc",
+    "people": 1.5,
+    "durationWeeks": 2.5
+  },
+  "expected": {
+    "stage": "poc",
+    "currency": "GBP",
+    "low": 15000,
+    "high": 15000,
+    "assumptions": {
+      "people": 1.5,
+      "dayRate": 800,
+      "workingDaysPerWeek": 5,
+      "weeksLow": 2.5,
+      "weeksHigh": 2.5
+    },
+    "limitations": [
+      "Editable assumptions, not a quote.",
+      "Excludes model, infrastructure and ongoing support costs."
+    ]
+  }
+}

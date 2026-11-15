@@ -1,0 +1,67 @@
+{
+  "name": "roadmap-gaps",
+  "tool": "opmodel",
+  "input": {
+    "teams": [
+      {
+        "id": "t1",
+        "name": "Example Team A",
+        "type": "stream-aligned",
+        "size": 5
+      }
+    ],
+    "roadmap": [
+      {
+        "id": "r1",
+        "title": "Example",
+        "horizon": "now"
+      }
+    ]
+  },
+  "expected": {
+    "model": {
+      "teams": [
+        {
+          "id": "t1",
+          "name": "Example Team A",
+          "type": "stream-aligned",
+          "size": 5
+        }
+      ],
+      "okrs": [],
+      "roadmap": [
+        {
+          "id": "r1",
+          "title": "Example",
+          "horizon": "now"
+        }
+      ],
+      "interactions": [],
+      "products": []
+    },
+    "checks": [
+      {
+        "code": "platform-dependency",
+        "entityId": "t1",
+        "message": "Confirm whether this stream-aligned team needs platform support."
+      },
+      {
+        "code": "roadmap-outcome",
+        "entityId": "r1",
+        "message": "State the outcome this item should change."
+      },
+      {
+        "code": "roadmap-owner",
+        "entityId": "r1",
+        "message": "Assign an accountable team to this roadmap item."
+      }
+    ],
+    "limitations": [
+      "Team Topologies is a cited public model; no affiliation is implied.",
+      "Checks support a design conversation and are not organisational prescriptions."
+    ],
+    "sources": [
+      "https://teamtopologies.com/key-concepts"
+    ]
+  }
+}

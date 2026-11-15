@@ -1,0 +1,450 @@
+{
+  "name": "capacity-only",
+  "tool": "roi",
+  "input": {
+    "useCase": "Example",
+    "users": 10,
+    "minutesPerTask": 20,
+    "tasksPerUserPerMonth": 20,
+    "savings": {
+      "low": 0.1,
+      "base": 0.2,
+      "high": 0.3
+    },
+    "hourlyCost": 50,
+    "buildCost": 1000,
+    "monthlyRunCost": 100,
+    "adoptionMonths": 3,
+    "horizonMonths": 12,
+    "annualDiscountRate": 0.1,
+    "cashRealisation": 0,
+    "currency": "GBP"
+  },
+  "expected": {
+    "currency": "GBP",
+    "assumptions": {
+      "cashRealisation": 0,
+      "capacityIsCash": false
+    },
+    "scenarios": {
+      "low": {
+        "monthlyCashFlow": [
+          {
+            "month": 1,
+            "adoption": 0.333333,
+            "hoursSaved": 2.222222,
+            "potentialValue": 111.111111,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1100
+          },
+          {
+            "month": 2,
+            "adoption": 0.666667,
+            "hoursSaved": 4.444444,
+            "potentialValue": 222.222222,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1200
+          },
+          {
+            "month": 3,
+            "adoption": 1,
+            "hoursSaved": 6.666667,
+            "potentialValue": 333.333333,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1300
+          },
+          {
+            "month": 4,
+            "adoption": 1,
+            "hoursSaved": 6.666667,
+            "potentialValue": 333.333333,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1400
+          },
+          {
+            "month": 5,
+            "adoption": 1,
+            "hoursSaved": 6.666667,
+            "potentialValue": 333.333333,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1500
+          },
+          {
+            "month": 6,
+            "adoption": 1,
+            "hoursSaved": 6.666667,
+            "potentialValue": 333.333333,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1600
+          },
+          {
+            "month": 7,
+            "adoption": 1,
+            "hoursSaved": 6.666667,
+            "potentialValue": 333.333333,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1700
+          },
+          {
+            "month": 8,
+            "adoption": 1,
+            "hoursSaved": 6.666667,
+            "potentialValue": 333.333333,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1800
+          },
+          {
+            "month": 9,
+            "adoption": 1,
+            "hoursSaved": 6.666667,
+            "potentialValue": 333.333333,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1900
+          },
+          {
+            "month": 10,
+            "adoption": 1,
+            "hoursSaved": 6.666667,
+            "potentialValue": 333.333333,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -2000
+          },
+          {
+            "month": 11,
+            "adoption": 1,
+            "hoursSaved": 6.666667,
+            "potentialValue": 333.333333,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -2100
+          },
+          {
+            "month": 12,
+            "adoption": 1,
+            "hoursSaved": 6.666667,
+            "potentialValue": 333.333333,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -2200
+          }
+        ],
+        "totalCashBenefit": 0,
+        "totalRunCost": 1200,
+        "totalHoursSaved": 73.333333,
+        "recoveredCapacityHours": 73.333333,
+        "npv": -2140.048783,
+        "paybackMonth": null,
+        "roiPercent": -100,
+        "costPerTask": 0.916667,
+        "breakEvenAdoption": null
+      },
+      "base": {
+        "monthlyCashFlow": [
+          {
+            "month": 1,
+            "adoption": 0.333333,
+            "hoursSaved": 4.444444,
+            "potentialValue": 222.222222,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1100
+          },
+          {
+            "month": 2,
+            "adoption": 0.666667,
+            "hoursSaved": 8.888889,
+            "potentialValue": 444.444444,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1200
+          },
+          {
+            "month": 3,
+            "adoption": 1,
+            "hoursSaved": 13.333333,
+            "potentialValue": 666.666667,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1300
+          },
+          {
+            "month": 4,
+            "adoption": 1,
+            "hoursSaved": 13.333333,
+            "potentialValue": 666.666667,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1400
+          },
+          {
+            "month": 5,
+            "adoption": 1,
+            "hoursSaved": 13.333333,
+            "potentialValue": 666.666667,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1500
+          },
+          {
+            "month": 6,
+            "adoption": 1,
+            "hoursSaved": 13.333333,
+            "potentialValue": 666.666667,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1600
+          },
+          {
+            "month": 7,
+            "adoption": 1,
+            "hoursSaved": 13.333333,
+            "potentialValue": 666.666667,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1700
+          },
+          {
+            "month": 8,
+            "adoption": 1,
+            "hoursSaved": 13.333333,
+            "potentialValue": 666.666667,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1800
+          },
+          {
+            "month": 9,
+            "adoption": 1,
+            "hoursSaved": 13.333333,
+            "potentialValue": 666.666667,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1900
+          },
+          {
+            "month": 10,
+            "adoption": 1,
+            "hoursSaved": 13.333333,
+            "potentialValue": 666.666667,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -2000
+          },
+          {
+            "month": 11,
+            "adoption": 1,
+            "hoursSaved": 13.333333,
+            "potentialValue": 666.666667,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -2100
+          },
+          {
+            "month": 12,
+            "adoption": 1,
+            "hoursSaved": 13.333333,
+            "potentialValue": 666.666667,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -2200
+          }
+        ],
+        "totalCashBenefit": 0,
+        "totalRunCost": 1200,
+        "totalHoursSaved": 146.666667,
+        "recoveredCapacityHours": 146.666667,
+        "npv": -2140.048783,
+        "paybackMonth": null,
+        "roiPercent": -100,
+        "costPerTask": 0.916667,
+        "breakEvenAdoption": null
+      },
+      "high": {
+        "monthlyCashFlow": [
+          {
+            "month": 1,
+            "adoption": 0.333333,
+            "hoursSaved": 6.666667,
+            "potentialValue": 333.333333,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1100
+          },
+          {
+            "month": 2,
+            "adoption": 0.666667,
+            "hoursSaved": 13.333333,
+            "potentialValue": 666.666667,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1200
+          },
+          {
+            "month": 3,
+            "adoption": 1,
+            "hoursSaved": 20,
+            "potentialValue": 1000,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1300
+          },
+          {
+            "month": 4,
+            "adoption": 1,
+            "hoursSaved": 20,
+            "potentialValue": 1000,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1400
+          },
+          {
+            "month": 5,
+            "adoption": 1,
+            "hoursSaved": 20,
+            "potentialValue": 1000,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1500
+          },
+          {
+            "month": 6,
+            "adoption": 1,
+            "hoursSaved": 20,
+            "potentialValue": 1000,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1600
+          },
+          {
+            "month": 7,
+            "adoption": 1,
+            "hoursSaved": 20,
+            "potentialValue": 1000,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1700
+          },
+          {
+            "month": 8,
+            "adoption": 1,
+            "hoursSaved": 20,
+            "potentialValue": 1000,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1800
+          },
+          {
+            "month": 9,
+            "adoption": 1,
+            "hoursSaved": 20,
+            "potentialValue": 1000,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -1900
+          },
+          {
+            "month": 10,
+            "adoption": 1,
+            "hoursSaved": 20,
+            "potentialValue": 1000,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -2000
+          },
+          {
+            "month": 11,
+            "adoption": 1,
+            "hoursSaved": 20,
+            "potentialValue": 1000,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -2100
+          },
+          {
+            "month": 12,
+            "adoption": 1,
+            "hoursSaved": 20,
+            "potentialValue": 1000,
+            "cashBenefit": 0,
+            "runCost": 100,
+            "netCashFlow": -100,
+            "cumulativeCashFlow": -2200
+          }
+        ],
+        "totalCashBenefit": 0,
+        "totalRunCost": 1200,
+        "totalHoursSaved": 220,
+        "recoveredCapacityHours": 220,
+        "npv": -2140.048783,
+        "paybackMonth": null,
+        "roiPercent": -100,
+        "costPerTask": 0.916667,
+        "breakEvenAdoption": null
+      }
+    },
+    "topDrivers": [
+      {
+        "name": "time-saving fraction",
+        "value": 0.2
+      },
+      {
+        "name": "cash-realisation fraction",
+        "value": 0
+      },
+      {
+        "name": "monthly task volume",
+        "value": 200
+      }
+    ],
+    "limitations": [
+      "Cash benefits require explicit cost-line removal or a justified cash-realisation assumption.",
+      "Recovered capacity is reported separately and is not treated as cash.",
+      "Editable assumptions, not a quote or financial advice."
+    ]
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "name": "interaction",
+  "tool": "opmodel",
+  "input": {
+    "teams": [
+      {
+        "id": "t1",
+        "name": "Example Team A",
+        "type": "stream-aligned",
+        "size": 5
+      },
+      {
+        "id": "p1",
+        "name": "Platform",
+        "type": "platform",
+        "size": 4
+      }
+    ],
+    "interactions": [
+      {
+        "from": "t1",
+        "to": "p1",
+        "mode": "X-as-a-Service"
+      }
+    ]
+  },
+  "expected": {
+    "model": {
+      "teams": [
+        {
+          "id": "p1",
+          "name": "Platform",
+          "type": "platform",
+          "size": 4
+        },
+        {
+          "id": "t1",
+          "name": "Example Team A",
+          "type": "stream-aligned",
+          "size": 5
+        }
+      ],
+      "okrs": [],
+      "roadmap": [],
+      "interactions": [
+        {
+          "from": "t1",
+          "to": "p1",
+          "mode": "X-as-a-Service"
+        }
+      ],
+      "products": []
+    },
+    "checks": [
+      {
+        "code": "platform-dependency",
+        "entityId": "t1",
+        "message": "Confirm whether this stream-aligned team needs platform support."
+      }
+    ],
+    "limitations": [
+      "Team Topologies is a cited public model; no affiliation is implied.",
+      "Checks support a design conversation and are not organisational prescriptions."
+    ],
+    "sources": [
+      "https://teamtopologies.com/key-concepts"
+    ]
+  }
+}

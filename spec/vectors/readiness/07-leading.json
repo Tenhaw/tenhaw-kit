@@ -1,0 +1,197 @@
+{
+  "name": "leading",
+  "tool": "readiness",
+  "input": {
+    "answers": [
+      {
+        "questionId": "strategy-1",
+        "score": 5
+      },
+      {
+        "questionId": "strategy-2",
+        "score": 5
+      },
+      {
+        "questionId": "strategy-3",
+        "score": 5
+      },
+      {
+        "questionId": "strategy-4",
+        "score": 5
+      },
+      {
+        "questionId": "strategy-5",
+        "score": 5
+      },
+      {
+        "questionId": "data-1",
+        "score": 5
+      },
+      {
+        "questionId": "data-2",
+        "score": 5
+      },
+      {
+        "questionId": "data-3",
+        "score": 5
+      },
+      {
+        "questionId": "data-4",
+        "score": 5
+      },
+      {
+        "questionId": "data-5",
+        "score": 5
+      },
+      {
+        "questionId": "technology-1",
+        "score": 5
+      },
+      {
+        "questionId": "technology-2",
+        "score": 5
+      },
+      {
+        "questionId": "technology-3",
+        "score": 5
+      },
+      {
+        "questionId": "technology-4",
+        "score": 5
+      },
+      {
+        "questionId": "technology-5",
+        "score": 5
+      },
+      {
+        "questionId": "people-1",
+        "score": 5
+      },
+      {
+        "questionId": "people-2",
+        "score": 5
+      },
+      {
+        "questionId": "people-3",
+        "score": 5
+      },
+      {
+        "questionId": "people-4",
+        "score": 5
+      },
+      {
+        "questionId": "people-5",
+        "score": 5
+      },
+      {
+        "questionId": "governance-1",
+        "score": 5
+      },
+      {
+        "questionId": "governance-2",
+        "score": 5
+      },
+      {
+        "questionId": "governance-3",
+        "score": 5
+      },
+      {
+        "questionId": "governance-4",
+        "score": 5
+      },
+      {
+        "questionId": "governance-5",
+        "score": 5
+      },
+      {
+        "questionId": "delivery-1",
+        "score": 5
+      },
+      {
+        "questionId": "delivery-2",
+        "score": 5
+      },
+      {
+        "questionId": "delivery-3",
+        "score": 5
+      },
+      {
+        "questionId": "delivery-4",
+        "score": 5
+      },
+      {
+        "questionId": "delivery-5",
+        "score": 5
+      }
+    ]
+  },
+  "expected": {
+    "frameworkVersion": "v1",
+    "contentCredit": "Tenhaw AI Readiness Framework, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), https://tenhaw.com.",
+    "overall": 5,
+    "band": "Leading",
+    "coverage": 1,
+    "dimensions": [
+      {
+        "id": "strategy",
+        "label": "Strategy and value",
+        "weight": 0.2,
+        "score": 5,
+        "answered": 5,
+        "total": 5,
+        "coverage": 1
+      },
+      {
+        "id": "data",
+        "label": "Data foundations",
+        "weight": 0.2,
+        "score": 5,
+        "answered": 5,
+        "total": 5,
+        "coverage": 1
+      },
+      {
+        "id": "technology",
+        "label": "Technology and platforms",
+        "weight": 0.15,
+        "score": 5,
+        "answered": 5,
+        "total": 5,
+        "coverage": 1
+      },
+      {
+        "id": "people",
+        "label": "People and skills",
+        "weight": 0.15,
+        "score": 5,
+        "answered": 5,
+        "total": 5,
+        "coverage": 1
+      },
+      {
+        "id": "governance",
+        "label": "Governance, risk and compliance",
+        "weight": 0.15,
+        "score": 5,
+        "answered": 5,
+        "total": 5,
+        "coverage": 1
+      },
+      {
+        "id": "delivery",
+        "label": "Delivery and operating model",
+        "weight": 0.15,
+        "score": 5,
+        "answered": 5,
+        "total": 5,
+        "coverage": 1
+      }
+    ],
+    "gaps": [],
+    "recommendations": [],
+    "limitations": [
+      "Self-assessment, not a certification or legal advice.",
+      "Maturity bands require at least 80% response coverage."
+    ]
+  }
+}

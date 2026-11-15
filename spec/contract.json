@@ -1,0 +1,102 @@
+{
+  "version": "1.0.0",
+  "canonical": "Sort object keys recursively; finite numbers rounded to 6 decimal places; integral floats become integers; compact UTF-8 JSON. No generated timestamps or generator fields in pure scoring results.",
+  "readiness": {
+    "input": {
+      "answers": [
+        {
+          "questionId": "strategy-1",
+          "score": 3,
+          "evidence": "optional"
+        }
+      ]
+    },
+    "output": {
+      "frameworkVersion": "v1",
+      "overall": 3,
+      "band": null,
+      "coverage": 0.033333,
+      "dimensions": [
+        {
+          "id": "strategy",
+          "label": "Strategy and value",
+          "weight": 0.2,
+          "score": 3,
+          "answered": 1,
+          "total": 5,
+          "coverage": 0.2
+        }
+      ],
+      "gaps": [],
+      "recommendations": [],
+      "limitations": [
+        "Self-assessment, not a certification or legal advice.",
+        "Maturity bands require at least 80% response coverage."
+      ],
+      "contentCredit": "Tenhaw AI Readiness Framework, CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), https://tenhaw.com."
+    },
+    "dimensions": [
+      [
+        "strategy",
+        "Strategy and value",
+        0.2
+      ],
+      [
+        "data",
+        "Data foundations",
+        0.2
+      ],
+      [
+        "technology",
+        "Technology and platforms",
+        0.15
+      ],
+      [
+        "people",
+        "People and skills",
+        0.15
+      ],
+      [
+        "governance",
+        "Governance, risk and compliance",
+        0.15
+      ],
+      [
+        "delivery",
+        "Delivery and operating model",
+        0.15
+      ]
+    ],
+    "rules": "Question IDs dimension-1 through dimension-5. All six dimensions always returned, in listed order. Missing dimension score null. Empty overall null. Override weights merge with defaults then normalise; nonnegative finite values, sum > 0. Gaps score <= 2 ordered descending priority then questionId; priority=weight*(5-score). Gap {questionId,dimensionId,score,priority,recommendation}; recommendations map gaps to {questionId,action}. Exact text in readiness-framework.v1.json."
+  },
+  "roi": {
+    "input": {
+      "useCase": "Example",
+      "users": 10,
+      "minutesPerTask": 20,
+      "tasksPerUserPerMonth": 20,
+      "savings": {
+        "low": 0.1,
+        "base": 0.2,
+        "high": 0.3
+      },
+      "hourlyCost": 50,
+      "buildCost": 1000,
+      "monthlyRunCost": 100,
+      "adoptionMonths": 3,
+      "horizonMonths": 12,
+      "annualDiscountRate": 0.1,
+      "cashRealisation": 0,
+      "currency": "GBP"
+    },
+    "output": "{currency,assumptions:{cashRealisation,capacityIsCash:false},scenarios:{low:Scenario,base:Scenario,high:Scenario},topDrivers:[{name,value}],limitations:[string]}",
+    "scenario": "{monthlyCashFlow:[{month,adoption,hoursSaved,potentialValue,cashBenefit,runCost,netCashFlow,cumulativeCashFlow}],totalCashBenefit,totalRunCost,totalHoursSaved,recoveredCapacityHours,npv,paybackMonth,roiPercent,costPerTask,breakEvenAdoption}",
+    "rules": "month 0 build cost excluded monthlyCashFlow but included NPV/cumulative/ROI denominator. Month n adoption=min(1,n/adoptionMonths), or 1 if adoptionMonths=0. hours=users*volume*minutes*savings/60*adoption. potentialValue=hours*hourlyCost; cashBenefit=potentialValue*cashRealisation. runCost=monthlyRunCost (full from month1). net=cashBenefit-runCost. NPV=-buildCost+sum(net/(1+annualDiscountRate)^(month/12)). payback first month cumulative >=0; zero build cost returns 0 only when the first monthly net cash flow is nonnegative; otherwise payback is the first later month cumulative cash flow recovers to >=0, or null. ROI=(totalCashBenefit-buildCost-totalRunCost)/(buildCost+totalRunCost)*100 or null denominator0. costPerTask=(buildCost+runCostTotal)/(users*volume*horizon) or null. breakEvenAdoption=monthlyRunCost/(fullPotentialMonthly*cashRealisation) or null (can >1). recoveredCapacityHours=totalHoursSaved*(1-cashRealisation). topDrivers exactly [{name:'time-saving fraction',value:savings.base},{name:'cash-realisation fraction',value:cashRealisation},{name:'monthly task volume',value:users*tasksPerUserPerMonth}]. Round only output, calculate intermediate full precision."
+  },
+  "delivery": {
+    "input": "computeMetrics(events, {since,until,productionEnvironment?:'production'}). Dates ISO8601 including timezone required. Metric period half-open [since,until). Events union documented in delivery-events.schema.json.",
+    "output": "{period:{since,until},metrics:{deploymentFrequency,changeLeadTime,changeFailRate,failedDeploymentRecoveryTime,deploymentReworkRate,cycleTime,throughput,wip,flowEfficiency,prReviewTime,prSize},caveats:[string]}",
+    "metric": "{value:number|null,unit:string,sampleSize:number,period:{since,until},dataSource:'supplied events',caveats:[string]}",
+    "rules": "Exact algorithms and null cases in packages/delivery-metrics/src/index.ts. scoreDeliveryHealth returns {status:'informational',metrics:report.metrics,actions:[string],limitations:[string]}; no composite score or invented industry thresholds. Python may implement same exact event model. See source/vectors before parity."
+  }
+}

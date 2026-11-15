@@ -1,0 +1,54 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "name": "OpenAI portable manifest: official Agent Plugins 1.0.0 schema",
+      "status": "passed"
+    },
+    {
+      "name": "OpenAI MCP: official Agent Plugins 1.0.0 schema",
+      "status": "passed"
+    },
+    {
+      "name": "OpenAI presentation and public-package containment",
+      "status": "passed"
+    },
+    {
+      "name": "Claude marketplace source and manifest identity",
+      "status": "passed"
+    },
+    {
+      "name": "Local MCP commands are pinned and carry no inline credentials",
+      "status": "passed"
+    },
+    {
+      "name": "Gemini documented manifest and context settings",
+      "status": "passed",
+      "detail": "Semantic checks from official Gemini docs; actual CLI validation is a separate check."
+    },
+    {
+      "name": "Skill packages are contained and select the same workflows",
+      "status": "passed",
+      "detail": "7 workflows per provider"
+    },
+    {
+      "name": "Root README local links resolve",
+      "status": "passed"
+    },
+    {
+      "name": "Claude plugin",
+      "status": "passed",
+      "detail": "Validating plugin manifest: /Users/jamesrooney/Tenhaw_Website/tenhaw-kit/plugins/claude/tenhaw/.claude-plugin/plugin.json\n\nPlugin directory checks for /Users/jamesrooney/Tenhaw_Website/tenhaw-kit/plugins/claude/tenhaw. The plugin directory is the catalog that plugins are submitted to; this is a subset of what it runs.\n\nAbout these checks:\n\n  ❯ The repository root was taken to be /Users/jamesrooney/Tenhaw_Website, the nearest parent folder with a .git folder or file. README.md was taken from it, because this plugin folder has none of its own. For a plugin submitted from a git repository, the repository root is the top folder of that repository, with only what is committed there, so check that the folder named above is that top folder.\n\n✔ These checks found nothing to report\n\nThe directory also runs a safety scan and a policy review that this command does not.\n\n✔ Validation passed"
+    },
+    {
+      "name": "Claude marketplace",
+      "status": "passed",
+      "detail": "Validating marketplace manifest: /Users/jamesrooney/Tenhaw_Website/tenhaw-kit/.claude-plugin/marketplace.json\n\n✔ Validation passed"
+    },
+    {
+      "name": "Gemini extension",
+      "status": "passed",
+      "detail": "Extension /Users/jamesrooney/Tenhaw_Website/tenhaw-kit/plugins/gemini has been successfully validated."
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "version": "v1",
+  "pricesAsOf": "2026-11-15",
+  "currency": "GBP",
+  "cashRealisation": 0,
+  "dayRate": 800,
+  "label": "Editable assumptions, not a quote. Model prices must be supplied by the user.",
+  "stages": {
+    "poc": {
+      "people": 2,
+      "weeksLow": 2,
+      "weeksHigh": 4
+    },
+    "pilot": {
+      "people": 3,
+      "weeksLow": 4,
+      "weeksHigh": 8
+    },
+    "production": {
+      "people": 4,
+      "weeksLow": 8,
+      "weeksHigh": 16
+    }
+  },
+  "sources": [
+    "https://tenhaw.com/services/agentic-proof-of-concept"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "all-custom",
+  "tool": "cost",
+  "input": {
+    "stage": "production",
+    "people": 2,
+    "durationWeeks": 4,
+    "dayRate": 500
+  },
+  "expected": {
+    "stage": "production",
+    "currency": "GBP",
+    "low": 20000,
+    "high": 20000,
+    "assumptions": {
+      "people": 2,
+      "dayRate": 500,
+      "workingDaysPerWeek": 5,
+      "weeksLow": 4,
+      "weeksHigh": 4
+    },
+    "limitations": [
+      "Editable assumptions, not a quote.",
+      "Excludes model, infrastructure and ongoing support costs."
+    ]
+  }
+}

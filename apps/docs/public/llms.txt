@@ -1,0 +1,22 @@
+# Tenhaw Kit
+
+Local-first agent tools for AI readiness, delivery performance, AI business cases, use-case registers and operating models. MIT code, CC BY 4.0 framework content. No installed-tool telemetry.
+
+## Install
+
+```sh
+npx tenhaw@latest --help
+codex mcp add tenhaw -- npx -y @tenhaw/mcp
+```
+
+## References
+
+- [ai-readiness](https://kit.tenhaw.com/tools/ai-readiness/): install, API and methodology.
+- [delivery-metrics](https://kit.tenhaw.com/tools/delivery-metrics/): install, API and methodology.
+- [ai-roi](https://kit.tenhaw.com/tools/ai-roi/): install, API and methodology.
+- [usecase-register](https://kit.tenhaw.com/tools/usecase-register/): install, API and methodology.
+- [opmodel](https://kit.tenhaw.com/tools/opmodel/): install, API and methodology.
+- [MCP](https://kit.tenhaw.com/mcp/): local and remote data boundaries.
+- [OpenAPI](https://kit.tenhaw.com/openapi.json)
+- [Full reference](https://kit.tenhaw.com/llms-full.txt)
+- [Source](https://github.com/Tenhaw/tenhaw-kit)

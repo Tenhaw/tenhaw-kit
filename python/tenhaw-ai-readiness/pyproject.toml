@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "tenhaw-ai-readiness"
+version = "1.0.0"
+description = "Deterministic, evidence-aware AI readiness assessment for internal tools."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT AND CC-BY-4.0"
+license-files = ["LICENSE", "LICENSE-CONTENT"]
+authors = [{ name = "Tenhaw", email = "hello@tenhaw.com" }]
+dependencies = ["jsonschema>=4.23"]
+keywords = ["ai-readiness", "ai-governance", "internal-tools", "assessment", "tenhaw"]
+
+[project.urls]
+Homepage = "https://kit.tenhaw.com/tools/ai-readiness"
+Repository = "https://github.com/Tenhaw/tenhaw-kit"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/tenhaw_ai_readiness"]

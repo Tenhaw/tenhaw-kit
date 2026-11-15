@@ -15,5 +15,7 @@ coverage/
 .vercel/
 .tenhaw/
 artifacts/
+/packages/cli/templates/
+/packages/cli/instructions/
 *.egg-info/
 .DS_Store

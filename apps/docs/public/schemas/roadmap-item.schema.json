@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kit.tenhaw.com/schemas/roadmap-item.schema.json",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "horizon": {
+      "type": "string",
+      "enum": [
+        "now",
+        "next",
+        "later"
+      ]
+    },
+    "outcome": {
+      "type": "string"
+    },
+    "teamId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "okrId": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "required": [
+    "id",
+    "title",
+    "horizon"
+  ],
+  "additionalProperties": false
+}

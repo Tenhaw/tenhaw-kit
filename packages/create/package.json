@@ -1,0 +1,6 @@
+{
+  "name":"create-tenhaw","version":"1.0.0","description":"Scaffold an internal product, portfolio, delivery or transformation tool with Tenhaw Kit",
+  "type":"module","bin":{"create-tenhaw":"dist/index.js"},"files":["dist","LICENSE"],"license":"MIT","author":"Tenhaw (https://tenhaw.com)",
+  "homepage":"https://kit.tenhaw.com/install","repository":{"type":"git","url":"https://github.com/Tenhaw/tenhaw-kit.git","directory":"packages/create"},
+  "engines":{"node":">=22.14.0"},"publishConfig":{"access":"public","provenance":true},"scripts":{"build":"tsup src/index.ts --format esm --dts"},"dependencies":{"tenhaw":"workspace:*"}
+}
