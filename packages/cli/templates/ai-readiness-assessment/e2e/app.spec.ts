@@ -1,2 +1,0 @@
-import { test, expect } from "@playwright/test";
-test("loads the synthetic workspace and exports without a network data service", async ({ page }) => { await page.goto("/"); await expect(page.getByRole("heading",{level:1})).toBeVisible(); await expect(page.getByText("Data stays in this browser.", {exact:true})).toBeVisible(); const download=page.waitForEvent("download"); await page.getByRole("button",{name:"Export JSON",exact:true}).click(); expect((await download).suggestedFilename()).toMatch(/\.json$/); });

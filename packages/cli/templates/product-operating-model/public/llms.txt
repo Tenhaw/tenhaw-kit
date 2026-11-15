@@ -1,6 +1,0 @@
-# Product operating model
-
-Browser-local internal tool starter from Tenhaw Kit. Synthetic examples.
-
-- [Reference](https://kit.tenhaw.com/templates/product-operating-model)
-- [Source](https://github.com/Tenhaw/tenhaw-kit/tree/main/templates/product-operating-model)
