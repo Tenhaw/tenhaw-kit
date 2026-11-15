@@ -1,4 +1,4 @@
-import { createHash } from 'node:crypto';
+import { createHmac } from 'node:crypto';
 import { mkdir, readFile, rename, stat, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import type { DeliveryEvent } from './index.js';
@@ -40,7 +40,9 @@ async function request(url:URL,headers:Record<string,string>,context:Context):Pr
 }
 
 async function cached(identity:unknown,secrets:string[],options:Options,ctx:Context,load:()=>Promise<DeliveryEvent[]>) {
-  const key=createHash('sha256').update(JSON.stringify([identity,...secrets.map(s=>createHash('sha256').update(s).digest('hex'))])).digest('hex');
+  // A credential keys an opaque partition tag; this is not a stored password verifier.
+  const principalKey=secrets.reduce((tag,secret)=>createHmac('sha256',secret).update(tag).digest('hex'),'tenhaw-kit-cache-principal-v1');
+  const key=createHmac('sha256',principalKey).update(JSON.stringify(identity)).digest('hex');
   const directory=ctx.cacheDir??'.tenhaw/cache', file=join(directory,`${key}.json`);
   if(!options.noCache)try{if(Date.now()-(await stat(file)).mtimeMs<300000){const value=JSON.parse(await readFile(file,'utf8'));if(Array.isArray(value))return redact(value,secrets) as DeliveryEvent[];}}catch{/* A cache miss never changes collection. */}
   const events=redact(await load(),secrets);

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import hmac
 import json
 import os
 import re
@@ -313,7 +314,8 @@ def collect_github(
                 events.extend(commits.values())
         return events
 
-    identity = json.dumps(["github", repos, since, until, hashlib.sha256(token.encode()).hexdigest()])
+    principal = hmac.new(token.encode(), b"tenhaw-kit-cache-principal-v1", hashlib.sha256).hexdigest()
+    identity = json.dumps(["github", repos, since, until, principal])
     return _cached(identity, fetch, (token,), cache, cache_dir, cache_ttl)
 
 
@@ -450,7 +452,7 @@ def collect_jira(
             since,
             until,
             sorted(mapping.items()),
-            hashlib.sha256(f"{email}:{token}".encode()).hexdigest(),
+            hmac.new(f"{email}:{token}".encode(), b"tenhaw-kit-cache-principal-v1", hashlib.sha256).hexdigest(),
         ]
     )
     return _cached(identity, fetch, (token, email), cache, cache_dir, cache_ttl)

@@ -4,7 +4,7 @@ The compact reference and remote MCP are separate Git-connected Vercel projects.
 
 James selected a **US$25 monthly operating budget for Kit**, tracked separately. Vercel's existing **US$200 team-wide alert remains unchanged**, because it covers other applications too. A budget record is not a hard billing cap.
 
-Use `vercel usage --group-by project --json` to read the current billing period, retain only tenhaw-kit-docs and tenhaw-mcp, and compare their combined cost with US$25. Do not commit private account usage reports to this public repository. The public weekly metrics workflow collects public distribution measurements only.
+Use `node scripts/hosting-budget.mjs` to read the current billing period, retain only tenhaw-kit-docs and tenhaw-mcp, and compare their combined cost with US$25. It writes only the Kit report under ignored `artifacts/`. Do not commit private account usage reports to this public repository. The public weekly metrics workflow collects public distribution measurements only.
 
 ## Remote rate limiting
 
