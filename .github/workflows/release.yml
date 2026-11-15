@@ -6,6 +6,14 @@ on:
         description: Exact reviewed version to publish, for example 1.0.0
         required: true
         type: string
+      satellite_sync:
+        description: Owner CLI initial sync or configured GitHub App automation
+        required: true
+        type: choice
+        default: owner-cli
+        options:
+          - owner-cli
+          - github-app
 permissions:
   contents: read
 concurrency:
@@ -28,6 +36,24 @@ jobs:
         run: |
           test "$GITHUB_REPOSITORY" = Tenhaw/tenhaw-kit
           test "$GITHUB_REF" = refs/heads/main
+      - name: Validate satellite sync configuration before publication
+        env:
+          SATELLITE_SYNC: ${{ inputs.satellite_sync }}
+          SATELLITES_APP_CONFIGURED: ${{ secrets.SATELLITES_APP_ID != '' && secrets.SATELLITES_APP_PRIVATE_KEY != '' }}
+        run: |
+          case "$SATELLITE_SYNC" in
+            owner-cli) ;;
+            github-app)
+              if [ "$SATELLITES_APP_CONFIGURED" != true ]; then
+                echo '::error::github-app requires both SATELLITES_APP_ID and SATELLITES_APP_PRIVATE_KEY repository secrets.'
+                exit 1
+              fi
+              ;;
+            *)
+              echo '::error::Unsupported satellite sync mode.'
+              exit 1
+              ;;
+          esac
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22.23.1
@@ -130,6 +156,7 @@ jobs:
   satellites:
     name: Synchronise thin satellite repositories
     needs: [publish-npm, publish-python]
+    if: ${{ inputs.satellite_sync == 'github-app' }}
     uses: ./.github/workflows/sync-satellites.yml
     with:
       version: ${{ inputs.version }}
@@ -138,8 +165,9 @@ jobs:
       SATELLITES_APP_ID: ${{ secrets.SATELLITES_APP_ID }}
       SATELLITES_APP_PRIVATE_KEY: ${{ secrets.SATELLITES_APP_PRIVATE_KEY }}
   github-release:
-    name: Record the verified release
+    name: Record the verified package release
     needs: [publish-npm, publish-python, satellites]
+    if: ${{ !cancelled() && needs.publish-npm.result == 'success' && needs.publish-python.result == 'success' && ((inputs.satellite_sync == 'owner-cli' && needs.satellites.result == 'skipped') || (inputs.satellite_sync == 'github-app' && needs.satellites.result == 'success')) }}
     runs-on: ubuntu-24.04
     permissions:
       contents: write
@@ -151,11 +179,46 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           RELEASE_VERSION: ${{ inputs.version }}
+          SATELLITE_SYNC: ${{ inputs.satellite_sync }}
         run: |
           set -euo pipefail
+          notes="$RUNNER_TEMP/tenhaw-release-notes.md"
+          export RELEASE_NOTES_FILE="$notes"
+          node <<'NODE'
+          const fs = require('node:fs');
+          const { GITHUB_SHA, GITHUB_SERVER_URL, GITHUB_REPOSITORY, GITHUB_RUN_ID, RELEASE_VERSION, SATELLITE_SYNC, RELEASE_NOTES_FILE, GITHUB_STEP_SUMMARY } = process.env;
+          const runUrl = `${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}`;
+          const lines = [
+            `Verified npm and Python distributions from commit ${GITHUB_SHA}.`,
+            '',
+            `Publication integrity, provenance and attestation evidence: ${runUrl}`,
+            '',
+          ];
+          if (SATELLITE_SYNC === 'owner-cli') {
+            lines.push(
+              'Satellite synchronisation is a separate owner CLI operation. This package release does not attest to satellite completion.',
+              '',
+              `From a clean checkout of ${GITHUB_SHA}, run:`,
+              '',
+              '```sh',
+              `node scripts/sync-satellites.mjs --version ${RELEASE_VERSION} --local-bootstrap --apply`,
+              '```',
+              '',
+              'Record the resulting satellite tags and releases separately after the command succeeds.',
+            );
+          } else if (SATELLITE_SYNC === 'github-app') {
+            lines.push('The six satellite source snapshots and immutable version tags were verified by the GitHub App sync in this run.');
+          } else {
+            throw Error('Unknown satellite sync mode');
+          }
+          lines.push('', 'Registry and hosting status are tracked separately.', '');
+          const notes = lines.join('\n');
+          fs.writeFileSync(RELEASE_NOTES_FILE, notes);
+          fs.appendFileSync(GITHUB_STEP_SUMMARY, `## Verified package release ${RELEASE_VERSION}\n\n${notes}`);
+          NODE
           tag="v$RELEASE_VERSION"
           if gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json tagName >/dev/null 2>&1; then
             test "$(gh api "repos/$GITHUB_REPOSITORY/commits/$tag" --jq .sha)" = "$GITHUB_SHA"
           else
-            gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "Tenhaw Kit $RELEASE_VERSION" --notes "Verified npm and Python distributions from commit $GITHUB_SHA. Release evidence is attached to the Actions run. Registry and hosting status are tracked separately."
+            gh release create "$tag" --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --title "Tenhaw Kit $RELEASE_VERSION" --notes-file "$notes"
           fi
