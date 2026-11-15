@@ -37,11 +37,13 @@ gemini extensions install https://github.com/Tenhaw/tenhaw-gemini
 
 ### cursor
 
-{"mcpServers":{"tenhaw":{"command":"npx","args":["-y","@tenhaw/mcp"]}}}
+{"mcpServers":{"tenhaw":{"command":"npx","args":["-y","@tenhaw/mcp@1.0.0"]}}}
 
 ### vscode
 
 code --add-mcp '{"name":"tenhaw","command":"npx","args":["-y","@tenhaw/mcp"]}'
+
+[Add to Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=tenhaw&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkB0ZW5oYXcvbWNwQDEuMC4wIl19)
 
 ## AI readiness assessment
 

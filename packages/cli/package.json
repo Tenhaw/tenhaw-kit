@@ -1,7 +1,7 @@
 {
   "name": "tenhaw", "version": "1.0.0", "description": "Agent-ready building blocks for internal product, portfolio, delivery and AI transformation tools",
   "type": "module", "bin": {"tenhaw":"dist/index.js"}, "exports": {".":"./dist/index.js","./scaffold":"./dist/scaffold.js"},
-  "files": ["dist", "templates", "instructions", "LICENSE", "LICENSE-CONTENT"], "license":"MIT", "author":"Tenhaw (https://tenhaw.com)",
+  "files": ["dist", "templates", "instructions", "README.md", "LICENSE", "LICENSE-CONTENT"], "license":"MIT", "author":"Tenhaw (https://tenhaw.com)",
   "homepage":"https://kit.tenhaw.com/install", "repository":{"type":"git","url":"https://github.com/Tenhaw/tenhaw-kit.git","directory":"packages/cli"},
   "engines":{"node":">=22.14.0"}, "publishConfig":{"access":"public","provenance":true},
   "keywords":["internal-tools","portfolio-tracking","product-delivery","ai-readiness","dora","mcp","ai-transformation"],

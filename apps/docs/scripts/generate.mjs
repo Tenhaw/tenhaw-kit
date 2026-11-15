@@ -4,12 +4,15 @@ import { fileURLToPath } from 'node:url';
 const app=resolve(dirname(fileURLToPath(import.meta.url)),'..'),root=resolve(app,'../..'),publicDir=resolve(app,'public');
 await mkdir(publicDir,{recursive:true});await cp(resolve(root,'spec/schemas'),resolve(publicDir,'schemas'),{recursive:true});
 const reference=JSON.parse(await readFile(resolve(app,'lib/reference.json'),'utf8'));
+const cursor=JSON.parse(await readFile(resolve(root,'plugins/cursor/mcp.json'),'utf8'));
+const cursorInstallUrl=`cursor://anysphere.cursor-deeplink/mcp/install?name=tenhaw&config=${encodeURIComponent(Buffer.from(JSON.stringify(cursor.mcpServers.tenhaw)).toString('base64'))}`;
 const names=reference.tools.map(tool=>tool.slug);
 const refs=names.map(name=>`- [${name}](https://kit.tenhaw.com/tools/${name}/): install, API and methodology.`).join('\n');
 const intro='# Tenhaw Kit\n\nLocal-first agent tools for AI readiness, delivery performance, AI business cases, use-case registers and operating models. MIT code, CC BY 4.0 framework content. No installed-tool telemetry.\n\n';
 const llms=intro+'## Install\n\n```sh\nnpx tenhaw@latest --help\ncodex mcp add tenhaw -- npx -y @tenhaw/mcp\n```\n\n## References\n\n'+refs+'\n- [MCP](https://kit.tenhaw.com/mcp/): local and remote data boundaries.\n- [OpenAPI](https://kit.tenhaw.com/openapi.json)\n- [Full reference](https://kit.tenhaw.com/llms-full.txt)\n- [Source](https://github.com/Tenhaw/tenhaw-kit)\n';
 await writeFile(resolve(publicDir,'llms.txt'),llms);
 let full=llms+'\n## Agent installation\n\n'+Object.entries(reference.install).map(([client,command])=>`### ${client}\n\n${command}\n`).join('\n');
+full+=`\n[Add to Cursor](${cursorInstallUrl})\n`;
 for(const tool of reference.tools)full+=`\n## ${tool.title}\n\nWhen to use: ${tool.use}\n\nInstall: npm install ${tool.pkg}\n\nCLI: npx tenhaw@latest ${tool.command}\n\nAPI: ${tool.api}\n\nMethodology: ${tool.method}\n\n${tool.snippet}\n`;
 full+='\n## Schemas\n\n';
 for(const name of await readdir(resolve(root,'spec/schemas'))){full+=`### ${name}\n\n`+await readFile(resolve(root,'spec/schemas',name),'utf8')+'\n';}

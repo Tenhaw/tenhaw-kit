@@ -1,32 +1,74 @@
 # Directory submission pack
 
-Status: drafts prepared; no third-party submissions made. Verify current forms and eligibility at submission time.
+Checked 15 November 2026 against the primary sources linked below. This is prepared material only: no form submitted, account created, permission changed or fee paid. A passing local validator or GitHub installation is not a public directory listing. Account eligibility, private portal fields and actual listing status remain unverified unless stated.
 
-Name: Tenhaw Kit
+## Public fields to copy
 
-Description: Building blocks for agents creating internal portfolio, product, delivery and AI transformation tools. Deterministic AI readiness, DORA and flow evidence, cash-realistic ROI, use-case governance and operating models. MIT code; CC BY framework content. Local credentials stay local; remote delivery accepts aggregate metrics only.
+| Field | Prepared value |
+| --- | --- |
+| Display name / company | Tenhaw Kit / Tenhaw |
+| Plugin identifier / version | `tenhaw` / `1.0.0` |
+| Short description | Build internal product tools |
+| One-liner | Skills and deterministic MCP tools for internal portfolio, product, delivery and AI transformation apps. |
+| Description | Tenhaw Kit helps coding agents create internal portfolio, product, delivery and AI transformation tools. Seven skills combine deterministic libraries and JSON schemas for AI readiness, delivery metrics, ROI, use-case governance and operating models. The hosted MCP exposes six calculation tools; local stdio also supports collection and scaffolding. Remote delivery accepts aggregate metrics only. MIT code; CC BY 4.0 framework content. |
+| Source | https://github.com/Tenhaw/tenhaw-kit |
+| Documentation / install | https://kit.tenhaw.com/ / https://kit.tenhaw.com/install/ |
+| Hosted MCP / transport / authentication | `https://mcp.tenhaw.com/mcp` / Streamable HTTP / None |
+| Privacy | https://kit.tenhaw.com/privacy/ |
+| Contact email / company website | hello@tenhaw.com / https://tenhaw.com |
+| Support URL | https://tenhaw.com/contact (configured in the OpenAI manifest; direct HTTPS 200 and publishes contact routes and email) |
+| Terms URL | **Pending owner scope review.** https://tenhaw.com/terms returns direct HTTPS 200 but describes website use and professional services/SOW; it does not mention Tenhaw Kit, open-source distribution or hosted MCP. Do not claim that it already covers the hosted service. |
+| Icon | `plugins/assets/icon.png` (512 × 512 PNG); included in Claude/OpenAI packages |
+| Discovery terms | internal-tools, portfolio-tracking, delivery-metrics, ai-transformation |
+| Category candidate | Productivity or Developer Tools, using the destination's offered category |
 
-Repository: https://github.com/Tenhaw/tenhaw-kit
+Canonical `kit.tenhaw.com` and `mcp.tenhaw.com` still did not resolve in the latest check on 15 November. Public production fallbacks already passed functional tests at https://tenhaw-kit-docs.vercel.app/ and https://tenhaw-mcp.vercel.app/mcp. Resolve and recheck the canonical URLs before copying them into a hosted listing. The npm registry still returns 404 for `@tenhaw/mcp@1.0.0`; the pinned local command is prepared, not yet an installability claim.
 
-Reference: https://kit.tenhaw.com
+```sh
+# Claude Code: actual GitHub marketplace installation verified
+claude plugin marketplace add Tenhaw/tenhaw-kit
+claude plugin install tenhaw@tenhaw-kit
 
-Remote MCP: https://mcp.tenhaw.com/mcp
+# Local MCP after npm 1.0.0 publication; Node.js >=22.14
+npx -y @tenhaw/mcp@1.0.0
 
-Privacy: https://kit.tenhaw.com/privacy
+# Alternative: connect a Streamable HTTP MCP client to the canonical URL above
+```
 
-Support: hello@tenhaw.com
+Claude Code 2.1.325 actually cloned the public repository over HTTPS and installed enabled `tenhaw@tenhaw-kit` 1.0.0 in an isolated temporary configuration. Both the cached installation metadata and git HEAD recorded `560a8701fd8802907d64d76d7d2e8f85ff656a0b`. `plugin details` found all seven skills: ai-readiness-assessment, ai-roi-business-case, ai-usecase-register, build-ai-adoption-dashboard, delivery-metrics-dora, portfolio-tracking and product-operating-model. It found one configured MCP server; the runtime was intentionally not started. Evidence is retained locally in ignored `artifacts/claude-github-install-verification-2026-11-15.json`. This proves GitHub installation, not Anthropic approval or successful npm startup.
 
-Local command: npx -y @tenhaw/mcp@1.0.0
+## Verified destinations and remaining steps
 
-| Channel | Prepared material | State |
+| Destination | Current official path and prepared fields | State / remaining action |
 | --- | --- | --- |
-| Official MCP registry | packages/mcp/server.json | Await exact package, endpoint and namespace verification |
-| Claude Code marketplace | .claude-plugin/marketplace.json | Local validator passes; GitHub install follows source release |
-| Anthropic public directory | plugins/claude/tenhaw | Pending owner submission |
-| OpenAI plugin directory | plugins/openai/tenhaw | Portable schemas validated; pending endpoint verification and owner submission |
-| Gemini extensions | plugins/gemini | Validator passes; satellite topic/root manifest/tag required |
-| Cursor directory | plugins/cursor | Rules and install payload validated; pending owner submission |
-| Smithery / mcp.so / PulseMCP / Glama | Shared metadata above | Verify each current submission or indexing mechanism; no listing claimed |
-| Awesome lists | Useful code example and repository link | Draft third-party PR text only; owner go-ahead required before sending |
+| Official MCP Registry | [Publisher quickstart](https://modelcontextprotocol.io/registry/quickstart); `packages/mcp/server.json`: `com.tenhaw/kit`, version 1.0.0, npm package and hosted endpoint above. [HTTP identity setup](../docs/REGISTRY_IDENTITY.md) is prepared. | Not published. Await npm version, canonical endpoint and release checks; publish through the protected workflow. |
+| Claude Code, direct GitHub marketplace | `.claude-plugin/marketplace.json` and `plugins/claude/tenhaw`; commands above. [Official self-hosted marketplace guidance](https://code.claude.com/docs/en/plugins/publish). | **Actual GitHub add/install passed**, seven skills detected. No directory submission is needed for this route. |
+| Anthropic public plugin directory | [Developer portal](https://claude.ai/directory/manage), Submit new → Plugin bundle. Repository `Tenhaw/tenhaw-kit`; plugin path `plugins/claude/tenhaw`; tracked branch `main`; listing read from manifest/README; contact hello@tenhaw.com. [Current plugin submission guide](https://claude.com/docs/plugins/submit). | Pending account owner: paid eligible Claude plan, connected GitHub identity with push access, portal validation, data-handling/compliance answers and review/publish. Portal checks exceed CLI validation. GitHub releases are not automatically initial directory submissions. After submission, scheduled checks and optional webhook track commits; publication follows review settings. |
+| Anthropic connector directory | Same [portal](https://claude.ai/directory/manage), Submit new → MCP connector. Name, one-liner, description, MCP URL, docs, privacy, support email, company website and icon above; proposed slug `tenhaw-kit` (availability unknown). No sign-in required, no customer account prerequisite, no hosted UI. [Connector submission guide](https://claude.com/docs/connectors/building/submission). | Pending DNS and eligible owner account. Select offered categories and confirm data handling, policy attestations and every tool's test result. Protocol tests passed; no Claude conversation test is claimed. Tools/prompts/resources sync from the endpoint. Community listing follows submission and automated checks; it is not inferred from GitHub. |
+| OpenAI Plugins, shared ChatGPT/Codex directory | [Plugins dashboard](https://platform.openai.com/plugins), upload a ZIP rooted at `plugins/openai/tenhaw`; [current submission guide](https://developers.openai.com/plugins/deploy/submission). Prepared name, implemented 28-character short description and support URL, long description, developer Tenhaw, category candidate, icon, website/privacy/MCP above. | Pending verified Developer identity and owner portal. Portable schemas pass; eight review cases below have recorded protocol evidence, with Claude/ChatGPT conversation review still unrun. Public review also needs applicable terms, canonical endpoint/domain challenge, accessible walkthrough video and attestations. No portal validation, submission or approval is claimed. |
+| Smithery | [Current operator notice](https://www.smithery.ai/future): directory remains curated with direct MCP URLs, powered by Arcade. Shared public metadata above is ready if a new intake route becomes available. | Old Smithery accounts, API, CLI, SDK and connection services shut down 31 October 2026. Current public submission form, required fields and autoindex behaviour could not be verified. Do not use legacy publish instructions or claim readiness for that flow. |
+| MCP.so | [Repository listing form](https://mcp.so/Submit?type=server): Repository URL `https://github.com/Tenhaw/tenhaw-kit`, Name `Tenhaw Kit`. [Remote form](https://mcp.so/submit?type=remote-server): endpoint and name above, both required. | Prepared only. Current form advertises a **$39 one-time paid submission** and immediate publication without review. No payment or listing made. Leave optional against the total launch budget; account/payment requirements beyond the public form are unverified. |
+| PulseMCP | [Current submission page](https://www.pulsemcp.com/submit) recommends publishing to the Official MCP Registry; it says it will pick entries up automatically when intake resumes. Shared metadata and registry manifest above are ready. | **Intake paused**, including changes to existing listings (page updated 3 September 2026). No current form to fill and no live pickup timing promised. Publish official registry first, then check actual indexing when resumed. |
+| Glama | [Official FAQ](https://glama.ai/mcp/faq): repository submission via Add MCP Server asks GitHub URL, display name and short description. [Hosted connectors](https://glama.ai/mcp/connectors), Add Server → Hosted endpoint asks name, short description and HTTPS Streamable HTTP URL. Values above are ready. | Prefer official Registry publication: Glama documents hourly import of published Streamable HTTP endpoints without manual review; only healthy endpoints are indexed. No manual submission or imported listing verified. Claiming later requires owner sign-in and its own domain/endpoint/GitHub proof; MCP Registry proof does not automatically complete Glama ownership. |
+| cursor.directory | [Submit a Plugin](https://cursor.directory/plugins/new); sign in with GitHub or Google, paste the repository URL, review auto-detected Open Plugins components, submit. [Operator repository instructions](https://github.com/cursor/community-plugins#submit-a-plugin). Name/description/source above are ready. | Pending account owner and package eligibility. The directory expects root `rules/*.mdc`, `.mcp.json`, `skills/*/SKILL.md` or manual component entry. Our current Cursor export is nested at `plugins/cursor/` and uses `mcp.json`; rules/deep-link validation does not prove repository auto-detection. Check the package/path accepted in the form before submission. Submitted plugins receive asynchronous security scans and moderation; no listing claimed. |
+| Gemini extensions | `plugins/gemini`, shared public metadata above. | Actual Gemini 0.68.0 extension validator passed earlier. Public discovery satellite/root manifest/topic/tag work remains separate; no directory listing claimed in this pack. |
+| Awesome lists | Repository link plus a concrete useful code example. | Third-party PR draft only; no PR or message sent. |
 
-Do not submit a hosted endpoint while production rate limiting returns unconfigured. Never describe a generated package or a submitted form as a live listing.
+## Eight prepared MCP review cases
+
+These proposed reviewer prompts have **not been run in Claude or ChatGPT conversations**. Observations come only from the existing production MCP/HTTP verification at `https://tenhaw-mcp.vercel.app`, 15 November 2026 at 20:41 UTC, version 1.0.0, commit `560a8701fd8802907d64d76d7d2e8f85ff656a0b`. The retained artifact `artifacts/production-verification-2026-11-15.json` records successful calls, output-schema checks, response sizes and exact denials, not complete successful result payloads. Input summaries come from the corresponding verification script and ROI vector. Expected semantics below are reviewer targets; the observed column states only what was recorded. No tests were rerun to prepare this pack.
+
+| Case / proposed reviewer prompt | Actual synthetic input summary / expected tools | Expected result | Recorded protocol evidence |
+| --- | --- | --- | --- |
+| P1. “Assess this empty response set without inventing evidence, then show the questionnaire.” | `assess_ai_readiness`: `responses.answers=[]`; separate call with `mode=questionnaire`. | Valid readiness report with missing coverage explicit; questionnaire available without claiming answered evidence. | Both `tools/call` requests returned HTTP 200 without MCP/tool errors; `readiness-report` and `readiness-questionnaire` schemas passed. Separate framework read found six dimensions and 30 questions. |
+| P2. “Assess delivery health from this supplied aggregate report.” | `score_delivery_health`: aggregate `metrics` report computed locally from zero events for 1 January–1 February 2026. No events sent remotely. | Valid delivery-health report; preserve absent-data limitations. | `tools/call` HTTP 200, no MCP/tool error, `delivery-health` schema passed. Aggregate-only REST input also returned HTTP 200 and passed the same schema. |
+| P3. “Separate recovered capacity from cash in this ROI example, and estimate a PoC build.” | `estimate_ai_roi`: vector `spec/vectors/roi/01-capacity-only.json`; 10 users, 20 minutes/task, 20 tasks/user/month, savings 10/20/30%, £50/hour, £1,000 build, £100/month run, three-month adoption, 12-month horizon, 10% annual discount, zero cash realisation. `estimate_ai_project_cost`: `stage=poc`, other assumptions defaulted. | Valid scenario ROI distinguishing capacity from cash; separate indicative project-cost range and assumptions. | Two `tools/call` requests returned HTTP 200 without MCP/tool errors; `roi-report` and `project-cost-report` schemas passed. Numeric cash/price assertions were not retained in this artifact. |
+| P4. “Create a use-case register from this empty supplied list; do not invent initiatives.” | `generate_usecase_register`: `useCases=[]`. | Valid empty register with methodology/limitations; no invented records. | `tools/call` HTTP 200, no MCP/tool error, `usecase-register-report` schema passed. This is empty-input smoke evidence, not a populated governance workflow test. |
+| P5. “Create an operating model from these supplied teams; do not invent ownership.” | `generate_operating_model`: `teams=[]`; no optional OKRs, roadmap or interactions supplied. | Valid empty operating-model report without fabricated teams. | `tools/call` HTTP 200, no MCP/tool error, `opmodel-report` schema passed. Populated model behaviour was not exercised in this live check. |
+| N1. “Score delivery health directly from these raw repository events on the hosted service.” | `score_delivery_health`: `events=[]` plus January–February period configuration, instead of an aggregate `metrics` report. | Reject unsupported raw-event shape; ask for a local aggregate report. | HTTP 200 contained MCP tool `isError=true`: required `metrics` missing and additional properties denied. REST raw-event input separately returned HTTP 400. No conversation clarification/refusal was tested. |
+| N2. “Collect repository delivery events through the hosted server.” | Attempted remote `collect_delivery_events` with `{}`. No credentials supplied. | Remote tool unavailable; explain the local collection route without requesting a token for the hosted endpoint. | HTTP 200 contained JSON-RPC error `-32602`, `Tool collect_delivery_events not found`. Credential handling and conversation wording were not tested by this call. |
+| N3. “Scaffold an internal app through the hosted server.” | Attempted remote `scaffold_internal_tool` with `{}`. | Remote tool unavailable; direct scaffolding to local tooling, with no hosted filesystem action. | HTTP 200 contained JSON-RPC error `-32602`, `Tool scaffold_internal_tool not found`. Agent tool selection and conversation fallback remain untested. |
+
+The artifact also records protocol `2025-11-25`, the exact six-tool inventory, 25 resources, four prompts, a 256 KB request rejection (HTTP 413) and two real HTTP 429 responses in a bounded 12-request burst. These are transport checks, not extra positive/negative conversation cases. Before portal submission, run these eight prompts with synthetic attachments in the intended product, retain actual tool selection/results, and record the walkthrough video.
+
+Before hosted submission, verify canonical HTTPS, version/source commit and healthy configured rate limiting. Keep six remote pure tools distinct from eight local stdio tools; never offer raw event or customer-token collection through the public remote endpoint. Do not describe a generated package, successful form submission or scheduled import as a live listing without checking the destination.
