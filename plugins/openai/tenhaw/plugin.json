@@ -20,7 +20,7 @@
     "com.openai": {
       "interface": {
         "displayName": "Tenhaw Kit",
-        "shortDescription": "Build internal product and transformation tools",
+        "shortDescription": "Build internal product tools",
         "longDescription": "Deterministic libraries, schemas and agent workflows for AI readiness, delivery evidence, cash-realistic ROI, use-case registers and product operating models.",
         "developerName": "Tenhaw",
         "category": "Productivity",
@@ -29,6 +29,7 @@
         ],
         "websiteURL": "https://kit.tenhaw.com",
         "privacyPolicyURL": "https://kit.tenhaw.com/privacy",
+        "supportURL": "https://tenhaw.com/contact",
         "defaultPrompt": [
           "Build an internal product portfolio tracker with Tenhaw Kit.",
           "Assess delivery health from aggregate metrics."

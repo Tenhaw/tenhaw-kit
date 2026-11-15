@@ -41,7 +41,7 @@
     "claude": "claude mcp add tenhaw -- npx -y @tenhaw/mcp",
     "codex": "codex mcp add tenhaw -- npx -y @tenhaw/mcp",
     "gemini": "gemini extensions install https://github.com/Tenhaw/tenhaw-gemini",
-    "cursor": "{\"mcpServers\":{\"tenhaw\":{\"command\":\"npx\",\"args\":[\"-y\",\"@tenhaw/mcp\"]}}}",
+    "cursor": "{\"mcpServers\":{\"tenhaw\":{\"command\":\"npx\",\"args\":[\"-y\",\"@tenhaw/mcp@1.0.0\"]}}}",
     "vscode": "code --add-mcp '{\"name\":\"tenhaw\",\"command\":\"npx\",\"args\":[\"-y\",\"@tenhaw/mcp\"]}'"
   },
   "pages": [
