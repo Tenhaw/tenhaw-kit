@@ -28,7 +28,7 @@ function fixture(profile: string) {
   const parent = { postMessage: (message: unknown, origin: string) => messages.push({ message, origin }) };
   const window = { parent, addEventListener: (name: string, handler: (event: any) => void) => { if (name === 'message') handlers.push(handler); } };
   const document = { getElementById: () => root, createElement: (tag: string) => tag === 'input' ? new Input(tag) : new Element(tag) };
-  const html = renderAppUi(profile), script = html.match(/<script>([\s\S]+)<\/script>/)![1];
+  const html = renderAppUi(profile), script = html.match(/<script>([\s\S]+)<\/script>/i)![1];
   runInNewContext(script, { window, document, HTMLInputElement: Input, Blob, URL: { createObjectURL: (blob: Blob) => { blobs.push(blob); return 'blob:local-export'; }, revokeObjectURL() {} }, Intl, Uint8Array, atob, setTimeout: (callback: () => void) => { const id = ++nextTimer; timers.set(id, callback); return id; }, clearTimeout: (id: number) => timers.delete(id) });
   const send = (data: any, source: unknown = parent, origin = 'https://chat.example') => { for (const handler of handlers) handler({ source, origin, data }); };
   const respond = async (request: any, result: any) => { send({ jsonrpc: '2.0', id: request.id, result }); await flush(); };
@@ -44,8 +44,8 @@ describe('self-contained MCP Apps views', () => {
       const html = renderAppUi(profile);
       expect(renderAppUi(profile)).toBe(html);
       expect(html).toContain('ui/initialize'); expect(html).toContain('ui/notifications/initialized'); expect(html).toContain('ui/notifications/tool-result'); expect(html).toContain('tools/call');
-      expect(html).not.toMatch(/<script[^>]+src=|<link[^>]+href=|\bfetch\(|innerHTML\s*=|localStorage|document\.write/);
-      expect(html.match(/<script>/g)).toHaveLength(1);
+      expect(html).not.toMatch(/<script[^>]+src=|<link[^>]+href=|\bfetch\(|innerHTML\s*=|localStorage|document\.write/i);
+      expect(html.match(/<script>/gi)).toHaveLength(1);
     }
     expect(() => renderAppUi('</script><script>alert(1)</script>')).toThrow('Unknown');
   });
