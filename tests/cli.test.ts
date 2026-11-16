@@ -14,7 +14,7 @@ async function input(directory:string,name:string,tool:string,vector:string){con
 
 describe('built CLI agent contract',()=>{
   it('prints version and help without extra output',()=>{
-    const version=run(['--version']);expect(version.status).toBe(0);expect(version.stdout).toBe('1.0.0\n');expect(version.stderr).toBe('');
+    const version=run(['--version']);expect(version.status).toBe(0);expect(version.stdout).toBe('1.0.1\n');expect(version.stderr).toBe('');
     expect(run(['--help']).stdout).toContain('delivery-metrics');
     expect(()=>parseArgs(['--unknown'])).toThrow('Unknown option');
     expect(()=>parseArgs(['--input'])).toThrow('requires a value');
@@ -74,7 +74,7 @@ describe('non-overwriting project writes',()=>{
   it('scaffolds every bundled starter, preserves existing targets and strips sensitive environment files',async()=>{
     const cwd=await temp(),fixtures=join(cwd,'fixtures');
     for(const name of templates){const directory=join(fixtures,name);await mkdir(directory,{recursive:true});await writeFile(join(directory,'package.json'),JSON.stringify({name,dependencies:{'@tenhaw/core':'workspace:*'}}));await writeFile(join(directory,'.env.production'),'example-not-a-real-secret');await writeFile(join(directory,'.env.example'),'EXAMPLE=');
-      const target=join(cwd,name),report=await scaffold(name,target,{templateRoot:fixtures});expect(report.dataMode).toBe('browser-local');expect(JSON.parse(await readFile(join(target,'package.json'),'utf8')).dependencies['@tenhaw/core']).toBe('1.0.0');expect(await readdir(target)).not.toContain('.env.production');expect(await readdir(target)).toContain('.env.example');await expect(scaffold(name,target,{templateRoot:fixtures})).rejects.toThrow('exists');}
+      const target=join(cwd,name),report=await scaffold(name,target,{templateRoot:fixtures});expect(report.dataMode).toBe('browser-local');expect(JSON.parse(await readFile(join(target,'package.json'),'utf8')).dependencies['@tenhaw/core']).toBe('1.0.1');expect(await readdir(target)).not.toContain('.env.production');expect(await readdir(target)).toContain('.env.example');await expect(scaffold(name,target,{templateRoot:fixtures})).rejects.toThrow('exists');}
   });
   it('refuses source symlinks and shell-quotes suggested navigation commands',async()=>{
     const cwd=await temp(),fixtures=join(cwd,'fixtures'),source=join(fixtures,templates[0]);await mkdir(source,{recursive:true});await writeFile(join(source,'package.json'),'{}');

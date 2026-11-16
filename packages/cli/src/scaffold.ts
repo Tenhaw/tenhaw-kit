@@ -1,3 +1,4 @@
+import { VERSION } from '@tenhaw/core';
 import { cp, lstat, mkdir, readFile, readdir, realpath, rename, rm, writeFile } from 'node:fs/promises';
 import { dirname, isAbsolute, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -24,10 +25,9 @@ export async function scaffold(template: string, directory: string, options: { t
     const manifestPath = join(staging, 'package.json');
     const manifest = JSON.parse(await readFile(manifestPath, 'utf8'));
     manifest.name = target.split(sep).at(-1)?.toLowerCase().replace(/[^a-z0-9-]/g, '-') || 'tenhaw-internal-tool';
-    delete manifest.packageManager;
     for (const group of ['dependencies', 'devDependencies']) {
       for (const [name, version] of Object.entries(manifest[group] ?? {})) {
-        if (String(version).startsWith('workspace:')) manifest[group][name] = '1.0.0';
+        if (String(version).startsWith('workspace:')) manifest[group][name] = VERSION;
       }
     }
     await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);

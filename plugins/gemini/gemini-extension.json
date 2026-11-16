@@ -1,13 +1,13 @@
 {
   "name": "tenhaw",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Agent tools for internal portfolio, delivery, product and AI transformation apps",
   "mcpServers": {
     "tenhaw": {
       "command": "npx",
       "args": [
         "-y",
-        "@tenhaw/mcp@1.0.0"
+        "@tenhaw/mcp@1.0.1"
       ]
     }
   },

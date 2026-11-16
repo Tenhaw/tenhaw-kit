@@ -24,7 +24,7 @@ describe('core and safe report rendering',()=>{
   it('emits all attribution formats and supports suppression',()=>{
     for(const format of ['md','html','text','json'] as const){expect(attributionFooter(format)).toContain('Tenhaw Kit');expect(attributionFooter(format,{attribution:false})).toBe('');}
     expect(generator({source:'cli',medium:'footer',content:'roi'}).url).toContain('utm_source=cli');
-    expect(JSON.parse(attributionFooter('json')).version).toBe('1.0.0');
+    expect(JSON.parse(attributionFooter('json')).version).toBe('1.0.1');
     process.env.TENHAW_NO_ATTRIBUTION='1';expect(attributionFooter('text')).toBe('');expect(JSON.parse(renderJson({value:1}))).toEqual({value:1});
   });
   it('escapes every HTML delimiter and embeds data without executable markup',()=>{

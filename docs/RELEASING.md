@@ -14,7 +14,7 @@ The source of truth is `Tenhaw/tenhaw-kit`. Nine npm distributions, four Python 
 For the initial satellite launch, complete the staged package procedure below, selecting `satellite_sync: owner-cli` for the full release. After both package publication jobs and their registry verification succeed, use a clean checkout of that run's exact source commit and the existing authenticated `Tenhaw` account:
 
 ```sh
-node scripts/sync-satellites.mjs --version 1.0.0 --local-bootstrap --apply
+node scripts/sync-satellites.mjs --version 1.0.1 --local-bootstrap --apply
 ```
 
 This explicit local mode checks the account, canonical origin, merged main-branch PR history, clean source checkout and every published internal package before synchronising source. It delegates Git authentication to `gh auth git-credential`, without extracting a token or changing global Git configuration. Record the six resulting source snapshots, version tags and releases as separate satellite evidence. A successful package release in `owner-cli` mode does not establish satellite completion. The GitHub App workflow is available for recurring releases after its account configuration is complete.
@@ -38,7 +38,7 @@ pnpm build:apps
 pnpm build:templates
 node scripts/pack-check.mjs
 uv build --all-packages --out-dir artifacts/python
-node scripts/publish.mjs --version 1.0.0 --dry-run
+node scripts/publish.mjs --version 1.0.1 --dry-run
 ```
 
 The shared CI composite additionally runs all five template unit and Playwright journeys, clean Python wheel imports, and production dependency audits. Packaging must leave the original publishable tarballs in `artifacts/*.tgz`; clean-install test rewrites belong in temporary copies. `pack-check.mjs` verifies real packed installations, an MCP protocol inventory, a scaffold build, licensed contents and the CLI size limit. Regeneration checks fail when tracked assets differ or new untracked plugin files appear.
@@ -48,7 +48,7 @@ The shared CI composite additionally runs all five template unit and Playwright 
 Dispatch **Release** on the reviewed `main` commit with `mode: prepare`, the exact version, `python_project: all` and no `source_run_id`:
 
 ```sh
-gh workflow run release.yml --ref main -f mode=prepare -f version=1.0.0 -f python_project=all -f satellite_sync=owner-cli
+gh workflow run release.yml --ref main -f mode=prepare -f version=1.0.1 -f python_project=all -f satellite_sync=owner-cli
 ```
 
 Prepare runs the full shared verification and build, then freezes all nine npm tarballs and eight Python archives in one immutable artifact named `verified-distributions-<version>-<source-sha>`. Its `release-bundle.json` records SHA-256 and size for every archive, the repository, source SHA, version, producer run ID and producer mode. The artifact contains those 17 archives and the two identity manifests. Prepare has no publishing, satellite or GitHub Release job; it does not request publication approval from the `release` environment.
@@ -69,7 +69,7 @@ PyPI's pending identity excludes the project name, so four simultaneous pending 
 For each selected project, set `PYTHON_PROJECT` to its exact allowlisted name and use the observed prepare run ID:
 
 ```sh
-gh workflow run release.yml --ref main -f mode=python-bootstrap -f version=1.0.0 -f python_project="$PYTHON_PROJECT" -f source_run_id="$PREPARE_RUN_ID" -f satellite_sync=owner-cli
+gh workflow run release.yml --ref main -f mode=python-bootstrap -f version=1.0.1 -f python_project="$PYTHON_PROJECT" -f source_run_id="$PREPARE_RUN_ID" -f satellite_sync=owner-cli
 ```
 
 A bootstrap is an actual publication of that project's complete reviewed release. Its evidence states the selected project and leaves `allPythonProjectsVerified` false. A successful scoped run does not establish a full Python, npm or Kit launch. Each publishing job remains behind the existing protected `release` environment. A prepare success alone does not establish that a pending publisher or npm authentication is ready.
@@ -79,13 +79,13 @@ A bootstrap is an actual publication of that project's complete reviewed release
 After the four Python bootstrap runs and npm account configuration are complete, dispatch **Release** on the same `main` SHA with explicit `mode: release`, the exact reviewed version, `python_project: all`, the original `source_run_id` and a satellite sync mode (`owner-cli` by default; `github-app` only after configuring its repository secrets):
 
 ```sh
-gh workflow run release.yml --ref main -f mode=release -f version=1.0.0 -f python_project=all -f source_run_id="$PREPARE_RUN_ID" -f satellite_sync=owner-cli
+gh workflow run release.yml --ref main -f mode=release -f version=1.0.1 -f python_project=all -f source_run_id="$PREPARE_RUN_ID" -f satellite_sync=owner-cli
 ```
 
 The preflight rejects unsupported scopes, a missing or malformed producer ID, a single-project full release, a reused prepare request or `github-app` without both App secrets; only a boolean secret-presence result reaches its shell. The verification job validates and restages the original successful prepare bundle. Independent npm and PyPI jobs each enter the protected `release` environment, download that same immutable artifact and verify all 17 archive hashes and source/producer identity before publication. An npm account or bootstrap failure therefore does not prevent an authorised PyPI operation.
 
 - npm publication uses OIDC and explicit provenance. Before the first upload, all nine tarballs are checked against their source manifests and any immutable existing versions. An existing version is reused only if its registry integrity exactly matches the local tarball. The script then verifies exact versions, tarball hashes, provenance metadata and a fresh `npm audit signatures` installation.
-- npm scans accepted uploads before they become publicly installable. Its current guidance describes a typical delay of about five minutes, sometimes 15 minutes or more; a successful upload receipt is not proof of public availability. The publisher uploads all missing archives first, then polls all nine versions together every 30 seconds under one shared 20-minute deadline. Missing versions or pending provenance are retried; hash conflicts and non-404 registry errors fail immediately. Polling never repeats an upload. If the deadline expires, inspect scan/moderation status and use `node scripts/publish.mjs --version 1.0.0 --verify-only` with the original bundle to resume verification without publication. Do not rebuild or republish accepted versions to force visibility. The npm job has a 30-minute outer limit.
+- npm scans accepted uploads before they become publicly installable. Its current guidance describes a typical delay of about five minutes, sometimes 15 minutes or more; a successful upload receipt is not proof of public availability. The publisher uploads all missing archives first, then polls all nine versions together every 30 seconds under one shared 20-minute deadline. Missing versions or pending provenance are retried; hash conflicts and non-404 registry errors fail immediately. Polling never repeats an upload. If the deadline expires, inspect scan/moderation status and use `node scripts/publish.mjs --version 1.0.1 --verify-only` with the original bundle to resume verification without publication. Do not rebuild or republish accepted versions to force visibility. The npm job has a 30-minute outer limit.
 - Python preflight validates the exact wheel and sdist metadata for every selected project and rejects an unexpected remote file, hash conflict or yanked release before upload. The PyPI action uses the staged exact distributions with OIDC attestations. Its subsequent verifier requires the complete expected archive set, exact SHA-256 hashes, publish-attestation subjects and the approved repository/workflow/environment identity. Existing identical files support a safe rerun; a different immutable file fails verification. A full release verifies all four projects and records `allPythonProjectsVerified: true` only after they all pass.
 - PyPI postverification retries release/attestation HTTP 404s and matching incomplete file lists every 15 seconds under one shared 10-minute deadline across selected projects. Conflicting files or publisher data fail immediately; verification never uploads files.
 - In `owner-cli` mode, the App job is intentionally skipped. The workflow records only the verified package release and prints the separate owner CLI command with the exact source commit. Complete and verify the initial satellite sync using that command; it remains required launch work outside the package workflow.

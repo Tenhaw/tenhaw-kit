@@ -21,7 +21,7 @@ node packages/cli/dist/index.js init product-operating-model internal-portfolio 
 
 Node 22.14+ is required. Scaffolding never installs dependencies or overwrites an existing directory. The templates use clearly synthetic examples and browser-local data.
 
-After the verified public release, use `npx tenhaw@1.0.0 --help`, `npm create tenhaw@1.0.0 -- <template> <new-directory>`, or `npx @tenhaw/mcp@1.0.0` for local MCP. The local server exposes eight tools; the remote server exposes six pure tools and accepts aggregate delivery metrics only.
+After the verified public release, use `npx tenhaw@1.0.1 --help`, `npm create tenhaw@1.0.1 -- <template> <new-directory>`, or `npx @tenhaw/mcp@1.0.1` for local MCP. The local server exposes eight tools; the remote server exposes six pure tools and accepts aggregate delivery metrics only.
 
 ## Compose the packages
 

@@ -1,6 +1,6 @@
 {
   "name": "@tenhaw/ai-readiness",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An explainable AI readiness framework for internal assessment tools",
   "type": "module",
   "main": "./dist/index.js",

@@ -1,6 +1,7 @@
 import { cp, mkdir, readFile, readdir, writeFile, chmod, lstat, realpath, rm } from 'node:fs/promises';
 import { resolve, join, relative, sep, isAbsolute } from 'node:path';
 const root=resolve('.');
+const version=JSON.parse(await readFile(join(root,'packages/core/package.json'),'utf8')).version;
 for(const entry of await readdir('packages')){
   const directory=join('packages',entry);
   for(const file of ['LICENSE','LICENSE-CONTENT'])await cp(file,join(directory,file));
@@ -17,7 +18,7 @@ for(const name of await readdir('templates')){
     return true;
   }});
   const file=join(target,'package.json'),pkg=JSON.parse(await readFile(file,'utf8'));
-  for(const group of ['dependencies','devDependencies'])for(const[name,value]of Object.entries(pkg[group]??{}))if(String(value).startsWith('workspace:'))pkg[group][name]='1.0.0';
+  for(const group of ['dependencies','devDependencies'])for(const[name,value]of Object.entries(pkg[group]??{}))if(String(value).startsWith('workspace:'))pkg[group][name]=version;
   await writeFile(file,JSON.stringify(pkg,null,2)+'\n');
 }
 await mkdir('packages/cli/instructions',{recursive:true});

@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Tenhaw Kit calculation API",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "No tokens or raw delivery events. Calculation input is transient."
   },
   "servers": [

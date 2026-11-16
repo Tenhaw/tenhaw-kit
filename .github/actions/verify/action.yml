@@ -35,9 +35,15 @@ runs:
         pnpm build:templates
     - name: Install browser test runtime
       shell: bash
+      # The root frozen install owns monorepo dependencies, including template links.
+      env:
+        pnpm_config_verify_deps_before_run: 'false'
       run: pnpm --dir templates/ai-adoption-dashboard exec playwright install --with-deps chromium
     - name: Test all template units and browser journeys
       shell: bash
+      # Inherit this in Playwright's child pnpm dev; standalone pack checks reset it.
+      env:
+        pnpm_config_verify_deps_before_run: 'false'
       run: |
         set -euo pipefail
         for template in ai-adoption-dashboard delivery-metrics-dashboard ai-usecase-register product-operating-model ai-readiness-assessment; do

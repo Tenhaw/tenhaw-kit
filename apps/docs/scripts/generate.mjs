@@ -2,6 +2,7 @@ import { readFile,writeFile,mkdir,cp,readdir } from 'node:fs/promises';
 import { resolve,dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const app=resolve(dirname(fileURLToPath(import.meta.url)),'..'),root=resolve(app,'../..'),publicDir=resolve(app,'public');
+const version=JSON.parse(await readFile(resolve(root,'packages/core/package.json'),'utf8')).version;
 await mkdir(publicDir,{recursive:true});await cp(resolve(root,'spec/schemas'),resolve(publicDir,'schemas'),{recursive:true});
 const reference=JSON.parse(await readFile(resolve(app,'lib/reference.json'),'utf8'));
 const cursor=JSON.parse(await readFile(resolve(root,'plugins/cursor/mcp.json'),'utf8'));
@@ -28,7 +29,7 @@ const inputSchema=input=>input==='delivery-report'?deliveryTransport:schema(inpu
 const outputSchema=output=>schema(output);
 const wrapped=output=>({type:'object',required:['result'],properties:{result:outputSchema(output),generator:{type:'object',required:['generator','version','url'],properties:{generator:{type:'string'},version:{type:'string'},url:{type:'string',format:'uri'}}}}});
 const operation=(id,input,output)=>({post:{operationId:id,summary:id.replaceAll('_',' '),requestBody:{required:true,content:{'application/json':{schema:inputSchema(input)}}},responses:{200:{description:'Validated deterministic result',content:{'application/json':{schema:wrapped(output)}}},400:{description:'Invalid input'},413:{description:'Request too large'},429:{description:'Rate limit exceeded'}}}});
-await writeFile(resolve(publicDir,'openapi.json'),JSON.stringify({openapi:'3.1.0',info:{title:'Tenhaw Kit calculation API',version:'1.0.0',description:'No tokens or raw delivery events. Calculation input is transient.'},servers:[{url:'https://mcp.tenhaw.com'}],paths:{'/api/v1/readiness/score':operation('assess_ai_readiness','readiness-response','readiness-report'),'/api/v1/delivery/health':operation('score_delivery_health','delivery-report','delivery-health'),'/api/v1/roi/estimate':operation('estimate_ai_roi','roi-input','roi-report')}},null,2)+'\n');
+await writeFile(resolve(publicDir,'openapi.json'),JSON.stringify({openapi:'3.1.0',info:{title:'Tenhaw Kit calculation API',version,description:'No tokens or raw delivery events. Calculation input is transient.'},servers:[{url:'https://mcp.tenhaw.com'}],paths:{'/api/v1/readiness/score':operation('assess_ai_readiness','readiness-response','readiness-report'),'/api/v1/delivery/health':operation('score_delivery_health','delivery-report','delivery-health'),'/api/v1/roi/estimate':operation('estimate_ai_roi','roi-input','roi-report')}},null,2)+'\n');
 await mkdir(resolve(publicDir,'examples'),{recursive:true});
 await writeFile(resolve(publicDir,'examples/readiness.json'),JSON.stringify({answers:framework.dimensions.flatMap(d=>d.questions.map(q=>({questionId:q.id,score:3,evidence:'Synthetic example.'})))},null,2)+'\n');
 await writeFile(resolve(publicDir,'examples/roi.json'),JSON.stringify({useCase:'Example support workflow',users:20,minutesPerTask:15,tasksPerUserPerMonth:30,savings:{low:.15,base:.25,high:.35},hourlyCost:50,buildCost:10000,monthlyRunCost:200,adoptionMonths:3,horizonMonths:12,annualDiscountRate:.1,cashRealisation:0,currency:'GBP'},null,2)+'\n');

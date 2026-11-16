@@ -12,7 +12,7 @@ on:
           - python-bootstrap
           - release
       version:
-        description: Exact reviewed version to publish, for example 1.0.0
+        description: Exact reviewed version to publish, for example 1.0.1
         required: true
         type: string
       python_project:
