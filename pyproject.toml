@@ -17,7 +17,7 @@ tenhaw-ai-roi = { workspace = true }
 tenhaw-delivery-metrics = { workspace = true }
 
 [dependency-groups]
-dev = ["pytest>=8.3", "ruff>=0.9", "mypy>=1.14", "build>=1.2", "types-jsonschema>=4.23", "respx>=0.22"]
+dev = ["pytest>=8.3", "ruff>=0.9", "mypy>=1.14", "build>=1.2", "types-jsonschema>=4.23", "respx>=0.23.1"]
 
 [tool.pytest.ini_options]
 testpaths = ["python/tests"]
