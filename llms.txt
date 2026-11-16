@@ -2,7 +2,15 @@
 
 Building blocks for coding agents creating internal product, portfolio, delivery and AI transformation tools. Code is MIT. Authored framework content is CC BY 4.0.
 
-This source checkout is a release candidate. Public npm, PyPI, GitHub and domain availability must be verified through the release runbook before recommending installation from registries.
+Published release: 1.0.1, verified on 16 November 2026. npm: https://www.npmjs.com/package/tenhaw/v/1.0.1 . PyPI: https://pypi.org/project/tenhaw/1.0.1/ . Official MCP Registry identity: com.tenhaw/kit, https://registry.modelcontextprotocol.io/v0.1/servers/com.tenhaw%2Fkit/versions/1.0.1 . Exact release evidence: docs/RUNBOOK.md.
+
+## Agent installation
+
+No Tenhaw API key is required. Install the pinned public CLI with `npx -y tenhaw@1.0.1 --help`; use `npx -y tenhaw@1.0.1 mcp --json` for client snippets. Local MCP starts with `npx -y @tenhaw/mcp@1.0.1`. Remote MCP: https://mcp.tenhaw.com/mcp . Python: `uvx --from tenhaw==1.0.1 tenhaw-py --help`.
+
+One-prompt workflow: identify the host coding client, preserve its existing project instructions and MCP servers, configure the pinned server, then verify the tool inventory and run a synthetic readiness calculation. For a requested starter, scaffold into a new directory, install dependencies and run its documented build and tests. Ask only for missing local environment variables needed by requested GitHub/Jira collection. Never request a secret in chat or place its value in commands, config or logs. A host may need a reload and its normal trust approval before tools appear.
+
+The source-only `setup` command is unreleased and is not part of npm 1.0.1. Build this checkout, then run `node packages/cli/dist/index.js setup --agent codex --directory /path/to/project --json` to plan. Apply with `--yes`; inspect with `--check`; probe the MCP connection with `--verify`. Supported agents: codex, claude, cursor, vscode, gemini. Defaults: --transport local --integration none. Optional collection: --integration github|jira|github,jira. Remote transport provides pure tools and cannot collect from GitHub/Jira. Setup returns JSON status, missing environment variable names and next actions, never secret values. Full workflow and host references: docs/AGENT_INSTALL.md.
 
 ## Use from source
 
@@ -31,6 +39,8 @@ Python mirrors readiness, delivery and ROI calculations and provides tenhaw-py. 
 
 ## Agent interfaces and data boundaries
 
+Seven focused product packages are source candidates: six hosted applications with interactive MCP Apps views and one desktop developer skills package. Hosted scopes cover business cases, readiness, use-case prioritisation, aggregate delivery health, operating models and procurement. The procurement engine generates a buyer brief, supplier questions, evidence rubric and editable Word pack. See [app launch and verification](docs/APP_LAUNCH.md) and [submission drafts](launch/apps/README.md). Source implementation does not imply an approved directory listing.
+
 The local stdio MCP provides eight tools, questionnaire and schema resources, and workflow prompts. The remote service provides six pure calculation tools. Remote delivery health accepts aggregate metrics reports only; customer credentials and raw repository events stay local.
 
 GitHub and Jira collectors run locally with read-only environment credentials when requested. No installed-tool telemetry is included. Browser-local starters include synthetic examples and local import/export. Add authentication and authorisation before introducing shared persistence or hosted collection.
@@ -38,6 +48,7 @@ GitHub and Jira collectors run locally with read-only environment credentials wh
 ## Source references
 
 - [Installation and API catalogue](apps/docs/lib/reference.json)
+- [Agent setup, credentials and acceptance checks](docs/AGENT_INSTALL.md)
 - [Full machine-readable reference and schemas](apps/docs/public/llms-full.txt)
 - [JSON Schema source](spec/schemas)
 - [Scoring vectors](spec/vectors)

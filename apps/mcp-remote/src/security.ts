@@ -9,7 +9,11 @@ export function localRateLimit(key:string,now=Date.now(),limit=30){
 }
 async function permitted(request:Request){
   // Set only after the project's active native WAF rule has been verified.
-  if(process.env.TENHAW_RATE_LIMIT_PROVIDER==='vercel'&&process.env.VERCEL==='1')return 'yes';
+  if(process.env.TENHAW_RATE_LIMIT_PROVIDER==='vercel'&&process.env.VERCEL==='1'){
+    // New app paths need the expanded native rule verified before public traffic.
+    if(new URL(request.url).pathname.startsWith('/mcp/apps/')&&process.env.TENHAW_APPS_RATE_LIMIT_CONFIGURED!=='true'&&process.env.VERCEL_ENV==='production')return 'unconfigured';
+    return 'yes';
+  }
   const address=request.headers.get('x-forwarded-for')?.split(',')[0].trim()??'unknown';
   const identity=createHash('sha256').update(`${Math.floor(Date.now()/60000)}:${address}`).digest('hex');
   const url=process.env.UPSTASH_REDIS_REST_URL,token=process.env.UPSTASH_REDIS_REST_TOKEN;

@@ -5,6 +5,8 @@ import os
 import subprocess
 import sys
 
+from tenhaw import __version__
+
 
 def invoke(*arguments, env=None):
     return subprocess.run(
@@ -20,7 +22,7 @@ def test_cli_json_is_clean_and_attribution_can_be_disabled(tmp_path):
     assert result.stderr == ""
     assert "generator" not in json.loads(result.stdout)
     enabled = invoke("readiness", "--input", str(path), "--json")
-    assert json.loads(enabled.stdout)["generator"]["version"] == "1.0.1"
+    assert json.loads(enabled.stdout)["generator"]["version"] == __version__
 
 
 def test_cli_env_suppression_and_doctor_do_not_reveal_values():

@@ -9,8 +9,10 @@ Validate shared JSON Schemas, render safe reports and add optional attribution.
 
 ## Install
 
+These commands target the **1.1.0 release candidate**. Verify its exact npm publication before installation.
+
 ```sh
-npm install @tenhaw/core
+npm install @tenhaw/core@1.1.0
 ```
 
 ## Quick start

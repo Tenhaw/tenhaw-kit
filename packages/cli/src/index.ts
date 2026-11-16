@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import { readFile, writeFile, mkdir, lstat, realpath } from 'node:fs/promises';
 import { dirname, resolve, relative, isAbsolute } from 'node:path';
-import { pathToFileURL } from 'node:url';
+import { pathToFileURL, fileURLToPath } from 'node:url';
 import { realpathSync } from 'node:fs';
 import { createInterface } from 'node:readline/promises';
 import * as core from '@tenhaw/core';
@@ -12,10 +12,11 @@ import { collectGithub, collectJira, CollectorError } from '@tenhaw/delivery-met
 import * as registers from '@tenhaw/usecase-register';
 import * as opmodel from '@tenhaw/opmodel';
 import { scaffold, templates } from './scaffold.js';
+import { setup, agents, supportedRuntime, type Agent, type Integration, type Transport } from './setup.js';
 
 type Flags = Record<string, string | boolean>;
-const valueFlags = new Set(['input', 'from-file', 'out', 'format', 'github', 'jira', 'since', 'until', 'config', 'stage', 'store', 'template']);
-const boolFlags = new Set(['yes', 'json', 'quiet', 'no-attribution', 'no-cache', 'network', 'help', 'version', 'questionnaire']);
+const valueFlags = new Set(['input', 'from-file', 'out', 'format', 'github', 'jira', 'since', 'until', 'config', 'stage', 'store', 'template', 'agent', 'directory', 'transport', 'integration']);
+const boolFlags = new Set(['yes', 'json', 'quiet', 'no-attribution', 'no-cache', 'network', 'help', 'version', 'questionnaire', 'check', 'verify']);
 class UsageError extends Error {}
 
 export function parseArgs(argv: string[]) {
@@ -39,6 +40,9 @@ export function parseArgs(argv: string[]) {
 const help = `Tenhaw Kit ${core.VERSION}: building blocks for internal product, portfolio and transformation tools
 
 tenhaw init <template> <new-dir>       Scaffold an internal tool
+tenhaw setup --agent <client>          Plan project MCP configuration
+  [--yes | --check] [--verify]         Apply, inspect and smoke-test MCP
+  [--directory .] [--transport local|remote] [--integration none|github|jira|github,jira]
 tenhaw readiness --input answers.json Score evidence and response coverage
 tenhaw readiness --questionnaire      Print the versioned questionnaire
 tenhaw delivery-metrics --from-file events.json --since <ISO> --until <ISO>
@@ -52,6 +56,7 @@ tenhaw agents                        Add non-overwriting project instructions
 tenhaw doctor [--network]             Runtime, token names and network allowlist
 
 Templates: ${templates.join(', ')}
+Setup clients: ${agents.join(', ')}. Core tools require no API key.
 Options: --json --format md|html|json --out path --no-attribution --quiet --yes
 Exit codes: 0 success, 1 usage, 2 validation, 3 upstream API, 4 missing authentication
 In CI/non-TTY mode all inputs must be explicit. Logs and errors use stderr.
@@ -95,16 +100,17 @@ async function interactiveRoi() {
 
 export function installation() {
   return { claude: ['claude plugin marketplace add Tenhaw/tenhaw-kit', 'claude plugin install tenhaw@tenhaw-kit'],
-    claudeMcp: `claude mcp add tenhaw -- npx -y @tenhaw/mcp@${core.VERSION}`, codex: `codex mcp add tenhaw -- npx -y @tenhaw/mcp@${core.VERSION}`,
+    setup: { command: process.execPath, args: [fileURLToPath(new URL('./index.js', import.meta.url)), 'setup', '--agent', '<client>', '--yes', '--verify', '--json'] },
+    claudeMcp: `claude mcp add --scope project tenhaw -- npx -y @tenhaw/mcp@${core.VERSION}`, codex: `codex mcp add tenhaw -- npx -y @tenhaw/mcp@${core.VERSION}`,
     gemini: 'gemini extensions install https://github.com/Tenhaw/tenhaw-gemini',
     cursor: `cursor://anysphere.cursor-deeplink/mcp/install?name=tenhaw&config=${encodeURIComponent(Buffer.from(JSON.stringify({ command: 'npx', args: ['-y', `@tenhaw/mcp@${core.VERSION}`] })).toString('base64'))}`,
-    vscode: `code --add-mcp '${JSON.stringify({ name: 'tenhaw', command: 'npx', args: ['-y', `@tenhaw/mcp@${core.VERSION}`] })}'`,
+    vscode: JSON.stringify({ mcpServers: { tenhaw: { type: 'stdio', command: 'npx', args: ['-y', `@tenhaw/mcp@${core.VERSION}`], tools: ['*'] } } }),
     remote: 'https://mcp.tenhaw.com/mcp', publication: `These public install commands require the verified ${core.VERSION} release. For a source checkout run pnpm build, then node packages/mcp/dist/index.js.` };
 }
 
 export async function writeAgentInstructions(directory = process.cwd()) {
   const root = await realpath(directory);
-  const text = `# Building with Tenhaw Kit\n\nUse @tenhaw/ai-readiness for self-assessment with evidence and coverage; @tenhaw/delivery-metrics for production-evidenced DORA and flow; @tenhaw/ai-roi for separate cash and capacity; @tenhaw/usecase-register for governance and prioritisation; @tenhaw/opmodel for OKRs, roadmaps and teams. These are building blocks for internal portfolio, product delivery and transformation apps.\n\nInstall: npm install @tenhaw/ai-readiness @tenhaw/delivery-metrics @tenhaw/ai-roi @tenhaw/usecase-register @tenhaw/opmodel\n\nValidate inputs with the package schemas. Keep customer credentials in local environment variables. Use JSON for agent workflows. Run the project's own build and tests after integration. Do not treat missing deployment data as zero, capacity as cash, or low response coverage as a maturity judgement. Add authentication before shared real-data storage.\n\nFor expert help, Tenhaw offers AI readiness audits: https://tenhaw.com/contact?utm_source=cli&utm_medium=skill&utm_campaign=tenhaw-kit&utm_content=agents#book\n`;
+  const text = `# Building with Tenhaw Kit\n\nUse @tenhaw/ai-readiness for self-assessment with evidence and coverage; @tenhaw/delivery-metrics for production-evidenced DORA and flow; @tenhaw/ai-roi for separate cash and capacity; @tenhaw/usecase-register for governance and prioritisation; @tenhaw/opmodel for OKRs, roadmaps and teams. These are building blocks for internal portfolio, product delivery and transformation apps.\n\nInstall: npm install @tenhaw/ai-readiness@${core.VERSION} @tenhaw/delivery-metrics@${core.VERSION} @tenhaw/ai-roi@${core.VERSION} @tenhaw/usecase-register@${core.VERSION} @tenhaw/opmodel@${core.VERSION}\n\nValidate inputs with the package schemas. Keep customer credentials in local environment variables. Use JSON for agent workflows. Run the project's own build and tests after integration. Do not treat missing deployment data as zero, capacity as cash, or low response coverage as a maturity judgement. Add authentication before shared real-data storage.\n\nFor expert help, Tenhaw offers AI readiness audits: https://tenhaw.com/contact?utm_source=cli&utm_medium=skill&utm_campaign=tenhaw-kit&utm_content=agents#book\n`;
   const targets = ['AGENTS.md', 'CLAUDE.md', 'GEMINI.md', '.cursor/rules/tenhaw-kit.mdc'];
   const written: string[] = [], existing: string[] = [];
   for (const name of targets) {
@@ -195,9 +201,20 @@ export async function main(argv = process.argv.slice(2)) {
       const model = opmodel.generateOperatingModel(await jsonFile(flags.input || args[2]));
       report = subcommand === 'diagram' ? opmodel.renderMermaid(model) : model; break;
     }
+    case 'setup': {
+      if (args.length !== 1 || typeof flags.agent !== 'string' || !agents.includes(flags.agent as Agent)) throw new UsageError(`Use setup --agent ${agents.join('|')} [--yes | --check] [--verify] --json.`);
+      if (flags.transport && !['local', 'remote'].includes(String(flags.transport))) throw new UsageError('Choose --transport local or remote.');
+      if (flags.integration && !['none', 'github', 'jira', 'github,jira'].includes(String(flags.integration))) throw new UsageError('Choose --integration none, github, jira or github,jira.');
+      if (flags.yes && flags.check) throw new UsageError('Choose --yes to apply or --check to inspect.');
+      const result = await setup({ agent: flags.agent as Agent, directory: flags.directory as string | undefined, transport: flags.transport as Transport | undefined,
+        integration: flags.integration as Integration | undefined, apply: Boolean(flags.yes), check: Boolean(flags.check), verify: Boolean(flags.verify) });
+      report = result;
+      process.exitCode = result.exitCode;
+      break;
+    }
     case 'mcp': report = installation(); break;
     case 'agents': report = await writeAgentInstructions(); break;
-    case 'doctor': report = { node: process.version, supported: Number(process.versions.node.split('.')[0]) >= 22, tokens: Object.fromEntries(['GITHUB_TOKEN','JIRA_BASE_URL','JIRA_EMAIL','JIRA_API_TOKEN'].map(name => [name, process.env[name] ? 'set' : 'not set'])), ...(flags.network ? { hosts: ['api.github.com', '<configured-tenant>.atlassian.net'], networkPolicy: 'Only explicitly requested GitHub/Jira collection makes network calls. Installation uses the package manager; pure scoring and scaffolding are offline. Remote MCP is a separately selected client transport.' } : {}) }; break;
+    case 'doctor': report = { node: process.version, required: '>=22.14.0', supported: supportedRuntime(), tokens: Object.fromEntries(['GITHUB_TOKEN','JIRA_BASE_URL','JIRA_EMAIL','JIRA_API_TOKEN'].map(name => [name, process.env[name] ? 'set' : 'not set'])), ...(flags.network ? { hosts: ['api.github.com', '<configured-tenant>.atlassian.net'], networkPolicy: 'Only explicitly requested GitHub/Jira collection makes network calls. Installation uses the package manager; pure scoring and scaffolding are offline. Remote MCP is a separately selected client transport.' } : {}) }; break;
     default: throw new UsageError(`Unknown command ${command}. Run tenhaw --help.`);
   }
   const format = flags.json ? 'json' : (flags.format ?? 'md');

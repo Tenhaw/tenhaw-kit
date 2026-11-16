@@ -4,14 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "tenhaw"
-version = "1.0.1"
+version = "1.1.0"
 description = "Agent-friendly CLI for AI readiness, AI ROI and delivery metrics."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "Tenhaw", email = "hello@tenhaw.com" }]
-dependencies = ["tenhaw-ai-readiness==1.0.1", "tenhaw-ai-roi==1.0.1", "tenhaw-delivery-metrics==1.0.1"]
+dependencies = ["tenhaw-ai-readiness==1.1.0", "tenhaw-ai-roi==1.1.0", "tenhaw-delivery-metrics==1.1.0"]
 keywords = ["ai-readiness", "ai-roi", "delivery-metrics", "internal-tools", "tenhaw"]
 
 [project.scripts]

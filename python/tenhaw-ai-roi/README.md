@@ -8,8 +8,11 @@ Explainable AI business cases for internal investment and transformation tools.
 - These calculations use supplied assumptions; they are not a quote or financial advice.
 
 ## Install
+
+These commands target the **1.1.0 release candidate**. Verify its exact PyPI publication before installation.
+
 ```sh
-pip install tenhaw-ai-roi
+python -m pip install 'tenhaw-ai-roi==1.1.0'
 ```
 
 ## Quick start

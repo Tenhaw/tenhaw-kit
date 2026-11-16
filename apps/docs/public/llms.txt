@@ -2,12 +2,31 @@
 
 Local-first agent tools for AI readiness, delivery performance, AI business cases, use-case registers and operating models. MIT code, CC BY 4.0 framework content. No installed-tool telemetry.
 
+Published release: 1.0.1, verified 2026-11-16. [npm](https://www.npmjs.com/package/tenhaw/v/1.0.1), [PyPI](https://pypi.org/project/tenhaw/1.0.1/), [official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers/com.tenhaw%2Fkit/versions/1.0.1), identity com.tenhaw/kit. Core tools require no Tenhaw API key.
+
 ## Install
 
 ```sh
-npx tenhaw@latest --help
-codex mcp add tenhaw -- npx -y @tenhaw/mcp
+npx -y tenhaw@1.0.1 --help
+codex mcp add tenhaw -- npx -y @tenhaw/mcp@1.0.1
+uvx --from tenhaw==1.0.1 tenhaw-py --help
 ```
+
+Remote MCP: https://mcp.tenhaw.com/mcp . Local: eight tools. Remote: six pure tools, aggregate delivery metrics only.
+
+## One prompt for a coding agent
+
+Install Tenhaw Kit 1.0.1 for this project and continue my requested task. Identify the coding client and use its documented project MCP configuration with npx -y @tenhaw/mcp@1.0.1. Preserve existing servers and instructions; report conflicting Tenhaw definitions for review. Verify the expected eight local tools and a synthetic readiness calculation. If I request a starter, scaffold a new directory, install its dependencies and run its documented build and tests. Ask me to set only missing local environment variables required for GitHub or Jira collection I request. Keep secret values out of chat, command arguments, configuration and logs. Report the checks that passed and any remaining host reload or trust step.
+
+## Automated setup from source
+
+The setup command is unreleased and is not included in npm 1.0.1. Build the source checkout, then run:
+
+```sh
+node packages/cli/dist/index.js setup --agent codex --directory /path/to/project --json
+```
+
+Setup plans by default. Add --yes to apply, --check to inspect without writing, and --verify to probe the selected MCP server with a synthetic readiness calculation. Agents: codex, claude, cursor, vscode, gemini. Defaults: --transport local --integration none. GitHub/Jira collection requires local transport and only the relevant environment credentials. Report missing variable names, never values. Confirm the tool call inside the selected client after its reload or trust step. [Full agent install guide](https://github.com/Tenhaw/tenhaw-kit/blob/main/docs/AGENT_INSTALL.md).
 
 ## References
 
@@ -20,3 +39,15 @@ codex mcp add tenhaw -- npx -y @tenhaw/mcp
 - [OpenAPI](https://kit.tenhaw.com/openapi.json)
 - [Full reference](https://kit.tenhaw.com/llms-full.txt)
 - [Source](https://github.com/Tenhaw/tenhaw-kit)
+
+## Focused app source previews
+
+Six hosted product profiles and one desktop developer package are implemented in source. Directory submission and publication are separate owner operations. [Catalogue](https://kit.tenhaw.com/apps/), [machine-readable products](https://kit.tenhaw.com/apps.json).
+
+- Tenhaw AI Business Case: Build an AI business case from your explicit operating and cost assumptions. Compare low, base and high scenarios, recovered capacity, cash flow, NPV and payback. Explore editable project-cost assumptions. Results support planning; they are not a quote or financial advice. [Source preview](https://kit.tenhaw.com/apps/business-case/).
+- Tenhaw AI Readiness: Run an evidence-led AI readiness self-assessment using 30 anchored questions across six dimensions. See scores, response coverage and gaps. Maturity bands require at least 80% response coverage. This supports internal self-assessment, not certification. [Source preview](https://kit.tenhaw.com/apps/readiness/).
+- Tenhaw Use-case Prioritiser: Prioritise supplied AI use cases using explicit value, feasibility, ownership and indicative governance gates. Inspect dependencies and outcome measures before taking an idea forward. The app does not certify legal risk or approve deployment. [Source preview](https://kit.tenhaw.com/apps/usecase-prioritiser/).
+- Tenhaw Delivery Health: Review one service's delivery health from a supplied aggregate metrics report. Keep reporting windows, sample sizes and unavailable observations visible. The hosted app accepts aggregate metrics only; it does not collect repository events or rank unrelated teams. [Source preview](https://kit.tenhaw.com/apps/delivery-health/).
+- Tenhaw Operating Model: Connect supplied teams, OKRs, roadmap outcomes and interactions into an explainable product operating model. Inspect missing ownership and dependency checks. The app supports organisational design conversations; it does not prescribe a reorganisation or fabricate team commitments. [Source preview](https://kit.tenhaw.com/apps/operating-model/).
+- Tenhaw AI Procurement: Prepare a vendor-neutral AI procurement pack from a defined buying brief. Select evidence questions, must-have criteria and blank supplier response worksheets. Sector prompts support the buyer's own review. No supplier claims, prices, rankings, legal advice or procurement approval are invented. [Source preview](https://kit.tenhaw.com/apps/procurement/).
+- Tenhaw Kit Developer Tools: Build internal product tools with connected deterministic calculations and local coding workflows. Validate readiness, aggregate delivery evidence, AI business cases, use-case registers and operating models through one remote MCP connection; scaffold projects and integrate the results locally. Desktop execution is required for local work. [Source preview](https://kit.tenhaw.com/apps/developer-kit/).

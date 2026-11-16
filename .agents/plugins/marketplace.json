@@ -1,0 +1,92 @@
+{
+  "name": "tenhaw-apps",
+  "interface": {
+    "displayName": "Tenhaw Apps"
+  },
+  "plugins": [
+    {
+      "name": "tenhaw-business-case",
+      "source": {
+        "source": "local",
+        "path": "./plugins/openai/tenhaw-business-case"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "tenhaw-readiness",
+      "source": {
+        "source": "local",
+        "path": "./plugins/openai/tenhaw-readiness"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "tenhaw-usecase-prioritiser",
+      "source": {
+        "source": "local",
+        "path": "./plugins/openai/tenhaw-usecase-prioritiser"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "tenhaw-delivery-health",
+      "source": {
+        "source": "local",
+        "path": "./plugins/openai/tenhaw-delivery-health"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "tenhaw-operating-model",
+      "source": {
+        "source": "local",
+        "path": "./plugins/openai/tenhaw-operating-model"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "tenhaw-procurement",
+      "source": {
+        "source": "local",
+        "path": "./plugins/openai/tenhaw-procurement"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "tenhaw-developer-tools",
+      "source": {
+        "source": "local",
+        "path": "./plugins/openai/tenhaw"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

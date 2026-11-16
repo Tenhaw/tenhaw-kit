@@ -9,8 +9,10 @@ Compute five DORA performance metrics and flow measures from explicitly linked e
 
 ## Install
 
+These commands target the **1.1.0 release candidate**. Verify its exact npm publication before installation.
+
 ```sh
-npm install @tenhaw/delivery-metrics
+npm install @tenhaw/delivery-metrics@1.1.0
 ```
 
 ## Quick start

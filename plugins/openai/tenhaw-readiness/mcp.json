@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "tenhaw-readiness": {
+      "type": "streamable-http",
+      "url": "https://readiness.apps.tenhaw.com/mcp/apps/readiness"
+    }
+  }
+}

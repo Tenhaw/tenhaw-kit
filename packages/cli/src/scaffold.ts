@@ -40,7 +40,14 @@ export async function scaffold(template: string, directory: string, options: { t
     throw error;
   }
   const quotedTarget = `'${target.replaceAll("'", "'\"'\"'")}'`;
-  return { template, directory: target, nextSteps: [`cd ${quotedTarget}`, 'pnpm install', 'pnpm dev'],
+  const manifest = JSON.parse(await readFile(join(target, 'package.json'), 'utf8'));
+  return { template, directory: target, nextSteps: [`cd ${quotedTarget}`, 'pnpm install', 'pnpm build', 'pnpm dev'],
+    actions: [
+      { kind: 'install', command: 'pnpm', args: ['install'], cwd: target },
+      { kind: 'verify', command: 'pnpm', args: ['build'], cwd: target },
+      { kind: 'start', command: 'pnpm', args: ['dev'], cwd: target },
+    ],
+    packageManager: manifest.packageManager ?? null, dependenciesInstalled: false, buildVerified: false, credentialsRequired: [],
     dataMode: 'browser-local', authentication: 'Required before adding shared storage or server-side real-data routes.' };
 }
 

@@ -1,4 +1,10 @@
 import reference from './reference.json';
-import cursor from '../../../plugins/cursor/mcp.json';
-export const { source,tools,templates,guides,install,pages } = reference;
+import core from '../../../packages/core/package.json';
+import { appPages } from './apps';
+export const { source,tools,templates,guides,install,release,agentSetup } = reference;
+export const pages = [...reference.pages, ...appPages];
+export const sourceVersion = core.version;
+export const version = release.version;
+export const onePromptInstall = agentSetup.onePrompt.replaceAll('{version}', version);
+const cursor = JSON.parse(install.cursor);
 export const cursorInstallUrl = `cursor://anysphere.cursor-deeplink/mcp/install?name=tenhaw&config=${encodeURIComponent(Buffer.from(JSON.stringify(cursor.mcpServers.tenhaw)).toString('base64'))}`;

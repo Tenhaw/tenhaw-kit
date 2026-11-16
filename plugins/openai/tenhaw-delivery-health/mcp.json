@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "tenhaw-delivery-health": {
+      "type": "streamable-http",
+      "url": "https://delivery-health.apps.tenhaw.com/mcp/apps/delivery-health"
+    }
+  }
+}

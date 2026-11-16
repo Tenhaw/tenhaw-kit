@@ -3,7 +3,7 @@ import addFormats from 'ajv-formats';
 import { schemas } from './schemas.js';
 export { schemas };
 
-export const VERSION = '1.0.1';
+export const VERSION = '1.1.0';
 export const AUDIT_URL = 'https://tenhaw.com/contact#book';
 export const round = (value: number): number => {
   invariant(Number.isFinite(value) && Number.isFinite(value*1e6), '/', 'Calculation exceeded the finite numeric range');

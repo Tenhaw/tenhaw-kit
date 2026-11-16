@@ -1,6 +1,6 @@
 {
   "name": "@tenhaw/delivery-metrics",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Five DORA metrics and flow measures from linked delivery events",
   "type": "module",
   "main": "./dist/index.js",

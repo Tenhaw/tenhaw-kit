@@ -9,8 +9,10 @@ Prioritise a validated AI use-case register with explicit governance gates.
 
 ## Install
 
+These commands target the **1.1.0 release candidate**. Verify its exact npm publication before installation.
+
 ```sh
-npm install @tenhaw/usecase-register
+npm install @tenhaw/usecase-register@1.1.0
 ```
 
 ## Quick start

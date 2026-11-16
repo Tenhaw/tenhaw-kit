@@ -1,10 +1,59 @@
 {
-  "name": "tenhaw", "version": "1.0.1", "description": "Agent-ready building blocks for internal product, portfolio, delivery and AI transformation tools",
-  "type": "module", "bin": {"tenhaw":"dist/index.js"}, "exports": {".":"./dist/index.js","./scaffold":"./dist/scaffold.js"},
-  "files": ["dist", "templates", "instructions", "README.md", "LICENSE", "LICENSE-CONTENT"], "license":"MIT", "author":"Tenhaw (https://tenhaw.com)",
-  "homepage":"https://kit.tenhaw.com/install", "repository":{"type":"git","url":"https://github.com/Tenhaw/tenhaw-kit.git","directory":"packages/cli"},
-  "engines":{"node":">=22.14.0"}, "publishConfig":{"access":"public","provenance":true},
-  "keywords":["internal-tools","portfolio-tracking","product-delivery","ai-readiness","dora","mcp","ai-transformation"],
-  "scripts":{"build":"tsup src/index.ts src/scaffold.ts --format esm --dts","e2e":"vitest run ../../tests/cli.test.ts --config ../../vitest.config.ts"},
-  "dependencies":{"@tenhaw/core":"workspace:*","@tenhaw/ai-readiness":"workspace:*","@tenhaw/delivery-metrics":"workspace:*","@tenhaw/ai-roi":"workspace:*","@tenhaw/usecase-register":"workspace:*","@tenhaw/opmodel":"workspace:*"}
+  "name": "tenhaw",
+  "version": "1.1.0",
+  "description": "Agent-ready building blocks for internal product, portfolio, delivery and AI transformation tools",
+  "type": "module",
+  "bin": {
+    "tenhaw": "dist/index.js"
+  },
+  "exports": {
+    ".": "./dist/index.js",
+    "./scaffold": "./dist/scaffold.js"
+  },
+  "files": [
+    "dist",
+    "templates",
+    "instructions",
+    "README.md",
+    "LICENSE",
+    "LICENSE-CONTENT"
+  ],
+  "license": "MIT",
+  "author": "Tenhaw (https://tenhaw.com)",
+  "homepage": "https://kit.tenhaw.com/install",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Tenhaw/tenhaw-kit.git",
+    "directory": "packages/cli"
+  },
+  "engines": {
+    "node": ">=22.14.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "keywords": [
+    "internal-tools",
+    "portfolio-tracking",
+    "product-delivery",
+    "ai-readiness",
+    "dora",
+    "mcp",
+    "ai-transformation"
+  ],
+  "scripts": {
+    "build": "tsup src/index.ts src/scaffold.ts --format esm --dts",
+    "e2e": "vitest run ../../tests/cli.test.ts --config ../../vitest.config.ts"
+  },
+  "dependencies": {
+    "@tenhaw/core": "workspace:*",
+    "@tenhaw/ai-readiness": "workspace:*",
+    "@tenhaw/delivery-metrics": "workspace:*",
+    "@tenhaw/ai-roi": "workspace:*",
+    "@tenhaw/usecase-register": "workspace:*",
+    "@tenhaw/opmodel": "workspace:*",
+    "jsonc-parser": "^3.3.1",
+    "smol-toml": "^1.9.1"
+  }
 }

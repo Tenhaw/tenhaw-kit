@@ -8,8 +8,11 @@ Deterministic AI readiness self-assessment for engineers building internal asses
 - This self-assessment supports discussion; it is not certification or legal advice.
 
 ## Install
+
+These commands target the **1.1.0 release candidate**. Verify its exact PyPI publication before installation.
+
 ```sh
-pip install tenhaw-ai-readiness
+python -m pip install 'tenhaw-ai-readiness==1.1.0'
 ```
 
 ## Quick start

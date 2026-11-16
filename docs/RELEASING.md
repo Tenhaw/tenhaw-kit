@@ -104,6 +104,10 @@ For `com.tenhaw/kit`, serve the public Ed25519 proof at **`https://tenhaw.com/.w
 
 The publisher is pinned to official release `v1.8.9`. Its Linux archive is checked against the verified SHA-256 and its Sigstore bundle before extraction. Update the version, digest and signing identity together when upgrading. A failed or unconfigured HTTP proof gate is a failed required operation, never a simulated registry submission. The workflow validates metadata, publishes, and checks the exact server name and version in the registry response. Domain proof, service DNS and package publication are separate controls.
 
+## Promote public installation metadata
+
+After exact npm, PyPI and official MCP Registry readbacks and public install checks pass, update `release.version`, `release.verifiedOn`, the versioned registry links and `install` snippets in `apps/docs/lib/reference.json` through a reviewed documentation PR. Public commands, Cursor links and the one-prompt workflow derive from this verified release record; a source version bump must not advance them automatically. Keep new features marked `unreleased-source` until their published version is verified, then update `agentSetup` availability and the matching source-only prose in the generator, install page and READMEs. Regenerate discovery with `node apps/docs/scripts/generate.mjs`, build the docs, and update the runbook evidence before promoting the public instructions. OpenAPI metadata continues to identify the source/core version.
+
 ## Supply chain and measurement
 
 CI includes CodeQL for JavaScript/TypeScript and Python, OpenSSF Scorecard output, dependency audits and pinned Action dependencies. The daily/manual MCP smoke workflow checks real stdio protocol responses and the exact live six-tool remote inventory with synthetic schema-validated calls; an unavailable or mismatched deployment fails the check. Scorecard results stay in the workflow artifact; no external score publication is implied. Dependabot opens update PRs. No automatic merge or direct write to `main` is configured.

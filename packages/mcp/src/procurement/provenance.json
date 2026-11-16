@@ -1,0 +1,13 @@
+{
+  "title": "Tenhaw AI Procurement Framework",
+  "author": "Tenhaw",
+  "licence": "CC BY 4.0",
+  "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "sources": [
+    {
+      "title": "Original authored AI RFP framework",
+      "url": "https://tenhaw.com/tools/ai-rfp-template"
+    }
+  ],
+  "changes": "Adapted into a vendor-neutral procurement pack. Supplier answers and prices removed; hosting, residency and sector criteria generalised."
+}

@@ -8,8 +8,11 @@ DORA and flow metrics for engineers building internal delivery dashboards.
 - Do not use merge proxies as evidence of real production deployments or to rank individuals.
 
 ## Install
+
+These commands target the **1.1.0 release candidate**. Verify its exact PyPI publication before installation.
+
 ```sh
-pip install tenhaw-delivery-metrics
+python -m pip install 'tenhaw-delivery-metrics==1.1.0'
 ```
 
 ## Quick start

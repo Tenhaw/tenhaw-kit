@@ -1,6 +1,6 @@
 [project]
 name = "tenhaw-kit-workspace"
-version = "1.0.1"
+version = "1.1.0"
 requires-python = ">=3.10"
 dependencies = ["tenhaw", "tenhaw-ai-readiness", "tenhaw-ai-roi", "tenhaw-delivery-metrics"]
 

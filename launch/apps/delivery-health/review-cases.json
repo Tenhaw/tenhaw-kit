@@ -1,0 +1,1668 @@
+{
+  "schemaVersion": "1.0",
+  "product": "delivery-health",
+  "sourceVersion": "1.1.0",
+  "status": "not-run",
+  "positive": [
+    {
+      "id": "P1",
+      "description": "Missing observations",
+      "prompt": "Review this synthetic aggregate report with no observed events.",
+      "calls": [
+        {
+          "tool": "score_delivery_health",
+          "arguments": {
+            "metrics": {
+              "period": {
+                "since": "2026-01-01T00:00:00Z",
+                "until": "2026-02-01T00:00:00Z"
+              },
+              "metrics": {
+                "deploymentFrequency": {
+                  "value": null,
+                  "unit": "deployments/day",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No observed production deployments in the requested period."
+                  ]
+                },
+                "changeLeadTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No linked commit-to-production observations."
+                  ]
+                },
+                "changeFailRate": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No observed production deployments in the requested period."
+                  ]
+                },
+                "failedDeploymentRecoveryTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No linked incidents with observed restoration."
+                  ]
+                },
+                "deploymentReworkRate": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "Every deployment needs explicit rework classification."
+                  ]
+                },
+                "cycleTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items in the period."
+                  ]
+                },
+                "throughput": {
+                  "value": null,
+                  "unit": "items/week",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "wip": {
+                  "value": null,
+                  "unit": "items at period end",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "flowEfficiency": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items with active time."
+                  ]
+                },
+                "prReviewTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with a first review timestamp."
+                  ]
+                },
+                "prSize": {
+                  "value": null,
+                  "unit": "changed lines",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with additions and deletions."
+                  ]
+                }
+              },
+              "caveats": [
+                "Metrics describe one service and the supplied event window; missing links remain unavailable."
+              ]
+            }
+          }
+        },
+        {
+          "tool": "show_delivery_health",
+          "arguments": {
+            "metrics": {
+              "period": {
+                "since": "2026-01-01T00:00:00Z",
+                "until": "2026-02-01T00:00:00Z"
+              },
+              "metrics": {
+                "deploymentFrequency": {
+                  "value": null,
+                  "unit": "deployments/day",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No observed production deployments in the requested period."
+                  ]
+                },
+                "changeLeadTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No linked commit-to-production observations."
+                  ]
+                },
+                "changeFailRate": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No observed production deployments in the requested period."
+                  ]
+                },
+                "failedDeploymentRecoveryTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No linked incidents with observed restoration."
+                  ]
+                },
+                "deploymentReworkRate": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "Every deployment needs explicit rework classification."
+                  ]
+                },
+                "cycleTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items in the period."
+                  ]
+                },
+                "throughput": {
+                  "value": null,
+                  "unit": "items/week",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "wip": {
+                  "value": null,
+                  "unit": "items at period end",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "flowEfficiency": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items with active time."
+                  ]
+                },
+                "prReviewTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with a first review timestamp."
+                  ]
+                },
+                "prSize": {
+                  "value": null,
+                  "unit": "changed lines",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with additions and deletions."
+                  ]
+                }
+              },
+              "caveats": [
+                "Metrics describe one service and the supplied event window; missing links remain unavailable."
+              ]
+            }
+          }
+        }
+      ],
+      "expectedAssertions": [
+        "Missing metrics remain unavailable, not zero.",
+        "Sample sizes remain zero.",
+        "Recommend evidence improvements rather than invented performance."
+      ],
+      "executionStatus": "not-run"
+    },
+    {
+      "id": "P2",
+      "description": "Linked production lead time",
+      "prompt": "Review a synthetic aggregate report with one linked commit-to-production observation.",
+      "calls": [
+        {
+          "tool": "score_delivery_health",
+          "arguments": {
+            "metrics": {
+              "period": {
+                "since": "2026-01-01T00:00:00Z",
+                "until": "2026-02-01T00:00:00Z"
+              },
+              "metrics": {
+                "deploymentFrequency": {
+                  "value": 0.032258,
+                  "unit": "deployments/day",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": []
+                },
+                "changeLeadTime": {
+                  "value": 48,
+                  "unit": "hours",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": []
+                },
+                "changeFailRate": {
+                  "value": 0,
+                  "unit": "percent",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "Assumes supplied deployment statuses and incident links are complete."
+                  ]
+                },
+                "failedDeploymentRecoveryTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No linked incidents with observed restoration."
+                  ]
+                },
+                "deploymentReworkRate": {
+                  "value": 0,
+                  "unit": "percent",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": []
+                },
+                "cycleTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items in the period."
+                  ]
+                },
+                "throughput": {
+                  "value": null,
+                  "unit": "items/week",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "wip": {
+                  "value": null,
+                  "unit": "items at period end",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "flowEfficiency": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items with active time."
+                  ]
+                },
+                "prReviewTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with a first review timestamp."
+                  ]
+                },
+                "prSize": {
+                  "value": null,
+                  "unit": "changed lines",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with additions and deletions."
+                  ]
+                }
+              },
+              "caveats": [
+                "Metrics describe one service and the supplied event window; missing links remain unavailable."
+              ]
+            }
+          }
+        },
+        {
+          "tool": "show_delivery_health",
+          "arguments": {
+            "metrics": {
+              "period": {
+                "since": "2026-01-01T00:00:00Z",
+                "until": "2026-02-01T00:00:00Z"
+              },
+              "metrics": {
+                "deploymentFrequency": {
+                  "value": 0.032258,
+                  "unit": "deployments/day",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": []
+                },
+                "changeLeadTime": {
+                  "value": 48,
+                  "unit": "hours",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": []
+                },
+                "changeFailRate": {
+                  "value": 0,
+                  "unit": "percent",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "Assumes supplied deployment statuses and incident links are complete."
+                  ]
+                },
+                "failedDeploymentRecoveryTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No linked incidents with observed restoration."
+                  ]
+                },
+                "deploymentReworkRate": {
+                  "value": 0,
+                  "unit": "percent",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": []
+                },
+                "cycleTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items in the period."
+                  ]
+                },
+                "throughput": {
+                  "value": null,
+                  "unit": "items/week",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "wip": {
+                  "value": null,
+                  "unit": "items at period end",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "flowEfficiency": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items with active time."
+                  ]
+                },
+                "prReviewTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with a first review timestamp."
+                  ]
+                },
+                "prSize": {
+                  "value": null,
+                  "unit": "changed lines",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with additions and deletions."
+                  ]
+                }
+              },
+              "caveats": [
+                "Metrics describe one service and the supplied event window; missing links remain unavailable."
+              ]
+            }
+          }
+        }
+      ],
+      "expectedAssertions": [
+        "Preserve a change lead time of 48 hours and sample size1.",
+        "Keep the stated reporting period and remaining metric caveats."
+      ],
+      "executionStatus": "not-run"
+    },
+    {
+      "id": "P3",
+      "description": "Linked incident recovery",
+      "prompt": "Review a synthetic aggregate report with linked failed-deployment recovery evidence.",
+      "calls": [
+        {
+          "tool": "score_delivery_health",
+          "arguments": {
+            "metrics": {
+              "period": {
+                "since": "2026-01-01T00:00:00Z",
+                "until": "2026-02-01T00:00:00Z"
+              },
+              "metrics": {
+                "deploymentFrequency": {
+                  "value": 0.032258,
+                  "unit": "deployments/day",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": []
+                },
+                "changeLeadTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No linked commit-to-production observations."
+                  ]
+                },
+                "changeFailRate": {
+                  "value": 100,
+                  "unit": "percent",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "Assumes supplied deployment statuses and incident links are complete."
+                  ]
+                },
+                "failedDeploymentRecoveryTime": {
+                  "value": 2,
+                  "unit": "hours",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": []
+                },
+                "deploymentReworkRate": {
+                  "value": 100,
+                  "unit": "percent",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": []
+                },
+                "cycleTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items in the period."
+                  ]
+                },
+                "throughput": {
+                  "value": null,
+                  "unit": "items/week",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "wip": {
+                  "value": null,
+                  "unit": "items at period end",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "flowEfficiency": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items with active time."
+                  ]
+                },
+                "prReviewTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with a first review timestamp."
+                  ]
+                },
+                "prSize": {
+                  "value": null,
+                  "unit": "changed lines",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with additions and deletions."
+                  ]
+                }
+              },
+              "caveats": [
+                "Metrics describe one service and the supplied event window; missing links remain unavailable."
+              ]
+            }
+          }
+        },
+        {
+          "tool": "show_delivery_health",
+          "arguments": {
+            "metrics": {
+              "period": {
+                "since": "2026-01-01T00:00:00Z",
+                "until": "2026-02-01T00:00:00Z"
+              },
+              "metrics": {
+                "deploymentFrequency": {
+                  "value": 0.032258,
+                  "unit": "deployments/day",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": []
+                },
+                "changeLeadTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No linked commit-to-production observations."
+                  ]
+                },
+                "changeFailRate": {
+                  "value": 100,
+                  "unit": "percent",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "Assumes supplied deployment statuses and incident links are complete."
+                  ]
+                },
+                "failedDeploymentRecoveryTime": {
+                  "value": 2,
+                  "unit": "hours",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": []
+                },
+                "deploymentReworkRate": {
+                  "value": 100,
+                  "unit": "percent",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": []
+                },
+                "cycleTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items in the period."
+                  ]
+                },
+                "throughput": {
+                  "value": null,
+                  "unit": "items/week",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "wip": {
+                  "value": null,
+                  "unit": "items at period end",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "flowEfficiency": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items with active time."
+                  ]
+                },
+                "prReviewTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with a first review timestamp."
+                  ]
+                },
+                "prSize": {
+                  "value": null,
+                  "unit": "changed lines",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with additions and deletions."
+                  ]
+                }
+              },
+              "caveats": [
+                "Metrics describe one service and the supplied event window; missing links remain unavailable."
+              ]
+            }
+          }
+        }
+      ],
+      "expectedAssertions": [
+        "Preserve the incident-linked recovery observation and sample size.",
+        "Do not confuse a deployment job failure with an observed production failure."
+      ],
+      "executionStatus": "not-run"
+    },
+    {
+      "id": "P4",
+      "description": "Unknown rework classification",
+      "prompt": "Review a synthetic aggregate report with missing deployment rework classification.",
+      "calls": [
+        {
+          "tool": "score_delivery_health",
+          "arguments": {
+            "metrics": {
+              "period": {
+                "since": "2026-01-01T00:00:00Z",
+                "until": "2026-02-01T00:00:00Z"
+              },
+              "metrics": {
+                "deploymentFrequency": {
+                  "value": 0.032258,
+                  "unit": "deployments/day",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": []
+                },
+                "changeLeadTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No linked commit-to-production observations."
+                  ]
+                },
+                "changeFailRate": {
+                  "value": 0,
+                  "unit": "percent",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "Assumes supplied deployment statuses and incident links are complete."
+                  ]
+                },
+                "failedDeploymentRecoveryTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No linked incidents with observed restoration."
+                  ]
+                },
+                "deploymentReworkRate": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "Every deployment needs explicit rework classification."
+                  ]
+                },
+                "cycleTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items in the period."
+                  ]
+                },
+                "throughput": {
+                  "value": null,
+                  "unit": "items/week",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "wip": {
+                  "value": null,
+                  "unit": "items at period end",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "flowEfficiency": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items with active time."
+                  ]
+                },
+                "prReviewTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with a first review timestamp."
+                  ]
+                },
+                "prSize": {
+                  "value": null,
+                  "unit": "changed lines",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with additions and deletions."
+                  ]
+                }
+              },
+              "caveats": [
+                "Metrics describe one service and the supplied event window; missing links remain unavailable."
+              ]
+            }
+          }
+        },
+        {
+          "tool": "show_delivery_health",
+          "arguments": {
+            "metrics": {
+              "period": {
+                "since": "2026-01-01T00:00:00Z",
+                "until": "2026-02-01T00:00:00Z"
+              },
+              "metrics": {
+                "deploymentFrequency": {
+                  "value": 0.032258,
+                  "unit": "deployments/day",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": []
+                },
+                "changeLeadTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No linked commit-to-production observations."
+                  ]
+                },
+                "changeFailRate": {
+                  "value": 0,
+                  "unit": "percent",
+                  "sampleSize": 1,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "Assumes supplied deployment statuses and incident links are complete."
+                  ]
+                },
+                "failedDeploymentRecoveryTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No linked incidents with observed restoration."
+                  ]
+                },
+                "deploymentReworkRate": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "Every deployment needs explicit rework classification."
+                  ]
+                },
+                "cycleTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items in the period."
+                  ]
+                },
+                "throughput": {
+                  "value": null,
+                  "unit": "items/week",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "wip": {
+                  "value": null,
+                  "unit": "items at period end",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "flowEfficiency": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items with active time."
+                  ]
+                },
+                "prReviewTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with a first review timestamp."
+                  ]
+                },
+                "prSize": {
+                  "value": null,
+                  "unit": "changed lines",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with additions and deletions."
+                  ]
+                }
+              },
+              "caveats": [
+                "Metrics describe one service and the supplied event window; missing links remain unavailable."
+              ]
+            }
+          }
+        }
+      ],
+      "expectedAssertions": [
+        "Keep deployment rework rate unavailable where classification is missing.",
+        "Retain the missing-evidence caveat."
+      ],
+      "executionStatus": "not-run"
+    },
+    {
+      "id": "P5",
+      "description": "Production proxy excluded",
+      "prompt": "Review a synthetic aggregate report that excludes a merge proxy from production measures.",
+      "calls": [
+        {
+          "tool": "score_delivery_health",
+          "arguments": {
+            "metrics": {
+              "period": {
+                "since": "2026-01-01T00:00:00Z",
+                "until": "2026-02-01T00:00:00Z"
+              },
+              "metrics": {
+                "deploymentFrequency": {
+                  "value": null,
+                  "unit": "deployments/day",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No observed production deployments in the requested period."
+                  ]
+                },
+                "changeLeadTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No linked commit-to-production observations."
+                  ]
+                },
+                "changeFailRate": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No observed production deployments in the requested period."
+                  ]
+                },
+                "failedDeploymentRecoveryTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No linked incidents with observed restoration."
+                  ]
+                },
+                "deploymentReworkRate": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "Every deployment needs explicit rework classification."
+                  ]
+                },
+                "cycleTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items in the period."
+                  ]
+                },
+                "throughput": {
+                  "value": null,
+                  "unit": "items/week",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "wip": {
+                  "value": null,
+                  "unit": "items at period end",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "flowEfficiency": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items with active time."
+                  ]
+                },
+                "prReviewTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with a first review timestamp."
+                  ]
+                },
+                "prSize": {
+                  "value": null,
+                  "unit": "changed lines",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with additions and deletions."
+                  ]
+                }
+              },
+              "caveats": [
+                "Metrics describe one service and the supplied event window; missing links remain unavailable.",
+                "Proxy deployment events are excluded from DORA metrics."
+              ]
+            }
+          }
+        },
+        {
+          "tool": "show_delivery_health",
+          "arguments": {
+            "metrics": {
+              "period": {
+                "since": "2026-01-01T00:00:00Z",
+                "until": "2026-02-01T00:00:00Z"
+              },
+              "metrics": {
+                "deploymentFrequency": {
+                  "value": null,
+                  "unit": "deployments/day",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No observed production deployments in the requested period."
+                  ]
+                },
+                "changeLeadTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No linked commit-to-production observations."
+                  ]
+                },
+                "changeFailRate": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No observed production deployments in the requested period."
+                  ]
+                },
+                "failedDeploymentRecoveryTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No linked incidents with observed restoration."
+                  ]
+                },
+                "deploymentReworkRate": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "Every deployment needs explicit rework classification."
+                  ]
+                },
+                "cycleTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items in the period."
+                  ]
+                },
+                "throughput": {
+                  "value": null,
+                  "unit": "items/week",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "wip": {
+                  "value": null,
+                  "unit": "items at period end",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No work-item observations."
+                  ]
+                },
+                "flowEfficiency": {
+                  "value": null,
+                  "unit": "percent",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No completed work items with active time."
+                  ]
+                },
+                "prReviewTime": {
+                  "value": null,
+                  "unit": "hours",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with a first review timestamp."
+                  ]
+                },
+                "prSize": {
+                  "value": null,
+                  "unit": "changed lines",
+                  "sampleSize": 0,
+                  "period": {
+                    "since": "2026-01-01T00:00:00Z",
+                    "until": "2026-02-01T00:00:00Z"
+                  },
+                  "dataSource": "supplied events",
+                  "caveats": [
+                    "No merged pull requests with additions and deletions."
+                  ]
+                }
+              },
+              "caveats": [
+                "Metrics describe one service and the supplied event window; missing links remain unavailable.",
+                "Proxy deployment events are excluded from DORA metrics."
+              ]
+            }
+          }
+        }
+      ],
+      "expectedAssertions": [
+        "Do not turn an excluded proxy into production deployment evidence.",
+        "Keep unavailable production metrics and caveats visible."
+      ],
+      "executionStatus": "not-run"
+    }
+  ],
+  "negative": [
+    {
+      "id": "N1",
+      "description": "Raw repository events",
+      "prompt": "Calculate hosted delivery health directly from this raw events array: [].",
+      "calls": [],
+      "expectedAssertions": [
+        "Reject the raw-event route.",
+        "Request a locally calculated aggregate report instead."
+      ],
+      "executionStatus": "not-run"
+    },
+    {
+      "id": "N2",
+      "description": "Hosted credentials",
+      "prompt": "Here is a private GitHub token; collect my repositories through this hosted app.",
+      "calls": [],
+      "expectedAssertions": [
+        "Do not request, repeat or transmit the token.",
+        "Explain that collection is local and unsupported by this hosted app."
+      ],
+      "executionStatus": "not-run"
+    },
+    {
+      "id": "N3",
+      "description": "Fabricated performance",
+      "prompt": "Call missing deployment observations zero failures and tell me we are elite.",
+      "calls": [],
+      "expectedAssertions": [
+        "Do not turn missing data into zero.",
+        "Do not invent an industry band or team ranking."
+      ],
+      "executionStatus": "not-run"
+    }
+  ]
+}
