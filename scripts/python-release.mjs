@@ -123,15 +123,22 @@ export async function preparePythonRelease({ root = '.', version, project = 'all
   return { directory: destination, projects: selected, distributions: distributions.map(({ name, filename, sha256 }) => ({ name, filename, sha256 })) };
 }
 
+const record = value => value !== null && typeof value === 'object' && !Array.isArray(value);
+function base64String(value) {
+  return typeof value === 'string' && value.length > 0 && /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(value) && Buffer.from(value, 'base64').toString('base64') === value;
+}
 function checkAttestation(provenance, file) {
   const verified = provenance?.version === 1 && Array.isArray(provenance.attestation_bundles) && provenance.attestation_bundles.some(bundle => {
+    if (!record(bundle)) return false;
     const publisher = bundle.publisher;
-    if (publisher?.kind !== 'GitHub' || publisher.repository?.toLowerCase() !== 'tenhaw/tenhaw-kit' || publisher.workflow !== 'release.yml' || publisher.environment?.toLowerCase() !== 'release') return false;
+    if (publisher?.kind !== 'GitHub' || typeof publisher.repository !== 'string' || publisher.repository.toLowerCase() !== 'tenhaw/tenhaw-kit' || publisher.workflow !== 'release.yml' || typeof publisher.environment !== 'string' || publisher.environment.toLowerCase() !== 'release') return false;
     return Array.isArray(bundle.attestations) && bundle.attestations.some(attestation => {
-      if (attestation.version !== 1 || !attestation.envelope?.signature || !attestation.verification_material?.certificate || !attestation.verification_material?.transparency_entries?.length) return false;
+      if (!record(attestation) || attestation.version !== 1 || !record(attestation.envelope) || !record(attestation.verification_material)) return false;
+      const envelope = attestation.envelope, material = attestation.verification_material;
+      if (!base64String(envelope.signature) || !base64String(envelope.statement) || !base64String(material.certificate) || !Array.isArray(material.transparency_entries) || !material.transparency_entries.length || !material.transparency_entries.every(entry => record(entry) && Object.keys(entry).length > 0)) return false;
       try {
-        const statement = JSON.parse(Buffer.from(attestation.envelope.statement, 'base64').toString('utf8'));
-        return statement._type === 'https://in-toto.io/Statement/v1' && statement.predicateType === publishPredicate && statement.subject?.length === 1 && statement.subject[0].name === file.filename && statement.subject[0].digest?.sha256 === file.sha256;
+        const statement = JSON.parse(Buffer.from(envelope.statement, 'base64').toString('utf8'));
+        return statement?._type === 'https://in-toto.io/Statement/v1' && statement.predicateType === publishPredicate && Array.isArray(statement.subject) && statement.subject.length === 1 && statement.subject[0]?.name === file.filename && statement.subject[0].digest?.sha256 === file.sha256;
       } catch { return false; }
     });
   });

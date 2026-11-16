@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { readFile, readdir, mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
+import { waitForNpmVisibility } from './npm-visibility.mjs';
 import { preparePythonRelease, selectedPythonProjects, verifyPythonRelease } from './python-release.mjs';
 
 const root=resolve('.');
@@ -75,18 +76,16 @@ for(const tarball of tarballs){
   const existing=await getJson(`https://registry.npmjs.org/${encodeURIComponent(tarball.name)}/${version}`,{missing:true});
   if(existing&&existing.dist?.integrity!==tarball.integrity)throw new Error(`An immutable, different ${tarball.name}@${version} already exists. Stop and choose a new reviewed version.`);
   tarball.existing=Boolean(existing);
-  if(verifyOnly&&!existing)throw new Error(`${tarball.name}@${version} is not published.`);
 }
 for(const tarball of tarballs){
-  if(!tarball.existing){
+  if(!verifyOnly&&!tarball.existing){
     try{run('npm',['publish',tarball.path,'--access','public','--provenance','--ignore-scripts']);}
     catch{throw new Error(`npm publication failed for ${tarball.name}@${version}. Check release.yml trusted publisher settings and allowed direct-publish action; no tokens were logged.`);}
   }
-  await retry(async()=>{
-    const pkg=await getJson(`https://registry.npmjs.org/${encodeURIComponent(tarball.name)}/${version}`);
-    if(pkg.version!==version||pkg.dist?.integrity!==tarball.integrity||!pkg.dist?.attestations?.url)throw new Error(`Exact version, integrity or provenance verification pending for ${tarball.name}.`);
-  });
 }
+// Accepted versions are scanned before public availability. Upload every missing
+// archive first, then use one shared visibility deadline for all nine packages.
+await waitForNpmVisibility(tarballs, { getPackage: (name, releaseVersion) => getJson(`https://registry.npmjs.org/${encodeURIComponent(name)}/${releaseVersion}`, { missing: true }) });
 const scratch=await mkdtemp(join(tmpdir(),'tenhaw-registry-verification-'));
 try{
   await writeFile(join(scratch,'package.json'),JSON.stringify({name:'tenhaw-published-verification',private:true,type:'module'}));

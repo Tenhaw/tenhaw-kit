@@ -25,7 +25,7 @@ function registry(name: string, files: PythonDistribution[]) {
   return { info: { name, version }, urls: files.filter(file => file.name === name).map(file => ({ filename: file.filename, digests: { sha256: file.sha256 }, yanked: false })) };
 }
 function provenance(file: PythonDistribution) {
-  return { version: 1, attestation_bundles: [{ publisher: { kind: 'GitHub', repository: 'Tenhaw/tenhaw-kit', workflow: 'release.yml', environment: 'release' }, attestations: [{ version: 1, envelope: { signature: 'fixture-signature', statement: Buffer.from(JSON.stringify({ _type: 'https://in-toto.io/Statement/v1', predicateType: 'https://docs.pypi.org/attestations/publish/v1', subject: [{ name: file.filename, digest: { sha256: file.sha256 } }] })).toString('base64') }, verification_material: { certificate: 'fixture-certificate', transparency_entries: [{ fixture: true }] } }] }] };
+  return { version: 1, attestation_bundles: [{ publisher: { kind: 'GitHub', repository: 'Tenhaw/tenhaw-kit', workflow: 'release.yml', environment: 'release' }, attestations: [{ version: 1, envelope: { signature: Buffer.from('fixture-signature').toString('base64'), statement: Buffer.from(JSON.stringify({ _type: 'https://in-toto.io/Statement/v1', predicateType: 'https://docs.pypi.org/attestations/publish/v1', subject: [{ name: file.filename, digest: { sha256: file.sha256 } }] })).toString('base64') }, verification_material: { certificate: Buffer.from('fixture-certificate').toString('base64'), transparency_entries: [{ fixture: true }] } }] }] };
 }
 
 describe('Python release preparation and exact verification', () => {
@@ -144,6 +144,34 @@ describe('Python release preparation and exact verification', () => {
       if (kind === 'subject') result.attestation_bundles[0].attestations[0].envelope.statement = Buffer.from(JSON.stringify({ subject: [{ name: file.filename, digest: { sha256: '0'.repeat(64) } }] })).toString('base64');
       return result;
     } })).rejects.toThrow('Missing matching PyPI publish attestation');
+  });
+
+  const malformedEncodings: [string, string, unknown][] = [
+    ['signature', 'object', { malformed: true }],
+    ['signature', 'empty', ''],
+    ['signature', 'invalid-base64', 'invalid-signature'],
+    ['certificate', 'object', { malformed: true }],
+    ['certificate', 'invalid-base64', 'invalid-certificate'],
+    ['statement', 'object', { malformed: true }],
+    ['statement', 'invalid-base64', '!'],
+    ['transparency_entries', 'string', 'not-an-array'],
+    ['transparency_entries', 'length-object', { length: 1 }],
+    ['transparency_entries', 'empty-array', []],
+    ['transparency_entries', 'null-entry', [null]],
+    ['transparency_entries', 'array-entry', [[]]],
+    ['transparency_entries', 'boolean-entry', [true]],
+    ['transparency_entries', 'empty-object-entry', [{}]],
+  ];
+  it.each(malformedEncodings)('rejects malformed %s (%s) before writing evidence', async (field, _label, value) => {
+    const files = await loadPythonDistributions(options());
+    await expect(verifyPythonRelease({ ...options(), getJson: async url => {
+      const file = files.find(file => url.includes(`/${file.filename}/`));
+      if (!file) return registry(project, files);
+      const result = provenance(file), attestation = result.attestation_bundles[0].attestations[0];
+      Reflect.set(field === 'signature' || field === 'statement' ? attestation.envelope : attestation.verification_material, field, value);
+      return result;
+    } })).rejects.toThrow('Missing matching PyPI publish attestation');
+    expect(await readdir(join(root, 'artifacts'))).toEqual(['python']);
   });
 
   it('only marks all Python projects verified after all eight expected files pass', async () => {
