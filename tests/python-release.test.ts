@@ -27,6 +27,16 @@ function registry(name: string, files: PythonDistribution[]) {
 function provenance(file: PythonDistribution) {
   return { version: 1, attestation_bundles: [{ publisher: { kind: 'GitHub', repository: 'Tenhaw/tenhaw-kit', workflow: 'release.yml', environment: 'release' }, attestations: [{ version: 1, envelope: { signature: Buffer.from('fixture-signature').toString('base64'), statement: Buffer.from(JSON.stringify({ _type: 'https://in-toto.io/Statement/v1', predicateType: 'https://docs.pypi.org/attestations/publish/v1', subject: [{ name: file.filename, digest: { sha256: file.sha256 } }] })).toString('base64') }, verification_material: { certificate: Buffer.from('fixture-certificate').toString('base64'), transparency_entries: [{ fixture: true }] } }] }] };
 }
+function visibilityClock() {
+  let current = 0;
+  const pauses: number[] = [], reports: string[] = [];
+  return {
+    now: () => current,
+    pause: async (milliseconds: number) => { pauses.push(milliseconds); current += milliseconds; },
+    report: (message: string) => { reports.push(message); },
+    pauses, reports,
+  };
+}
 
 describe('Python release preparation and exact verification', () => {
   let root: string;
@@ -35,7 +45,7 @@ describe('Python release preparation and exact verification', () => {
     execFileSync('python3', ['-c', makeArchives, root, JSON.stringify(pythonProjects)], { stdio: 'pipe' });
   });
   afterEach(async () => { await rm(root, { recursive: true, force: true }); });
-  const options = () => ({ root, version, project });
+  const options = () => ({ root, version, project, ...visibilityClock() });
 
   it('stages only the selected pair from the frozen four-project bundle', async () => {
     const requests: string[] = [];
@@ -112,7 +122,10 @@ describe('Python release preparation and exact verification', () => {
 
   it('does not verify a release with only a wheel even if that wheel matches', async () => {
     const files = await loadPythonDistributions(options());
-    await expect(verifyPythonRelease({ ...options(), getJson: async () => registry(project, [files[0]]) })).rejects.toThrow('both expected distributions');
+    const time = visibilityClock();
+    await expect(verifyPythonRelease({ ...options(), ...time, getJson: async () => registry(project, [files[0]]) })).rejects.toThrow('Timed out waiting for PyPI');
+    expect(time.now()).toBe(600_000);
+    expect(time.pauses).toHaveLength(40);
     expect(await readdir(join(root, 'artifacts'))).toEqual(['python']);
   });
 
@@ -135,7 +148,8 @@ describe('Python release preparation and exact verification', () => {
 
   it.each(['missing', 'publisher', 'subject'] as const)('rejects %s attestations', async kind => {
     const files = await loadPythonDistributions(options());
-    await expect(verifyPythonRelease({ ...options(), getJson: async url => {
+    const time = visibilityClock();
+    await expect(verifyPythonRelease({ ...options(), ...time, getJson: async url => {
       const file = files.find(file => url.includes(`/${file.filename}/`));
       if (!file) return registry(project, files);
       const result = provenance(file);
@@ -144,6 +158,7 @@ describe('Python release preparation and exact verification', () => {
       if (kind === 'subject') result.attestation_bundles[0].attestations[0].envelope.statement = Buffer.from(JSON.stringify({ subject: [{ name: file.filename, digest: { sha256: '0'.repeat(64) } }] })).toString('base64');
       return result;
     } })).rejects.toThrow('Missing matching PyPI publish attestation');
+    expect(time.pauses).toEqual([]);
   });
 
   const malformedEncodings: [string, string, unknown][] = [
@@ -164,13 +179,15 @@ describe('Python release preparation and exact verification', () => {
   ];
   it.each(malformedEncodings)('rejects malformed %s (%s) before writing evidence', async (field, _label, value) => {
     const files = await loadPythonDistributions(options());
-    await expect(verifyPythonRelease({ ...options(), getJson: async url => {
+    const time = visibilityClock();
+    await expect(verifyPythonRelease({ ...options(), ...time, getJson: async url => {
       const file = files.find(file => url.includes(`/${file.filename}/`));
       if (!file) return registry(project, files);
       const result = provenance(file), attestation = result.attestation_bundles[0].attestations[0];
       Reflect.set(field === 'signature' || field === 'statement' ? attestation.envelope : attestation.verification_material, field, value);
       return result;
     } })).rejects.toThrow('Missing matching PyPI publish attestation');
+    expect(time.pauses).toEqual([]);
     expect(await readdir(join(root, 'artifacts'))).toEqual(['python']);
   });
 
@@ -184,5 +201,116 @@ describe('Python release preparation and exact verification', () => {
     expect(evidence.allPythonProjectsVerified).toBe(true);
     expect(evidence.selectedProject).toBeNull();
     expect(evidence.packages).toHaveLength(4);
+  });
+
+  it('waits beyond the original 25-second window for release JSON visibility without changing archives or staging uploads', async () => {
+    const files = await loadPythonDistributions(options()), time = visibilityClock();
+    const requests: { url: string; at: number }[] = [];
+    const evidence = await verifyPythonRelease({ ...options(), ...time, getJson: async (url, requestOptions) => {
+      expect(requestOptions?.missing).toBe(true);
+      requests.push({ url, at: time.now() });
+      const file = files.find(file => url.includes(`/${file.filename}/`));
+      return file ? provenance(file) : time.now() < 45_000 ? null : registry(project, files);
+    } });
+    expect(time.pauses).toEqual([15_000, 15_000, 15_000]);
+    expect(requests.filter(request => !request.url.includes('/integrity/')).map(request => request.at)).toEqual([0, 15_000, 30_000, 45_000]);
+    expect(requests.filter(request => request.url.includes('/integrity/'))).toHaveLength(2);
+    expect(evidence.selectedProject).toBe(project);
+    expect(await loadPythonDistributions(options())).toEqual(files);
+    expect(await readdir(join(root, 'artifacts'))).toEqual(['pypi-verification.json', 'python']);
+  });
+
+  it('waits for a complete matching archive pair before requesting attestations', async () => {
+    const files = await loadPythonDistributions(options()), time = visibilityClock();
+    const provenanceTimes: number[] = [];
+    await verifyPythonRelease({ ...options(), ...time, getJson: async url => {
+      const file = files.find(file => url.includes(`/${file.filename}/`));
+      if (file) { provenanceTimes.push(time.now()); return provenance(file); }
+      return registry(project, time.now() === 0 ? [files[0]] : files);
+    } });
+    expect(time.pauses).toEqual([15_000]);
+    expect(provenanceTimes).toEqual([15_000, 15_000]);
+  });
+
+  it('waits for pending provenance 404s after matching archives become visible', async () => {
+    const files = await loadPythonDistributions(options()), time = visibilityClock();
+    let provenanceReads = 0;
+    const evidence = await verifyPythonRelease({ ...options(), ...time, getJson: async (url, requestOptions) => {
+      expect(requestOptions?.missing).toBe(true);
+      const file = files.find(file => url.includes(`/${file.filename}/`));
+      if (!file) return registry(project, files);
+      provenanceReads++;
+      return time.now() < 30_000 ? null : provenance(file);
+    } });
+    expect(time.pauses).toEqual([15_000, 15_000]);
+    expect(provenanceReads).toBe(6);
+    expect(evidence.packages[0].distributions.every(file => file.attestations)).toBe(true);
+  });
+
+  it('shares one deadline across all four projects and does not recheck completed projects', async () => {
+    const files = await loadPythonDistributions({ root, version, project: 'all' }), time = visibilityClock();
+    const reads: { name: string; at: number }[] = [];
+    const evidence = await verifyPythonRelease({ root, version, project: 'all', ...time, getJson: async url => {
+      const file = files.find(file => url.includes(`/${file.filename}/`));
+      if (file) return provenance(file);
+      const name = new URL(url).pathname.split('/')[2], index = pythonProjects.indexOf(name);
+      reads.push({ name, at: time.now() });
+      return time.now() < index * 15_000 ? null : registry(name, files);
+    } });
+    expect(reads.filter(read => read.at === 0).map(read => read.name)).toEqual(pythonProjects);
+    expect(reads.filter(read => read.name === pythonProjects[0])).toHaveLength(1);
+    expect(reads.filter(read => read.name === pythonProjects[3])).toHaveLength(4);
+    expect(time.now()).toBe(45_000);
+    expect(evidence.allPythonProjectsVerified).toBe(true);
+    expect(evidence.packages).toHaveLength(4);
+  });
+
+  it('bounds permanent 404s for all projects by one deadline and leaves success evidence unwritten', async () => {
+    const time = visibilityClock(); let reads = 0;
+    await expect(verifyPythonRelease({ root, version, project: 'all', ...time, timeoutMs: 35_000, getJson: async () => { reads++; return null; } })).rejects.toThrow('do not rebuild or repeat accepted uploads');
+    expect(time.pauses).toEqual([15_000, 15_000, 5_000]);
+    expect(time.now()).toBe(35_000);
+    expect(reads).toBe(12);
+    expect(await readdir(join(root, 'artifacts'))).toEqual(['python']);
+  });
+
+  it.each(['name', 'version', 'hash', 'unexpected-file', 'duplicate-file', 'yanked', 'format'] as const)('fails immediately on a %s metadata conflict without treating it as propagation', async kind => {
+    const files = await loadPythonDistributions(options()), time = visibilityClock();
+    const value = registry(project, files);
+    if (kind === 'name') value.info.name = 'another-project';
+    if (kind === 'version') value.info.version = '1.0.1';
+    if (kind === 'hash') value.urls[0].digests.sha256 = '0'.repeat(64);
+    if (kind === 'unexpected-file') value.urls[0].filename = 'unreviewed.whl';
+    if (kind === 'duplicate-file') value.urls[1] = value.urls[0];
+    if (kind === 'yanked') value.urls[0].yanked = true;
+    if (kind === 'format') Reflect.set(value, 'urls', {});
+    let reads = 0;
+    await expect(verifyPythonRelease({ ...options(), ...time, getJson: async () => { reads++; return value; } })).rejects.toThrow(/metadata|integrity|unexpected distribution|yanked/i);
+    expect(time.pauses).toEqual([]);
+    expect(reads).toBe(1);
+    expect(await readdir(join(root, 'artifacts'))).toEqual(['python']);
+  });
+
+  it.each(['metadata', 'provenance'] as const)('does not retry a non-404 %s API failure', async endpoint => {
+    const files = await loadPythonDistributions(options()), time = visibilityClock();
+    const failure = new Error('Registry HTTP 503');
+    await expect(verifyPythonRelease({ ...options(), ...time, getJson: async url => {
+      if (endpoint === 'metadata' || url.includes('/integrity/')) throw failure;
+      return registry(project, files);
+    } })).rejects.toBe(failure);
+    expect(time.pauses).toEqual([]);
+    expect(await readdir(join(root, 'artifacts'))).toEqual(['python']);
+  });
+
+  it.each([{ timeoutMs: 0 }, { intervalMs: 0 }, { timeoutMs: Infinity }, { intervalMs: NaN }])('rejects invalid visibility bounds %j before registry access', async bounds => {
+    let requested = false;
+    await expect(verifyPythonRelease({ ...options(), ...bounds, getJson: async () => { requested = true; return null; } })).rejects.toThrow('Invalid PyPI visibility poll configuration');
+    expect(requested).toBe(false);
+  });
+
+  it.each([{ values: [NaN] }, { values: [0, NaN] }, { values: [0, 0, NaN] }])('rejects an invalid visibility clock $values', async ({ values }) => {
+    let index = 0; const time = visibilityClock();
+    await expect(verifyPythonRelease({ ...options(), ...time, now: () => values[Math.min(index++, values.length - 1)], getJson: async () => null })).rejects.toThrow(/clock|deadline/);
+    expect(time.pauses).toEqual([]);
   });
 });
