@@ -14,7 +14,7 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 from .collectors import collect_github, collect_jira
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 Json = dict[str, Any]
 
 

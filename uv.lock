@@ -831,7 +831,7 @@ wheels = [
 
 [[package]]
 name = "tenhaw"
-version = "1.0.0"
+version = "1.0.1"
 source = { editable = "python/tenhaw" }
 dependencies = [
     { name = "tenhaw-ai-readiness" },
@@ -848,7 +848,7 @@ requires-dist = [
 
 [[package]]
 name = "tenhaw-ai-readiness"
-version = "1.0.0"
+version = "1.0.1"
 source = { editable = "python/tenhaw-ai-readiness" }
 dependencies = [
     { name = "jsonschema" },
@@ -859,7 +859,7 @@ requires-dist = [{ name = "jsonschema", specifier = ">=4.23" }]
 
 [[package]]
 name = "tenhaw-ai-roi"
-version = "1.0.0"
+version = "1.0.1"
 source = { editable = "python/tenhaw-ai-roi" }
 dependencies = [
     { name = "jsonschema" },
@@ -870,7 +870,7 @@ requires-dist = [{ name = "jsonschema", specifier = ">=4.23" }]
 
 [[package]]
 name = "tenhaw-delivery-metrics"
-version = "1.0.0"
+version = "1.0.1"
 source = { editable = "python/tenhaw-delivery-metrics" }
 dependencies = [
     { name = "httpx" },
@@ -885,7 +885,7 @@ requires-dist = [
 
 [[package]]
 name = "tenhaw-kit-workspace"
-version = "1.0.0"
+version = "1.0.1"
 source = { virtual = "." }
 dependencies = [
     { name = "tenhaw" },

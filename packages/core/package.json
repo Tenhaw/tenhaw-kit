@@ -1,6 +1,6 @@
 {
   "name": "@tenhaw/core",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Deterministic validation, attribution and report rendering for internal tools",
   "type": "module",
   "main": "./dist/index.js",

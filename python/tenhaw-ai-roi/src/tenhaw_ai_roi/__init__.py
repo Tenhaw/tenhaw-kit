@@ -10,7 +10,7 @@ from typing import Any, Literal, cast
 
 from jsonschema import Draft202012Validator
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 Json = dict[str, Any]
 
 

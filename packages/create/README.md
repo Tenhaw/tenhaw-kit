@@ -9,10 +9,10 @@ Scaffold a working internal product, portfolio, delivery or AI transformation ap
 
 ## Install and quick start
 
-These instructions target the **1.0.0** release and require its exact npm publication to be verified first. Requires Node.js 22.14 or later and a package manager for the generated project.
+These instructions target the **1.0.1** release and require its exact npm publication to be verified first. Requires Node.js 22.14 or later and a package manager for the generated project.
 
 ```sh
-npm create --yes tenhaw@1.0.0 -- product-operating-model my-workspace --yes
+npm create --yes tenhaw@1.0.1 -- product-operating-model my-workspace --yes
 cd my-workspace
 pnpm install
 pnpm build

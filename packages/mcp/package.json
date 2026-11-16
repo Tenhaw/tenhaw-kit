@@ -1,5 +1,5 @@
 {
-  "name":"@tenhaw/mcp","version":"1.0.0","description":"Local and remote MCP building blocks for internal delivery, product and AI transformation tools",
+  "name":"@tenhaw/mcp","version":"1.0.1","description":"Local and remote MCP building blocks for internal delivery, product and AI transformation tools",
   "type":"module","bin":{"tenhaw-mcp":"dist/index.js"},"main":"./dist/server.js","types":"./dist/server.d.ts","exports":{".":{"types":"./dist/server.d.ts","import":"./dist/server.js"},"./tools":{"types":"./dist/tools.d.ts","import":"./dist/tools.js"},"./remote":{"types":"./dist/remote.d.ts","import":"./dist/remote.js"}},
   "files":["dist","server.json","README.md","LICENSE","LICENSE-CONTENT"],"license":"MIT","author":"Tenhaw (https://tenhaw.com)","mcpName":"com.tenhaw/kit",
   "homepage":"https://kit.tenhaw.com/mcp","repository":{"type":"git","url":"https://github.com/Tenhaw/tenhaw-kit.git","directory":"packages/mcp"},

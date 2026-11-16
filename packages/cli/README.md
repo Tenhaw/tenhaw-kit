@@ -10,10 +10,10 @@ An agent-friendly CLI for building internal portfolio, product delivery and AI t
 
 ## Install
 
-Release instructions target **1.0.0**. Verify that exact version has been published before running them. Requires Node.js 22.14 or later.
+Release instructions target **1.0.1**. Verify that exact version has been published before running them. Requires Node.js 22.14 or later.
 
 ```sh
-npm install --global tenhaw@1.0.0
+npm install --global tenhaw@1.0.1
 ```
 
 ## Quick start

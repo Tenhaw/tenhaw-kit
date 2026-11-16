@@ -36,7 +36,7 @@ export function parseArgs(argv: string[]) {
   return { args, flags };
 }
 
-const help = `Tenhaw Kit 1.0.0: building blocks for internal product, portfolio and transformation tools
+const help = `Tenhaw Kit ${core.VERSION}: building blocks for internal product, portfolio and transformation tools
 
 tenhaw init <template> <new-dir>       Scaffold an internal tool
 tenhaw readiness --input answers.json Score evidence and response coverage
@@ -95,11 +95,11 @@ async function interactiveRoi() {
 
 export function installation() {
   return { claude: ['claude plugin marketplace add Tenhaw/tenhaw-kit', 'claude plugin install tenhaw@tenhaw-kit'],
-    claudeMcp: 'claude mcp add tenhaw -- npx -y @tenhaw/mcp@1.0.0', codex: 'codex mcp add tenhaw -- npx -y @tenhaw/mcp@1.0.0',
+    claudeMcp: `claude mcp add tenhaw -- npx -y @tenhaw/mcp@${core.VERSION}`, codex: `codex mcp add tenhaw -- npx -y @tenhaw/mcp@${core.VERSION}`,
     gemini: 'gemini extensions install https://github.com/Tenhaw/tenhaw-gemini',
-    cursor: `cursor://anysphere.cursor-deeplink/mcp/install?name=tenhaw&config=${encodeURIComponent(Buffer.from(JSON.stringify({ command: 'npx', args: ['-y', '@tenhaw/mcp@1.0.0'] })).toString('base64'))}`,
-    vscode: `code --add-mcp '${JSON.stringify({ name: 'tenhaw', command: 'npx', args: ['-y', '@tenhaw/mcp@1.0.0'] })}'`,
-    remote: 'https://mcp.tenhaw.com/mcp', publication: 'These public install commands require the verified 1.0.0 release. For a source checkout run pnpm build, then node packages/mcp/dist/index.js.' };
+    cursor: `cursor://anysphere.cursor-deeplink/mcp/install?name=tenhaw&config=${encodeURIComponent(Buffer.from(JSON.stringify({ command: 'npx', args: ['-y', `@tenhaw/mcp@${core.VERSION}`] })).toString('base64'))}`,
+    vscode: `code --add-mcp '${JSON.stringify({ name: 'tenhaw', command: 'npx', args: ['-y', `@tenhaw/mcp@${core.VERSION}`] })}'`,
+    remote: 'https://mcp.tenhaw.com/mcp', publication: `These public install commands require the verified ${core.VERSION} release. For a source checkout run pnpm build, then node packages/mcp/dist/index.js.` };
 }
 
 export async function writeAgentInstructions(directory = process.cwd()) {
@@ -161,7 +161,7 @@ async function usecases(action: string, flags: Flags) {
 
 export async function main(argv = process.argv.slice(2)) {
   const { args, flags } = parseArgs(argv);
-  if (flags.version) { process.stdout.write('1.0.0\n'); return; }
+  if (flags.version) { process.stdout.write(`${core.VERSION}\n`); return; }
   if (flags.help || !args.length) { process.stdout.write(help); return; }
   const [command, subcommand, third] = args;
   const interactive = Boolean(process.stdin.isTTY && !process.env.CI && !flags.yes);

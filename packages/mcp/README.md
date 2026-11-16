@@ -10,16 +10,16 @@ MCP tools for coding agents building internal portfolio, product delivery and AI
 
 ## Install and quick start
 
-Release instructions target **1.0.0**; verify its exact npm publication before installation. Requires Node.js 22.14 or later. Hosted endpoint availability is verified separately.
+Release instructions target **1.0.1**; verify its exact npm publication before installation. Requires Node.js 22.14 or later. Hosted endpoint availability is verified separately.
 
 ```sh
 # Codex CLI
-codex mcp add tenhaw -- npx -y @tenhaw/mcp@1.0.0
+codex mcp add tenhaw -- npx -y @tenhaw/mcp@1.0.1
 # Claude Code
-claude mcp add tenhaw -- npx -y @tenhaw/mcp@1.0.0
+claude mcp add tenhaw -- npx -y @tenhaw/mcp@1.0.1
 ```
 
-The local executable is `tenhaw-mcp`, or `npx -y @tenhaw/mcp@1.0.0`. It serves MCP over stdio with protocol messages on stdout. The configured remote address is `https://mcp.tenhaw.com/mcp`, using Streamable HTTP.
+The local executable is `tenhaw-mcp`, or `npx -y @tenhaw/mcp@1.0.1`. It serves MCP over stdio with protocol messages on stdout. The configured remote address is `https://mcp.tenhaw.com/mcp`, using Streamable HTTP.
 
 ## Tools and data boundaries
 
