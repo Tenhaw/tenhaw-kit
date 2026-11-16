@@ -2,9 +2,33 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
+      mode:
+        description: Prepare immutable archives, bootstrap one Python project, or release all packages
+        required: true
+        type: choice
+        default: prepare
+        options:
+          - prepare
+          - python-bootstrap
+          - release
       version:
         description: Exact reviewed version to publish, for example 1.0.0
         required: true
+        type: string
+      python_project:
+        description: Bootstrap one project; prepare and release require all
+        required: true
+        type: choice
+        default: all
+        options:
+          - all
+          - tenhaw-ai-readiness
+          - tenhaw-ai-roi
+          - tenhaw-delivery-metrics
+          - tenhaw
+      source_run_id:
+        description: Successful prepare run ID, required for bootstrap and release
+        required: false
         type: string
       satellite_sync:
         description: Owner CLI initial sync or configured GitHub App automation
@@ -24,10 +48,16 @@ jobs:
     name: Verify source and build immutable distributions
     runs-on: ubuntu-24.04
     timeout-minutes: 75
+    permissions:
+      contents: read
+      actions: read
     env:
       CI: 'true'
       NEXT_TELEMETRY_DISABLED: '1'
       RELEASE_VERSION: ${{ inputs.version }}
+      RELEASE_MODE: ${{ inputs.mode }}
+      PYTHON_PROJECT: ${{ inputs.python_project }}
+      SOURCE_RUN_ID: ${{ inputs.source_run_id }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -36,50 +66,105 @@ jobs:
         run: |
           test "$GITHUB_REPOSITORY" = Tenhaw/tenhaw-kit
           test "$GITHUB_REF" = refs/heads/main
-      - name: Validate satellite sync configuration before publication
+      - name: Validate the publication scope before building or publishing
         env:
           SATELLITE_SYNC: ${{ inputs.satellite_sync }}
           SATELLITES_APP_CONFIGURED: ${{ secrets.SATELLITES_APP_ID != '' && secrets.SATELLITES_APP_PRIVATE_KEY != '' }}
         run: |
+          set -euo pipefail
+          fail() { echo "::error::$1"; exit 1; }
+          case "$PYTHON_PROJECT" in
+            all|tenhaw-ai-readiness|tenhaw-ai-roi|tenhaw-delivery-metrics|tenhaw) ;;
+            *) fail 'Unsupported Python project.' ;;
+          esac
+          case "$RELEASE_MODE" in
+            prepare)
+              [ "$PYTHON_PROJECT" = all ] || fail 'Prepare requires python_project=all.'
+              [ -z "$SOURCE_RUN_ID" ] || fail 'Prepare creates a new bundle; do not supply source_run_id.'
+              ;;
+            python-bootstrap)
+              [ "$PYTHON_PROJECT" != all ] || fail 'Bootstrap requires one explicit Python project.'
+              [[ "$SOURCE_RUN_ID" =~ ^[1-9][0-9]*$ ]] || fail 'Bootstrap requires a successful prepare run ID.'
+              ;;
+            release)
+              [ "$PYTHON_PROJECT" = all ] || fail 'Full release requires python_project=all.'
+              [[ "$SOURCE_RUN_ID" =~ ^[1-9][0-9]*$ ]] || fail 'Release requires a successful prepare run ID.'
+              ;;
+            *) fail 'Unsupported release mode.' ;;
+          esac
           case "$SATELLITE_SYNC" in
             owner-cli) ;;
             github-app)
-              if [ "$SATELLITES_APP_CONFIGURED" != true ]; then
-                echo '::error::github-app requires both SATELLITES_APP_ID and SATELLITES_APP_PRIVATE_KEY repository secrets.'
-                exit 1
+              if [ "$RELEASE_MODE" = release ] && [ "$SATELLITES_APP_CONFIGURED" != true ]; then
+                fail 'github-app requires both SATELLITES_APP_ID and SATELLITES_APP_PRIVATE_KEY repository secrets.'
               fi
               ;;
-            *)
-              echo '::error::Unsupported satellite sync mode.'
-              exit 1
-              ;;
+            *) fail 'Unsupported satellite sync mode.' ;;
           esac
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version: 22.23.1
           package-manager-cache: false
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        if: ${{ inputs.mode == 'prepare' }}
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        if: ${{ inputs.mode == 'prepare' }}
         with:
           python-version: '3.12'
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        if: ${{ inputs.mode == 'prepare' }}
         with:
           version: 0.11.32
           enable-cache: false
+      - name: Verify the successful producer run and immutable artifact identity
+        if: ${{ inputs.mode != 'prepare' }}
+        id: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/release-bundle.mjs check-run --source-run-id "$SOURCE_RUN_ID" --source-sha "$GITHUB_SHA" --version "$RELEASE_VERSION"
+      - name: Download the exact prepared distribution artifact
+        if: ${{ inputs.mode != 'prepare' }}
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          artifact-ids: ${{ steps.source.outputs.artifact_id }}
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ github.token }}
+          digest-mismatch: error
+          path: artifacts/
+      - name: Verify every prepared archive and restage the unchanged bundle
+        if: ${{ inputs.mode != 'prepare' }}
+        run: node scripts/release-bundle.mjs stage --directory artifacts --bundle-directory release-bundle --source-sha "$GITHUB_SHA" --version "$RELEASE_VERSION" --producer-run-id "$SOURCE_RUN_ID" --producer-mode prepare
       - uses: ./.github/actions/verify
+        if: ${{ inputs.mode == 'prepare' }}
       - name: Verify release versions without publishing
+        if: ${{ inputs.mode == 'prepare' }}
         run: node scripts/publish.mjs --version "$RELEASE_VERSION" --dry-run
-      - name: Record the exact verified source
-        run: node -e 'require("node:fs").writeFileSync("artifacts/release-source.json",JSON.stringify({commit:process.env.GITHUB_SHA,version:process.env.RELEASE_VERSION})+"\n")'
+      - name: Freeze one verified bundle with all archive hashes and producer identity
+        if: ${{ inputs.mode == 'prepare' }}
+        run: node scripts/release-bundle.mjs create --directory artifacts --bundle-directory release-bundle --source-sha "$GITHUB_SHA" --version "$RELEASE_VERSION" --producer-run-id "$GITHUB_RUN_ID" --producer-mode prepare
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: verified-distributions-${{ inputs.version }}-${{ github.sha }}
-          path: artifacts/
+          path: release-bundle/
           if-no-files-found: error
           retention-days: 30
+      - name: Record the exact scope and immutable bundle source
+        run: |
+          {
+            echo '## Release scope'
+            echo "Mode: $RELEASE_MODE; Python project: $PYTHON_PROJECT."
+            echo "Source commit: $GITHUB_SHA."
+            echo "Prepare producer run: ${SOURCE_RUN_ID:-$GITHUB_RUN_ID}. All 17 archive hashes are recorded in release-bundle.json."
+            if [ "$RELEASE_MODE" = prepare ]; then
+              echo 'Prepare mode does not publish packages, synchronise satellites or create a GitHub Release.'
+            elif [ "$RELEASE_MODE" = python-bootstrap ]; then
+              echo 'Bootstrap mode publishes and verifies only the selected Python project. Full package release and satellite launch remain separate work.'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
   publish-npm:
     name: Publish npm with OIDC
     needs: verify
+    if: ${{ inputs.mode == 'release' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     environment: release
@@ -88,6 +173,7 @@ jobs:
       id-token: write
     env:
       RELEASE_VERSION: ${{ inputs.version }}
+      SOURCE_RUN_ID: ${{ inputs.source_run_id }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -102,8 +188,9 @@ jobs:
         with:
           name: verified-distributions-${{ inputs.version }}-${{ github.sha }}
           path: artifacts/
+          digest-mismatch: error
       - name: Verify artifact source identity
-        run: node -e 'const x=JSON.parse(require("node:fs").readFileSync("artifacts/release-source.json"));if(x.commit!==process.env.GITHUB_SHA||x.version!==process.env.RELEASE_VERSION)throw Error("Verified artifact/source mismatch")'
+        run: node scripts/release-bundle.mjs verify --directory artifacts --source-sha "$GITHUB_SHA" --version "$RELEASE_VERSION" --producer-run-id "$SOURCE_RUN_ID" --producer-mode prepare
       - name: Publish npm tarballs and verify exact integrity and provenance
         run: node scripts/publish.mjs --version "$RELEASE_VERSION"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -116,6 +203,7 @@ jobs:
   publish-python:
     name: Publish PyPI with OIDC
     needs: verify
+    if: ${{ inputs.mode == 'release' || inputs.mode == 'python-bootstrap' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     environment: release
@@ -124,6 +212,8 @@ jobs:
       id-token: write
     env:
       RELEASE_VERSION: ${{ inputs.version }}
+      SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+      PYTHON_PROJECT: ${{ inputs.python_project }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -132,20 +222,26 @@ jobs:
         with:
           node-version: 22.23.1
           package-manager-cache: false
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.12'
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: verified-distributions-${{ inputs.version }}-${{ github.sha }}
           path: artifacts/
+          digest-mismatch: error
       - name: Verify artifact source identity
-        run: node -e 'const x=JSON.parse(require("node:fs").readFileSync("artifacts/release-source.json"));if(x.commit!==process.env.GITHUB_SHA||x.version!==process.env.RELEASE_VERSION)throw Error("Verified artifact/source mismatch")'
+        run: node scripts/release-bundle.mjs verify --directory artifacts --source-sha "$GITHUB_SHA" --version "$RELEASE_VERSION" --producer-run-id "$SOURCE_RUN_ID" --producer-mode prepare
+      - name: Validate and stage the exact selected Python distributions
+        run: node scripts/publish.mjs --version "$RELEASE_VERSION" --prepare-python --python-project "$PYTHON_PROJECT"
       - name: Publish Python distributions with attestations
         uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
         with:
-          packages-dir: artifacts/python/
+          packages-dir: artifacts/python-publish/
           attestations: true
           skip-existing: true
       - name: Verify exact Python versions and distribution attestations
-        run: node scripts/publish.mjs --version "$RELEASE_VERSION" --verify-python
+        run: node scripts/publish.mjs --version "$RELEASE_VERSION" --verify-python --python-project "$PYTHON_PROJECT"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
         with:
@@ -156,7 +252,7 @@ jobs:
   satellites:
     name: Synchronise thin satellite repositories
     needs: [publish-npm, publish-python]
-    if: ${{ inputs.satellite_sync == 'github-app' }}
+    if: ${{ inputs.mode == 'release' && inputs.satellite_sync == 'github-app' }}
     uses: ./.github/workflows/sync-satellites.yml
     with:
       version: ${{ inputs.version }}
@@ -167,7 +263,7 @@ jobs:
   github-release:
     name: Record the verified package release
     needs: [publish-npm, publish-python, satellites]
-    if: ${{ !cancelled() && needs.publish-npm.result == 'success' && needs.publish-python.result == 'success' && ((inputs.satellite_sync == 'owner-cli' && needs.satellites.result == 'skipped') || (inputs.satellite_sync == 'github-app' && needs.satellites.result == 'success')) }}
+    if: ${{ !cancelled() && inputs.mode == 'release' && needs.publish-npm.result == 'success' && needs.publish-python.result == 'success' && ((inputs.satellite_sync == 'owner-cli' && needs.satellites.result == 'skipped') || (inputs.satellite_sync == 'github-app' && needs.satellites.result == 'success')) }}
     runs-on: ubuntu-24.04
     permissions:
       contents: write

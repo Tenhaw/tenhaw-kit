@@ -3,12 +3,18 @@ import { createHash } from 'node:crypto';
 import { readFile, readdir, mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
+import { preparePythonRelease, selectedPythonProjects, verifyPythonRelease } from './python-release.mjs';
 
 const root=resolve('.');
 const argv=process.argv.slice(2),option=name=>{const index=argv.indexOf(name);return index<0?undefined:argv[index+1];};
 const version=option('--version');
 if(!version||!/^\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(version))throw new Error('Supply --version with the exact reviewed semantic version.');
-const dryRun=argv.includes('--dry-run'),verifyOnly=argv.includes('--verify-only'),verifyPython=argv.includes('--verify-python');
+const dryRun=argv.includes('--dry-run'),verifyOnly=argv.includes('--verify-only'),verifyPython=argv.includes('--verify-python'),preparePython=argv.includes('--prepare-python');
+if(argv.includes('--python-project')&&option('--python-project')===undefined)throw new Error('--python-project requires an explicit project name or all.');
+const pythonProject=option('--python-project')??'all';
+selectedPythonProjects(pythonProject);
+if(preparePython&&verifyPython||(preparePython||verifyPython)&&(dryRun||verifyOnly))throw new Error('Choose exactly one Python prepare or verification operation.');
+if(argv.includes('--python-project')&&!preparePython&&!verifyPython)throw new Error('--python-project requires --prepare-python or --verify-python.');
 const names=['core','ai-readiness','delivery-metrics','ai-roi','usecase-register','opmodel','cli','create','mcp'];
 const pythonNames=['tenhaw','tenhaw-ai-readiness','tenhaw-delivery-metrics','tenhaw-ai-roi'];
 const env={...process.env,npm_config_cache:process.env.npm_config_cache??join(process.env.RUNNER_TEMP??tmpdir(),'tenhaw-kit-release-npm-cache')};delete env.NODE_AUTH_TOKEN;delete env.NPM_TOKEN;
@@ -35,25 +41,15 @@ async function assertVersionConsistency(){
   for(const name of pythonNames){const text=await readFile(join(root,'python',name,'pyproject.toml'),'utf8');if(!new RegExp(`^version\\s*=\\s*"${version.replaceAll('.','\\.')}"\\s*$`,'m').test(text))throw new Error(`Python version drift in ${name}.`);}
   for(const file of ['plugins/claude/tenhaw/.claude-plugin/plugin.json','plugins/openai/tenhaw/plugin.json','plugins/gemini/gemini-extension.json']){const manifest=JSON.parse(await readFile(join(root,file),'utf8'));if(manifest.version!==version)throw new Error(`Plugin version drift in ${file}.`);}
 }
-async function verifyPythonRelease(){
-  const observations=[];
-  for(const name of pythonNames){
-    const pkg=await retry(async()=>{const value=await getJson(`https://pypi.org/pypi/${name}/${version}/json`);if(value.info.version!==version||!value.urls?.length)throw new Error(`PyPI has not exposed ${name}@${version} yet.`);return value;});
-    const local=await readdir(join(root,'artifacts/python'));
-    for(const distribution of pkg.urls){
-      if(!local.includes(distribution.filename))throw new Error(`PyPI contains an unexpected distribution for ${name}: ${distribution.filename}.`);
-      const bytes=await readFile(join(root,'artifacts/python',distribution.filename)),sha=createHash('sha256').update(bytes).digest('hex');
-      if(distribution.digests.sha256!==sha)throw new Error(`PyPI integrity mismatch for ${distribution.filename}.`);
-      const provenance=await retry(()=>getJson(`https://pypi.org/integrity/${name}/${version}/${encodeURIComponent(distribution.filename)}/provenance`));
-      if(!Array.isArray(provenance.attestation_bundles)||!provenance.attestation_bundles.length)throw new Error(`Missing PyPI attestations for ${distribution.filename}.`);
-    }
-    observations.push({name,version,distributions:pkg.urls.map(u=>u.filename),attestations:true});
-  }
-  await writeFile('artifacts/pypi-verification.json',JSON.stringify({version,packages:observations},null,2)+'\n');
-  console.log(`Verified four PyPI projects at ${version}, exact distribution hashes and attestations.`);
-}
 await assertVersionConsistency();
-if(verifyPython){await verifyPythonRelease();process.exit(0);}
+if(preparePython){
+  const result=await preparePythonRelease({root,version,project:pythonProject,getJson});
+  console.log(`Prepared ${result.distributions.length} verified Python archives for ${result.projects.join(', ')} in artifacts/python-publish; existing registry files match. No publication attempted.`);process.exit(0);
+}
+if(verifyPython){
+  await verifyPythonRelease({root,version,project:pythonProject,getJson,retry});
+  console.log(pythonProject==='all'?`Verified all four PyPI projects at ${version}, both exact archives and protected publisher attestations.`:`Verified selected PyPI project ${pythonProject}@${version}, both exact archives and protected publisher attestations. Other projects were not verified.`);process.exit(0);
+}
 
 const artifacts=join(root,'artifacts'),files=(await readdir(artifacts)).filter(name=>name.endsWith('.tgz'));
 if(files.length!==names.length)throw new Error(`Expected exactly ${names.length} verified npm tarballs; found ${files.length}. Clean stale artifacts and rerun pack-check.`);
