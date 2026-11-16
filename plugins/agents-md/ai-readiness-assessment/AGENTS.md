@@ -1,8 +1,8 @@
 # Tenhaw Kit: ai readiness assessment
 
-Fetch the questionnaire with `npx -y tenhaw@1.0.1 readiness --questionnaire --json`. Record explicit question IDs, scores and optional evidence in `{ "answers": [...] }`. Ask for missing evidence; never infer unanswered scores. Run the assessment and return the structured report. Show coverage beside every score and withhold maturity bands below 80% coverage. This framework supports internal self-assessment; the advisory audit separately examines real workflows.
+Fetch the questionnaire with `npx -y tenhaw@1.1.0 readiness --questionnaire --json`. Record explicit question IDs, scores and optional evidence in `{ "answers": [...] }`. Ask for missing evidence; never infer unanswered scores. Run the assessment and return the structured report. Show coverage beside every score and withhold maturity bands below 80% coverage. This framework supports internal self-assessment; the advisory audit separately examines real workflows.
 
-Command: `npx -y tenhaw@1.0.1 readiness --input answers.json --json`
+Command: `npx -y tenhaw@1.1.0 readiness --input answers.json --json`
 
 Use package schemas to validate the host data model; run the host repository’s documented build, test and lint commands. No command here replaces existing repository instructions.
 

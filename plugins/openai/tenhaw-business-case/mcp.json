@@ -1,0 +1,9 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "tenhaw-business-case": {
+      "type": "streamable-http",
+      "url": "https://business-case.apps.tenhaw.com/mcp/apps/business-case"
+    }
+  }
+}

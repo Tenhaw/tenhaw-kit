@@ -8,20 +8,39 @@ Building blocks for agents creating internal product, portfolio, delivery and AI
 - Add evidenced AI readiness assessment, delivery metrics or a cash-realistic AI business case to your product.
 - Give a coding agent deterministic tools, validated JSON and reusable starting points.
 
-## Start from source
+## Install the published release
 
-This checkout is a release candidate. Public package and domain availability is verified separately in [the runbook](docs/RUNBOOK.md); source implementation does not imply publication.
+Version **1.0.1** is published on [npm](https://www.npmjs.com/package/tenhaw/v/1.0.1), [PyPI](https://pypi.org/project/tenhaw/1.0.1/) and the [official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers/com.tenhaw%2Fkit/versions/1.0.1) as `com.tenhaw/kit`, verified on 16 November 2026. See [the runbook](docs/RUNBOOK.md) for release evidence.
+
+```sh
+npx -y tenhaw@1.0.1 --help
+npx -y tenhaw@1.0.1 readiness --questionnaire --json
+uvx --from tenhaw==1.0.1 tenhaw-py --help
+```
+
+Node.js 22.14+ is required for npm and local MCP; Python 3.10+ for Python. Core tools require no Tenhaw API key. GitHub and Jira credentials are needed only when you request local collection.
+
+## Give your coding agent one prompt
+
+> Install Tenhaw Kit 1.0.1 for this project. Identify the coding client and use its documented project MCP configuration with `npx -y @tenhaw/mcp@1.0.1`. Preserve existing servers and instructions. Verify that the connection exposes all eight local tools and run a synthetic readiness calculation. If I ask for a starter, scaffold it into a new directory, install its dependencies and run its build and tests. Ask me to set only missing environment variables needed for GitHub or Jira collection I request. Keep secret values out of prompts, commands, configuration and logs. Report what passed and any remaining host reload or trust step.
+
+Use [the agent install guide](docs/AGENT_INSTALL.md) for exact configuration paths, credentials and acceptance checks. The local server exposes eight tools; the [remote endpoint](https://mcp.tenhaw.com/mcp) exposes six pure tools and accepts aggregate delivery metrics only.
+
+## Automated setup from source
+
+The new `setup` command in this checkout is **unreleased** and is not included in npm 1.0.1. Build this source to use it:
 
 ```sh
 corepack pnpm install
 corepack pnpm build
 node packages/cli/dist/index.js readiness --questionnaire --json
-node packages/cli/dist/index.js init product-operating-model internal-portfolio --yes --json
+node packages/cli/dist/index.js setup --agent codex --directory /path/to/project --json
+node packages/cli/dist/index.js setup --agent codex --directory /path/to/project --yes --verify --json
 ```
 
-Node 22.14+ is required. Scaffolding never installs dependencies or overwrites an existing directory. The templates use clearly synthetic examples and browser-local data.
+Replace `codex` with `claude`, `cursor`, `vscode` or `gemini`. Setup plans by default; `--yes` writes the selected project configuration, `--check` inspects it and `--verify` probes the selected MCP connection. Use `--transport remote` for pure tools, or `--integration github,jira` with local transport for requested collection. Credentials remain in the local environment.
 
-After the verified public release, use `npx tenhaw@1.0.1 --help`, `npm create tenhaw@1.0.1 -- <template> <new-directory>`, or `npx @tenhaw/mcp@1.0.1` for local MCP. The local server exposes eight tools; the remote server exposes six pure tools and accepts aggregate delivery metrics only.
+For a published starter, run `npm create tenhaw@1.0.1 -- product-operating-model internal-portfolio --yes --json`, then run its documented dependency install, build and test commands. Scaffolding preserves existing directories and never installs dependencies itself. Templates use synthetic examples and browser-local data.
 
 ## Compose the packages
 
@@ -38,9 +57,11 @@ The Python workspace provides readiness, delivery and ROI libraries plus `tenhaw
 
 ## Agent interfaces
 
+Seven focused ChatGPT/Codex products are implemented as source candidates: AI Business Case, AI Readiness, AI Use-case Prioritiser, Delivery Health, Product Operating Model, AI Procurement Pack and Kit Developer Tools. Six use scoped hosted tools and interactive results; the developer package runs local coding workflows. Review [the launch plan](docs/APP_LAUNCH.md) and [seven submission packages](launch/apps/README.md). Directory submission and publication remain separate from source implementation.
+
 The CLI supports stable `--json` output and documented error codes. MCP exposes tools, versioned questionnaire and schema resources, and structured workflows. Claude, OpenAI, Gemini, Cursor and AGENTS.md packages live in `plugins/`; their commands use a pinned package version. Use the [install reference](apps/docs/lib/reference.json) and [machine-readable overview](llms.txt).
 
-For Claude Code, after the verified public release:
+For Claude Code:
 
 ```sh
 claude plugin marketplace add Tenhaw/tenhaw-kit

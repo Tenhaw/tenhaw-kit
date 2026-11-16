@@ -9,8 +9,10 @@ Model AI investment cash flow while separating recovered capacity from cash bene
 
 ## Install
 
+These commands target the **1.1.0 release candidate**. Verify its exact npm publication before installation.
+
 ```sh
-npm install @tenhaw/ai-roi
+npm install @tenhaw/ai-roi@1.1.0
 ```
 
 ## Quick start

@@ -9,8 +9,10 @@ Validate teams, OKRs, roadmaps and interactions for internal operating-model too
 
 ## Install
 
+These commands target the **1.1.0 release candidate**. Verify its exact npm publication before installation.
+
 ```sh
-npm install @tenhaw/opmodel
+npm install @tenhaw/opmodel@1.1.0
 ```
 
 ## Quick start

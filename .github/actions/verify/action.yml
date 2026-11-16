@@ -15,11 +15,18 @@ runs:
         set -euo pipefail
         uv run python scripts/sync-python-assets.py --check
         node scripts/generate-plugins.mjs
-        git diff --exit-code -- plugins .claude-plugin
-        test -z "$(git ls-files --others --exclude-standard -- plugins .claude-plugin)"
+        git diff --exit-code -- plugins .claude-plugin .agents/plugins
+        test -z "$(git ls-files --others --exclude-standard -- plugins .claude-plugin .agents/plugins)"
     - name: Check libraries, CLI, MCP, schemas and language parity
       shell: bash
       run: pnpm check
+    - name: Package seven verified app candidates
+      shell: bash
+      run: |
+        set -euo pipefail
+        node scripts/generate-app-plugins.mjs --check
+        node scripts/package-apps.mjs
+        node scripts/package-apps.mjs --check
     - name: Check Python
       shell: bash
       run: |

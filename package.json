@@ -1,10 +1,12 @@
 {
   "name": "tenhaw-kit-workspace",
   "private": true,
-  "version": "1.0.1",
+  "version": "1.1.0",
   "type": "module",
   "packageManager": "pnpm@11.25.0",
-  "engines": { "node": ">=22.14.0" },
+  "engines": {
+    "node": ">=22.14.0"
+  },
   "scripts": {
     "build": "pnpm -r --filter './packages/**' build && node scripts/package-assets.mjs",
     "build:apps": "pnpm -r --filter './apps/**' build",
@@ -15,12 +17,14 @@
     "spec:validate": "node --import tsx scripts/spec-validate.ts",
     "vectors:ts": "node --import tsx scripts/vectors-ts.ts",
     "vectors:parity": "node --import tsx scripts/parity.ts",
-    "check": "pnpm build && pnpm typecheck && pnpm test && pnpm spec:validate && pnpm vectors:parity && node scripts/validate-plugins.mjs && pnpm lint",
+    "check": "pnpm build && pnpm typecheck && pnpm test && pnpm spec:validate && pnpm vectors:parity && node scripts/validate-plugins.mjs && node scripts/generate-app-plugins.mjs --check && pnpm lint",
     "changeset": "changeset",
     "version:packages": "changeset version",
     "release": "changeset publish",
     "pack:check": "node scripts/pack-check.mjs",
-    "names:check": "node scripts/check-names.mjs"
+    "names:check": "node scripts/check-names.mjs",
+    "apps:generate": "node scripts/generate-app-plugins.mjs",
+    "apps:pack": "node scripts/package-apps.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.29.8",

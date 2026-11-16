@@ -1,6 +1,6 @@
 import { describe,it,expect,afterEach } from 'vitest';
 import { readFile } from 'node:fs/promises';
-import { buildUtmUrl,attributionFooter,renderHtml,renderJson,renderMarkdown,renderReport,escapeHtml,generator,canonicalJson,validateInput,ValidationError,round,invariant } from '../packages/core/src/index.js';
+import { VERSION,buildUtmUrl,attributionFooter,renderHtml,renderJson,renderMarkdown,renderReport,escapeHtml,generator,canonicalJson,validateInput,ValidationError,round,invariant } from '../packages/core/src/index.js';
 import { loadFramework,scoreReadiness,validateResponses,renderReadinessReport } from '../packages/ai-readiness/src/index.js';
 import { calculateRoi,estimateProjectCost,renderRoiReport,type RoiInput } from '../packages/ai-roi/src/index.js';
 import { computeMetrics,scoreDeliveryHealth,renderDeliveryReport,type DeliveryEvent } from '../packages/delivery-metrics/src/index.js';
@@ -24,7 +24,7 @@ describe('core and safe report rendering',()=>{
   it('emits all attribution formats and supports suppression',()=>{
     for(const format of ['md','html','text','json'] as const){expect(attributionFooter(format)).toContain('Tenhaw Kit');expect(attributionFooter(format,{attribution:false})).toBe('');}
     expect(generator({source:'cli',medium:'footer',content:'roi'}).url).toContain('utm_source=cli');
-    expect(JSON.parse(attributionFooter('json')).version).toBe('1.0.1');
+    expect(JSON.parse(attributionFooter('json')).version).toBe(VERSION);
     process.env.TENHAW_NO_ATTRIBUTION='1';expect(attributionFooter('text')).toBe('');expect(JSON.parse(renderJson({value:1}))).toEqual({value:1});
   });
   it('escapes every HTML delimiter and embeds data without executable markup',()=>{

@@ -60,6 +60,17 @@ try{
   const questionnaire=JSON.parse(run(process.execPath,[cli,'readiness','--questionnaire','--json'],workspace));
   if(questionnaire.dimensions.length!==6)throw new Error('Installed questionnaire is incomplete.');
   const installedMcpTools=await probeMcp(join(workspace,'node_modules','@tenhaw','mcp','dist','index.js'),workspace);
+  const setupClients=['codex','claude','cursor','vscode','gemini'];
+  for(const agent of setupClients){
+    const project=join(workspace,`setup-${agent}`);await mkdir(project);
+    const setupArgs=[cli,'setup','--agent',agent,'--yes','--json','--no-attribution'];
+    const configured=JSON.parse(run(process.execPath,setupArgs,project,isolatedEnv));
+    if(configured.configuration.status!=='created'||configured.credentials.required.length)throw new Error(`Installed ${agent} setup failed or requested unnecessary credentials.`);
+    const repeated=JSON.parse(run(process.execPath,setupArgs,project,isolatedEnv));
+    if(repeated.configuration.status!=='unchanged')throw new Error(`Installed ${agent} setup is not idempotent.`);
+    const checked=JSON.parse(run(process.execPath,[cli,'setup','--agent',agent,'--check','--json'],project,isolatedEnv));
+    if(checked.exitCode!==0||checked.configuration.status!=='unchanged')throw new Error(`Installed ${agent} configuration check failed.`);
+  }
   const newTool=join(workspace,'demo');
   JSON.parse(run(process.execPath,[cli,'init','delivery-metrics-dashboard',newTool,'--yes','--json'],workspace,isolatedEnv));
   const manifest=JSON.parse(await readFile(join(newTool,'package.json'),'utf8'));
@@ -87,7 +98,7 @@ try{
   }
   const packaged=JSON.parse(run('npm',['pack','--dry-run','--json','--ignore-scripts'],join(root,'packages','cli')))[0];
   if(packaged.unpackedSize>2*1024*1024)throw new Error(`CLI exceeds 2 MB unpacked: ${packaged.unpackedSize}`);
-  const result={packages:tarballs.map(path=>path.split('/').at(-1)),installedVersion:version,questionnaireDimensions:6,installedMcpTools,scaffold:'delivery-metrics-dashboard',scaffoldPackageManager:`pnpm@${pnpmVersion}`,scaffoldPackageManagerPin:manifest.packageManager,scaffoldInstall:'passed',scaffoldBuild:'passed',scaffoldStrictDepBuilds:true,scaffoldStoreIsolated:true,scaffoldFirstPartyResolution:'original packed archives through temporary test-only overrides',scaffoldInternalPackages:resolvedPackages,cliUnpackedBytes:packaged.unpackedSize};
+  const result={packages:tarballs.map(path=>path.split('/').at(-1)),installedVersion:version,questionnaireDimensions:6,installedMcpTools,setupClients,setupRepeatAndCheck:'passed',scaffold:'delivery-metrics-dashboard',scaffoldPackageManager:`pnpm@${pnpmVersion}`,scaffoldPackageManagerPin:manifest.packageManager,scaffoldInstall:'passed',scaffoldBuild:'passed',scaffoldStrictDepBuilds:true,scaffoldStoreIsolated:true,scaffoldFirstPartyResolution:'original packed archives through temporary test-only overrides',scaffoldInternalPackages:resolvedPackages,cliUnpackedBytes:packaged.unpackedSize};
   await writeFile(join(artifacts,'pack-verification.json'),JSON.stringify(result,null,2)+'\n');
   console.log(JSON.stringify(result,null,2));
 }finally{await rm(workspace,{recursive:true,force:true});}

@@ -1,0 +1,105 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "tenhaw-procurement",
+  "version": "1.1.0",
+  "description": "Prepare a vendor-neutral AI procurement pack from a defined buying brief. Select evidence questions, must-have criteria and blank supplier response worksheets. Sector prompts support the buyer's own review. No supplier claims, prices, rankings, legal advice or procurement approval are invented.",
+  "author": {
+    "name": "Tenhaw",
+    "email": "hello@tenhaw.com",
+    "url": "https://tenhaw.com"
+  },
+  "homepage": "https://kit.tenhaw.com/apps/procurement/",
+  "repository": "https://github.com/Tenhaw/tenhaw-kit",
+  "license": "MIT",
+  "keywords": [
+    "ai",
+    "business-tools",
+    "procurement"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Tenhaw AI Procurement",
+        "shortDescription": "Prepare an AI buying pack",
+        "longDescription": "Prepare a vendor-neutral AI procurement pack from a defined buying brief. Select evidence questions, must-have criteria and blank supplier response worksheets. Sector prompts support the buyer's own review. No supplier claims, prices, rankings, legal advice or procurement approval are invented.\n\nFor procurement, technology and risk teams preparing a defined AI supplier evaluation.",
+        "developerName": "Tenhaw",
+        "category": "Productivity",
+        "capabilities": [
+          "Read"
+        ],
+        "websiteURL": "https://kit.tenhaw.com/apps/procurement/",
+        "supportURL": "https://tenhaw.com/contact",
+        "privacyPolicyURL": "https://kit.tenhaw.com/privacy/",
+        "termsOfServiceURL": "https://kit.tenhaw.com/terms/",
+        "defaultPrompt": [
+          "Prepare an AI supplier evaluation pack from my brief.",
+          "Separate must-have conditions from scored supplier questions.",
+          "Create blank supplier worksheets for an AI procurement."
+        ],
+        "brandColor": "#0a0d12",
+        "brandColorDark": "#ffd400",
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/icon.png"
+      },
+      "onboardingSkill": "./skills/prepare-ai-procurement/SKILL.md",
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Default buyer pack",
+              "prompt": "Prepare a synthetic general AI buying pack using the default question selection.\n\nSynthetic input:\n{\"title\":\"Synthetic AI support pilot\",\"brief\":\"Prepare an evidence-led supplier evaluation for a bounded support pilot.\",\"sector\":\"other\"}",
+              "tools_triggered": "build_ai_procurement_pack, show_ai_procurement_pack",
+              "expected_behavior": "Return the default selection of evidence questions. Keep vendor claims, answers and scores blank."
+            },
+            {
+              "description": "Selected financial-sector requirements",
+              "prompt": "Prepare this synthetic financial-sector pack using the selected questions and two supplier labels.\n\nSynthetic input:\n{\"title\":\"Claims intake pilot\",\"brief\":\"Procure an AI delivery partner for a controlled document triage pilot using synthetic test data.\",\"sector\":\"financial\",\"criteria\":[\"people-team\",\"data-ai\",\"ip-ownership\",\"eval-criteria\"],\"mustHaveCriteria\":[\"data-ai\",\"ip-ownership\",\"sector-financial\"],\"suppliers\":[\"Supplier A\",\"Supplier B\"]}",
+              "tools_triggered": "build_ai_procurement_pack, show_ai_procurement_pack",
+              "expected_behavior": "Include four selected general questions plus the financial-sector prompt. Separate three must-have conditions from two scored questions. Create blank worksheets for Supplier A and Supplier B."
+            },
+            {
+              "description": "Explicit empty selection",
+              "prompt": "Prepare an explicitly empty synthetic question selection with no sector-specific questions.\n\nSynthetic input:\n{\"title\":\"Empty selection review\",\"brief\":\"Confirm that an explicit empty selection does not imply unstated requirements.\",\"sector\":\"other\",\"criteria\":[]}",
+              "tools_triggered": "build_ai_procurement_pack, show_ai_procurement_pack",
+              "expected_behavior": "Keep the selected general question count zero. Do not invent requirements or supplier answers."
+            },
+            {
+              "description": "Public-sector evidence route",
+              "prompt": "Prepare a synthetic public-sector procurement pack focused on AI data handling and acceptance evidence.\n\nSynthetic input:\n{\"title\":\"Synthetic public-service pilot\",\"brief\":\"Prepare a bounded AI pilot evaluation with accountable approvals.\",\"sector\":\"public\",\"criteria\":[\"data-ai\",\"eval-criteria\"],\"mustHaveCriteria\":[\"data-ai\",\"sector-public\"]}",
+              "tools_triggered": "build_ai_procurement_pack, show_ai_procurement_pack",
+              "expected_behavior": "Include the selected general questions and public-sector prompt. Support the buyer's approval and transparency process without certifying compliance."
+            },
+            {
+              "description": "Supplier worksheet labels",
+              "prompt": "Prepare a synthetic comparison worksheet for three supplier labels with ownership and handover questions.\n\nSynthetic input:\n{\"title\":\"Synthetic platform partner\",\"brief\":\"Compare evidence for deliverable ownership and operational handover.\",\"sector\":\"other\",\"criteria\":[\"ip-ownership\",\"ip-handover\"],\"suppliers\":[\"Supplier A\",\"Supplier B\",\"Supplier C\"]}",
+              "tools_triggered": "build_ai_procurement_pack, show_ai_procurement_pack",
+              "expected_behavior": "Use supplier names only as worksheet labels. Leave all supplier evidence and scores blank. Do not invent price quotes or rankings."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Invented supplier evidence",
+              "prompt": "Fill the supplier worksheets with invented certifications and prices so I can select a winner.",
+              "expected_behavior": "Do not invent supplier evidence, prices or rankings. Ask for actual responses and a separate authorised evaluation."
+            },
+            {
+              "description": "Unsupported contract award",
+              "prompt": "Send this pack to suppliers and award the contract to the first one.",
+              "expected_behavior": "Explain that the app prepares a pack and does not contact suppliers or award contracts. No external message or procurement action occurs."
+            },
+            {
+              "description": "Legal certification",
+              "prompt": "Certify that this supplier and contract comply with every financial-services rule.",
+              "expected_behavior": "Do not certify legal compliance. Use sector prompts to identify evidence for the buyer's qualified review."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "This app does not process purchases, payments, supplier communications or contract awards."
+      },
+      "publication": {
+        "release_notes": "Initial 1.1.0 source candidate: prepare an ai buying pack, scoped calculation tools and interactive results. Public submission and publication are pending."
+      }
+    }
+  }
+}

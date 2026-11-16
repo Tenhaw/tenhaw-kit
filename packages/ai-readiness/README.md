@@ -9,8 +9,10 @@ Score an evidence-led, 30-question AI readiness self-assessment.
 
 ## Install
 
+These commands target the **1.1.0 release candidate**. Verify its exact npm publication before installation.
+
 ```sh
-npm install @tenhaw/ai-readiness
+npm install @tenhaw/ai-readiness@1.1.0
 ```
 
 ## Quick start

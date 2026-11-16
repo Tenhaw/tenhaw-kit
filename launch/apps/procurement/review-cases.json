@@ -1,0 +1,251 @@
+{
+  "schemaVersion": "1.0",
+  "product": "procurement",
+  "sourceVersion": "1.1.0",
+  "status": "not-run",
+  "positive": [
+    {
+      "id": "P1",
+      "description": "Default buyer pack",
+      "prompt": "Prepare a synthetic general AI buying pack using the default question selection.",
+      "calls": [
+        {
+          "tool": "build_ai_procurement_pack",
+          "arguments": {
+            "title": "Synthetic AI support pilot",
+            "brief": "Prepare an evidence-led supplier evaluation for a bounded support pilot.",
+            "sector": "other"
+          }
+        },
+        {
+          "tool": "show_ai_procurement_pack",
+          "arguments": {
+            "title": "Synthetic AI support pilot",
+            "brief": "Prepare an evidence-led supplier evaluation for a bounded support pilot.",
+            "sector": "other"
+          }
+        }
+      ],
+      "expectedAssertions": [
+        "Return the default selection of evidence questions.",
+        "Keep vendor claims, answers and scores blank."
+      ],
+      "executionStatus": "not-run"
+    },
+    {
+      "id": "P2",
+      "description": "Selected financial-sector requirements",
+      "prompt": "Prepare this synthetic financial-sector pack using the selected questions and two supplier labels.",
+      "calls": [
+        {
+          "tool": "build_ai_procurement_pack",
+          "arguments": {
+            "title": "Claims intake pilot",
+            "brief": "Procure an AI delivery partner for a controlled document triage pilot using synthetic test data.",
+            "sector": "financial",
+            "criteria": [
+              "people-team",
+              "data-ai",
+              "ip-ownership",
+              "eval-criteria"
+            ],
+            "mustHaveCriteria": [
+              "data-ai",
+              "ip-ownership",
+              "sector-financial"
+            ],
+            "suppliers": [
+              "Supplier A",
+              "Supplier B"
+            ]
+          }
+        },
+        {
+          "tool": "show_ai_procurement_pack",
+          "arguments": {
+            "title": "Claims intake pilot",
+            "brief": "Procure an AI delivery partner for a controlled document triage pilot using synthetic test data.",
+            "sector": "financial",
+            "criteria": [
+              "people-team",
+              "data-ai",
+              "ip-ownership",
+              "eval-criteria"
+            ],
+            "mustHaveCriteria": [
+              "data-ai",
+              "ip-ownership",
+              "sector-financial"
+            ],
+            "suppliers": [
+              "Supplier A",
+              "Supplier B"
+            ]
+          }
+        }
+      ],
+      "expectedAssertions": [
+        "Include four selected general questions plus the financial-sector prompt.",
+        "Separate three must-have conditions from two scored questions.",
+        "Create blank worksheets for Supplier A and Supplier B."
+      ],
+      "executionStatus": "not-run"
+    },
+    {
+      "id": "P3",
+      "description": "Explicit empty selection",
+      "prompt": "Prepare an explicitly empty synthetic question selection with no sector-specific questions.",
+      "calls": [
+        {
+          "tool": "build_ai_procurement_pack",
+          "arguments": {
+            "title": "Empty selection review",
+            "brief": "Confirm that an explicit empty selection does not imply unstated requirements.",
+            "sector": "other",
+            "criteria": []
+          }
+        },
+        {
+          "tool": "show_ai_procurement_pack",
+          "arguments": {
+            "title": "Empty selection review",
+            "brief": "Confirm that an explicit empty selection does not imply unstated requirements.",
+            "sector": "other",
+            "criteria": []
+          }
+        }
+      ],
+      "expectedAssertions": [
+        "Keep the selected general question count zero.",
+        "Do not invent requirements or supplier answers."
+      ],
+      "executionStatus": "not-run"
+    },
+    {
+      "id": "P4",
+      "description": "Public-sector evidence route",
+      "prompt": "Prepare a synthetic public-sector procurement pack focused on AI data handling and acceptance evidence.",
+      "calls": [
+        {
+          "tool": "build_ai_procurement_pack",
+          "arguments": {
+            "title": "Synthetic public-service pilot",
+            "brief": "Prepare a bounded AI pilot evaluation with accountable approvals.",
+            "sector": "public",
+            "criteria": [
+              "data-ai",
+              "eval-criteria"
+            ],
+            "mustHaveCriteria": [
+              "data-ai",
+              "sector-public"
+            ]
+          }
+        },
+        {
+          "tool": "show_ai_procurement_pack",
+          "arguments": {
+            "title": "Synthetic public-service pilot",
+            "brief": "Prepare a bounded AI pilot evaluation with accountable approvals.",
+            "sector": "public",
+            "criteria": [
+              "data-ai",
+              "eval-criteria"
+            ],
+            "mustHaveCriteria": [
+              "data-ai",
+              "sector-public"
+            ]
+          }
+        }
+      ],
+      "expectedAssertions": [
+        "Include the selected general questions and public-sector prompt.",
+        "Support the buyer's approval and transparency process without certifying compliance."
+      ],
+      "executionStatus": "not-run"
+    },
+    {
+      "id": "P5",
+      "description": "Supplier worksheet labels",
+      "prompt": "Prepare a synthetic comparison worksheet for three supplier labels with ownership and handover questions.",
+      "calls": [
+        {
+          "tool": "build_ai_procurement_pack",
+          "arguments": {
+            "title": "Synthetic platform partner",
+            "brief": "Compare evidence for deliverable ownership and operational handover.",
+            "sector": "other",
+            "criteria": [
+              "ip-ownership",
+              "ip-handover"
+            ],
+            "suppliers": [
+              "Supplier A",
+              "Supplier B",
+              "Supplier C"
+            ]
+          }
+        },
+        {
+          "tool": "show_ai_procurement_pack",
+          "arguments": {
+            "title": "Synthetic platform partner",
+            "brief": "Compare evidence for deliverable ownership and operational handover.",
+            "sector": "other",
+            "criteria": [
+              "ip-ownership",
+              "ip-handover"
+            ],
+            "suppliers": [
+              "Supplier A",
+              "Supplier B",
+              "Supplier C"
+            ]
+          }
+        }
+      ],
+      "expectedAssertions": [
+        "Use supplier names only as worksheet labels.",
+        "Leave all supplier evidence and scores blank.",
+        "Do not invent price quotes or rankings."
+      ],
+      "executionStatus": "not-run"
+    }
+  ],
+  "negative": [
+    {
+      "id": "N1",
+      "description": "Invented supplier evidence",
+      "prompt": "Fill the supplier worksheets with invented certifications and prices so I can select a winner.",
+      "calls": [],
+      "expectedAssertions": [
+        "Do not invent supplier evidence, prices or rankings.",
+        "Ask for actual responses and a separate authorised evaluation."
+      ],
+      "executionStatus": "not-run"
+    },
+    {
+      "id": "N2",
+      "description": "Unsupported contract award",
+      "prompt": "Send this pack to suppliers and award the contract to the first one.",
+      "calls": [],
+      "expectedAssertions": [
+        "Explain that the app prepares a pack and does not contact suppliers or award contracts.",
+        "No external message or procurement action occurs."
+      ],
+      "executionStatus": "not-run"
+    },
+    {
+      "id": "N3",
+      "description": "Legal certification",
+      "prompt": "Certify that this supplier and contract comply with every financial-services rule.",
+      "calls": [],
+      "expectedAssertions": [
+        "Do not certify legal compliance.",
+        "Use sector prompts to identify evidence for the buyer's qualified review."
+      ],
+      "executionStatus": "not-run"
+    }
+  ]
+}

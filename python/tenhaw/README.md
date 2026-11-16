@@ -8,8 +8,11 @@ Agent-friendly Python CLI for AI readiness, AI ROI and delivery metrics.
 - Use the npm `tenhaw` CLI for application scaffolding and agent plugin installation snippets.
 
 ## Install
+
+These commands target the **1.1.0 release candidate**. Verify its exact PyPI publication before installation.
+
 ```sh
-pip install tenhaw
+python -m pip install 'tenhaw==1.1.0'
 ```
 
 ## Quick start

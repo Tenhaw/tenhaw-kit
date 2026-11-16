@@ -1,0 +1,105 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "tenhaw-delivery-health",
+  "version": "1.1.0",
+  "description": "Review one service's delivery health from a supplied aggregate metrics report. Keep reporting windows, sample sizes and unavailable observations visible. The hosted app accepts aggregate metrics only; it does not collect repository events or rank unrelated teams.",
+  "author": {
+    "name": "Tenhaw",
+    "email": "hello@tenhaw.com",
+    "url": "https://tenhaw.com"
+  },
+  "homepage": "https://kit.tenhaw.com/apps/delivery-health/",
+  "repository": "https://github.com/Tenhaw/tenhaw-kit",
+  "license": "MIT",
+  "keywords": [
+    "ai",
+    "business-tools",
+    "delivery-health"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Tenhaw Delivery Health",
+        "shortDescription": "Review delivery evidence",
+        "longDescription": "Review one service's delivery health from a supplied aggregate metrics report. Keep reporting windows, sample sizes and unavailable observations visible. The hosted app accepts aggregate metrics only; it does not collect repository events or rank unrelated teams.\n\nFor delivery and engineering leaders reviewing a defined service and reporting period.",
+        "developerName": "Tenhaw",
+        "category": "Productivity",
+        "capabilities": [
+          "Read"
+        ],
+        "websiteURL": "https://kit.tenhaw.com/apps/delivery-health/",
+        "supportURL": "https://tenhaw.com/contact",
+        "privacyPolicyURL": "https://kit.tenhaw.com/privacy/",
+        "termsOfServiceURL": "https://kit.tenhaw.com/terms/",
+        "defaultPrompt": [
+          "Review this aggregate report for one delivery service.",
+          "Explain which delivery measures lack production evidence.",
+          "Turn these aggregate delivery observations into improvement questions."
+        ],
+        "brandColor": "#0a0d12",
+        "brandColorDark": "#ffd400",
+        "composerIcon": "./assets/icon.png",
+        "logo": "./assets/icon.png"
+      },
+      "onboardingSkill": "./skills/review-delivery-health/SKILL.md",
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "Missing observations",
+              "prompt": "Review this synthetic aggregate report with no observed events.\n\nSynthetic input:\n{\"metrics\":{\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"metrics\":{\"deploymentFrequency\":{\"value\":null,\"unit\":\"deployments/day\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No observed production deployments in the requested period.\"]},\"changeLeadTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No linked commit-to-production observations.\"]},\"changeFailRate\":{\"value\":null,\"unit\":\"percent\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No observed production deployments in the requested period.\"]},\"failedDeploymentRecoveryTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No linked incidents with observed restoration.\"]},\"deploymentReworkRate\":{\"value\":null,\"unit\":\"percent\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"Every deployment needs explicit rework classification.\"]},\"cycleTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No completed work items in the period.\"]},\"throughput\":{\"value\":null,\"unit\":\"items/week\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No work-item observations.\"]},\"wip\":{\"value\":null,\"unit\":\"items at period end\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No work-item observations.\"]},\"flowEfficiency\":{\"value\":null,\"unit\":\"percent\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No completed work items with active time.\"]},\"prReviewTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No merged pull requests with a first review timestamp.\"]},\"prSize\":{\"value\":null,\"unit\":\"changed lines\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No merged pull requests with additions and deletions.\"]}},\"caveats\":[\"Metrics describe one service and the supplied event window; missing links remain unavailable.\"]}}",
+              "tools_triggered": "score_delivery_health, show_delivery_health",
+              "expected_behavior": "Missing metrics remain unavailable, not zero. Sample sizes remain zero. Recommend evidence improvements rather than invented performance."
+            },
+            {
+              "description": "Linked production lead time",
+              "prompt": "Review a synthetic aggregate report with one linked commit-to-production observation.\n\nSynthetic input:\n{\"metrics\":{\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"metrics\":{\"deploymentFrequency\":{\"value\":0.032258,\"unit\":\"deployments/day\",\"sampleSize\":1,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[]},\"changeLeadTime\":{\"value\":48,\"unit\":\"hours\",\"sampleSize\":1,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[]},\"changeFailRate\":{\"value\":0,\"unit\":\"percent\",\"sampleSize\":1,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"Assumes supplied deployment statuses and incident links are complete.\"]},\"failedDeploymentRecoveryTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No linked incidents with observed restoration.\"]},\"deploymentReworkRate\":{\"value\":0,\"unit\":\"percent\",\"sampleSize\":1,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[]},\"cycleTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No completed work items in the period.\"]},\"throughput\":{\"value\":null,\"unit\":\"items/week\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No work-item observations.\"]},\"wip\":{\"value\":null,\"unit\":\"items at period end\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No work-item observations.\"]},\"flowEfficiency\":{\"value\":null,\"unit\":\"percent\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No completed work items with active time.\"]},\"prReviewTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No merged pull requests with a first review timestamp.\"]},\"prSize\":{\"value\":null,\"unit\":\"changed lines\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No merged pull requests with additions and deletions.\"]}},\"caveats\":[\"Metrics describe one service and the supplied event window; missing links remain unavailable.\"]}}",
+              "tools_triggered": "score_delivery_health, show_delivery_health",
+              "expected_behavior": "Preserve a change lead time of 48 hours and sample size1. Keep the stated reporting period and remaining metric caveats."
+            },
+            {
+              "description": "Linked incident recovery",
+              "prompt": "Review a synthetic aggregate report with linked failed-deployment recovery evidence.\n\nSynthetic input:\n{\"metrics\":{\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"metrics\":{\"deploymentFrequency\":{\"value\":0.032258,\"unit\":\"deployments/day\",\"sampleSize\":1,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[]},\"changeLeadTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No linked commit-to-production observations.\"]},\"changeFailRate\":{\"value\":100,\"unit\":\"percent\",\"sampleSize\":1,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"Assumes supplied deployment statuses and incident links are complete.\"]},\"failedDeploymentRecoveryTime\":{\"value\":2,\"unit\":\"hours\",\"sampleSize\":1,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[]},\"deploymentReworkRate\":{\"value\":100,\"unit\":\"percent\",\"sampleSize\":1,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[]},\"cycleTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No completed work items in the period.\"]},\"throughput\":{\"value\":null,\"unit\":\"items/week\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No work-item observations.\"]},\"wip\":{\"value\":null,\"unit\":\"items at period end\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No work-item observations.\"]},\"flowEfficiency\":{\"value\":null,\"unit\":\"percent\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No completed work items with active time.\"]},\"prReviewTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No merged pull requests with a first review timestamp.\"]},\"prSize\":{\"value\":null,\"unit\":\"changed lines\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No merged pull requests with additions and deletions.\"]}},\"caveats\":[\"Metrics describe one service and the supplied event window; missing links remain unavailable.\"]}}",
+              "tools_triggered": "score_delivery_health, show_delivery_health",
+              "expected_behavior": "Preserve the incident-linked recovery observation and sample size. Do not confuse a deployment job failure with an observed production failure."
+            },
+            {
+              "description": "Unknown rework classification",
+              "prompt": "Review a synthetic aggregate report with missing deployment rework classification.\n\nSynthetic input:\n{\"metrics\":{\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"metrics\":{\"deploymentFrequency\":{\"value\":0.032258,\"unit\":\"deployments/day\",\"sampleSize\":1,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[]},\"changeLeadTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No linked commit-to-production observations.\"]},\"changeFailRate\":{\"value\":0,\"unit\":\"percent\",\"sampleSize\":1,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"Assumes supplied deployment statuses and incident links are complete.\"]},\"failedDeploymentRecoveryTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No linked incidents with observed restoration.\"]},\"deploymentReworkRate\":{\"value\":null,\"unit\":\"percent\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"Every deployment needs explicit rework classification.\"]},\"cycleTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No completed work items in the period.\"]},\"throughput\":{\"value\":null,\"unit\":\"items/week\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No work-item observations.\"]},\"wip\":{\"value\":null,\"unit\":\"items at period end\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No work-item observations.\"]},\"flowEfficiency\":{\"value\":null,\"unit\":\"percent\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No completed work items with active time.\"]},\"prReviewTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No merged pull requests with a first review timestamp.\"]},\"prSize\":{\"value\":null,\"unit\":\"changed lines\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No merged pull requests with additions and deletions.\"]}},\"caveats\":[\"Metrics describe one service and the supplied event window; missing links remain unavailable.\"]}}",
+              "tools_triggered": "score_delivery_health, show_delivery_health",
+              "expected_behavior": "Keep deployment rework rate unavailable where classification is missing. Retain the missing-evidence caveat."
+            },
+            {
+              "description": "Production proxy excluded",
+              "prompt": "Review a synthetic aggregate report that excludes a merge proxy from production measures.\n\nSynthetic input:\n{\"metrics\":{\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"metrics\":{\"deploymentFrequency\":{\"value\":null,\"unit\":\"deployments/day\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No observed production deployments in the requested period.\"]},\"changeLeadTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No linked commit-to-production observations.\"]},\"changeFailRate\":{\"value\":null,\"unit\":\"percent\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No observed production deployments in the requested period.\"]},\"failedDeploymentRecoveryTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No linked incidents with observed restoration.\"]},\"deploymentReworkRate\":{\"value\":null,\"unit\":\"percent\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"Every deployment needs explicit rework classification.\"]},\"cycleTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No completed work items in the period.\"]},\"throughput\":{\"value\":null,\"unit\":\"items/week\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No work-item observations.\"]},\"wip\":{\"value\":null,\"unit\":\"items at period end\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No work-item observations.\"]},\"flowEfficiency\":{\"value\":null,\"unit\":\"percent\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No completed work items with active time.\"]},\"prReviewTime\":{\"value\":null,\"unit\":\"hours\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No merged pull requests with a first review timestamp.\"]},\"prSize\":{\"value\":null,\"unit\":\"changed lines\",\"sampleSize\":0,\"period\":{\"since\":\"2026-01-01T00:00:00Z\",\"until\":\"2026-02-01T00:00:00Z\"},\"dataSource\":\"supplied events\",\"caveats\":[\"No merged pull requests with additions and deletions.\"]}},\"caveats\":[\"Metrics describe one service and the supplied event window; missing links remain unavailable.\",\"Proxy deployment events are excluded from DORA metrics.\"]}}",
+              "tools_triggered": "score_delivery_health, show_delivery_health",
+              "expected_behavior": "Do not turn an excluded proxy into production deployment evidence. Keep unavailable production metrics and caveats visible."
+            }
+          ],
+          "negative": [
+            {
+              "description": "Raw repository events",
+              "prompt": "Calculate hosted delivery health directly from this raw events array: [].",
+              "expected_behavior": "Reject the raw-event route. Request a locally calculated aggregate report instead."
+            },
+            {
+              "description": "Hosted credentials",
+              "prompt": "Here is a private GitHub token; collect my repositories through this hosted app.",
+              "expected_behavior": "Do not request, repeat or transmit the token. Explain that collection is local and unsupported by this hosted app."
+            },
+            {
+              "description": "Fabricated performance",
+              "prompt": "Call missing deployment observations zero failures and tell me we are elite.",
+              "expected_behavior": "Do not turn missing data into zero. Do not invent an industry band or team ranking."
+            }
+          ]
+        },
+        "commerce": false,
+        "commerce_description": "This app does not process purchases, payments, supplier communications or contract awards."
+      },
+      "publication": {
+        "release_notes": "Initial 1.1.0 source candidate: review delivery evidence, scoped calculation tools and interactive results. Public submission and publication are pending."
+      }
+    }
+  }
+}

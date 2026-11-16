@@ -38,11 +38,11 @@
     }
   ],
   "install": {
-    "claude": "claude mcp add tenhaw -- npx -y @tenhaw/mcp",
-    "codex": "codex mcp add tenhaw -- npx -y @tenhaw/mcp",
+    "claude": "claude mcp add --scope project tenhaw -- npx -y @tenhaw/mcp@1.0.1",
+    "codex": "codex mcp add tenhaw -- npx -y @tenhaw/mcp@1.0.1",
     "gemini": "gemini extensions install https://github.com/Tenhaw/tenhaw-gemini",
     "cursor": "{\"mcpServers\":{\"tenhaw\":{\"command\":\"npx\",\"args\":[\"-y\",\"@tenhaw/mcp@1.0.1\"]}}}",
-    "vscode": "code --add-mcp '{\"name\":\"tenhaw\",\"command\":\"npx\",\"args\":[\"-y\",\"@tenhaw/mcp\"]}'"
+    "vscode": "{\"mcpServers\":{\"tenhaw\":{\"type\":\"stdio\",\"command\":\"npx\",\"args\":[\"-y\",\"@tenhaw/mcp@1.0.1\"],\"tools\":[\"*\"]}}}"
   },
   "pages": [
     "install",
@@ -140,5 +140,60 @@
       "mcp": "generate_operating_model",
       "snippet": "import { generateOperatingModel } from '@tenhaw/opmodel';\nconsole.log(generateOperatingModel({ teams: [] }));"
     }
-  ]
+  ],
+  "release": {
+    "version": "1.0.1",
+    "verifiedOn": "2026-11-16",
+    "npm": "https://www.npmjs.com/package/tenhaw/v/1.0.1",
+    "pypi": "https://pypi.org/project/tenhaw/1.0.1/",
+    "registry": "https://registry.modelcontextprotocol.io/v0.1/servers/com.tenhaw%2Fkit/versions/1.0.1",
+    "mcpName": "com.tenhaw/kit",
+    "coreApiKeyRequired": false
+  },
+  "agentSetup": {
+    "status": "unreleased-source",
+    "availableInPublishedVersion": false,
+    "guide": "https://github.com/Tenhaw/tenhaw-kit/blob/main/docs/AGENT_INSTALL.md",
+    "sourceCommand": "node packages/cli/dist/index.js setup --agent codex --directory /path/to/project --json",
+    "applyArguments": [
+      "--yes"
+    ],
+    "inspectionArguments": [
+      "--check"
+    ],
+    "verificationArguments": [
+      "--verify"
+    ],
+    "agents": [
+      "codex",
+      "claude",
+      "cursor",
+      "vscode",
+      "gemini"
+    ],
+    "defaults": {
+      "transport": "local",
+      "integration": "none"
+    },
+    "configPaths": {
+      "codex": ".codex/config.toml",
+      "claude": ".mcp.json",
+      "cursor": ".cursor/mcp.json",
+      "vscode": ".mcp.json",
+      "gemini": ".gemini/settings.json"
+    },
+    "credentials": {
+      "none": [],
+      "github": [
+        "GITHUB_TOKEN"
+      ],
+      "jira": [
+        "JIRA_BASE_URL",
+        "JIRA_EMAIL",
+        "JIRA_API_TOKEN"
+      ]
+    },
+    "secretHandling": "Local environment only. Report missing variable names; never copy values into commands, configuration or logs.",
+    "onePrompt": "Install Tenhaw Kit {version} for this project and continue my requested task. Identify the coding client and use its documented project MCP configuration with npx -y @tenhaw/mcp@{version}. Preserve existing servers and instructions; report conflicting Tenhaw definitions for review. Verify the expected eight local tools and a synthetic readiness calculation. If I request a starter, scaffold a new directory, install its dependencies and run its documented build and tests. Ask me to set only missing local environment variables required for GitHub or Jira collection I request. Keep secret values out of chat, command arguments, configuration and logs. Report the checks that passed and any remaining host reload or trust step."
+  }
 }

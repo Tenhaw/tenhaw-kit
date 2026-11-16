@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "1.0",
+  "status": "draft-unsubmitted",
+  "sourceVersion": "1.1.0",
+  "product": "procurement",
+  "pluginName": "tenhaw-procurement",
+  "displayName": "Tenhaw AI Procurement",
+  "packagePath": "plugins/openai/tenhaw-procurement",
+  "submissionRoute": "with-mcp",
+  "endpoint": "https://procurement.apps.tenhaw.com/mcp/apps/procurement",
+  "uiDomain": "https://procurement.apps.tenhaw.com",
+  "expectedTools": [
+    "build_ai_procurement_pack",
+    "show_ai_procurement_pack"
+  ],
+  "authentication": "none",
+  "requiresLocalExecutor": false,
+  "reviewConversationStatus": "not-run",
+  "videoRecordingUrl": null,
+  "ownerGates": [
+    {
+      "id": "service-terms",
+      "status": "pending-owner-scope-approval",
+      "requirement": "Approve the scope of the draft hosted-service terms at https://kit.tenhaw.com/terms/ before public launch."
+    },
+    {
+      "id": "dedicated-origin-dns-tls",
+      "status": "pending-owner-deployment",
+      "requirement": "Configure https://procurement.apps.tenhaw.com as a dedicated hostname on the existing Tenhaw MCP hosting project, then verify DNS, TLS and exact host routing. Preserve a unique UI origin and portal challenge host for this plugin; no new hosting project is required."
+    },
+    {
+      "id": "endpoint-and-website",
+      "status": "not-verified-live",
+      "requirement": "Deploy and read back this exact scoped endpoint and product page, including tool allowlist, UI resources, privacy and terms URLs."
+    },
+    {
+      "id": "conversation-tests",
+      "status": "not-run",
+      "requirement": "Run all five positive and three negative cases in ChatGPT using synthetic inputs; retain actual tool selection, results and observations."
+    },
+    {
+      "id": "walkthrough-video",
+      "status": "not-recorded",
+      "requirement": "Record the working app and review cases; supply an accessible real recording URL. No recording URL is fabricated in this package."
+    },
+    {
+      "id": "domain-challenge",
+      "status": "pending-portal",
+      "requirement": "Serve the exact challenge issued by the portal. Each token is a single plain-text response; do not replace another app token at the same URL."
+    },
+    {
+      "id": "owner-identity",
+      "status": "pending-owner",
+      "requirement": "Confirm the owning OpenAI organisation/project, submission permission and verified developer identity in the portal."
+    },
+    {
+      "id": "policy-attestations",
+      "status": "pending-owner",
+      "requirement": "Review the exact package, applicable policies and attestations before submitting."
+    },
+    {
+      "id": "public-listing",
+      "status": "not-submitted",
+      "requirement": "Upload the reviewed ZIP, resolve portal findings and complete review. Publication follows approval and an explicit owner action."
+    }
+  ],
+  "sources": {
+    "package": "https://developers.openai.com/plugins/build/plugins",
+    "submission": "https://developers.openai.com/plugins/deploy/submission",
+    "desktop": "https://developers.openai.com/plugins/deploy/desktop-only",
+    "guidelines": "https://developers.openai.com/plugins/plugin-guidelines"
+  }
+}

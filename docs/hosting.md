@@ -14,4 +14,6 @@ Alternative: configure `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` f
 
 Production requests fail closed until one of these controls is configured. Development uses an in-memory limiter. Verify the real production 429 response; do not infer protection from an environment variable alone.
 
+The six application scopes share the existing MCP project under `/mcp/apps/*`. Expand and read back the native rule for those paths before setting `TENHAW_APPS_RATE_LIMIT_CONFIGURED=true`; app requests fail closed in native-limited production until that verification is recorded. The existing `/mcp` inventory remains unchanged. Review the app domain challenges and endpoint origins through [APP_LAUNCH.md](APP_LAUNCH.md) before public directory submission.
+
 No package, CLI or MCP telemetry is shipped. Hosting providers retain their own operational metadata. The reference site does not ship an analytics script.

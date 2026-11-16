@@ -3,16 +3,17 @@ import { schemas, renderReport } from '@tenhaw/core';
 import { loadFramework } from '@tenhaw/ai-readiness';
 import { runTool, serverInfo, toolsFor, type Surface } from './tools.js';
 
-export function registerRemoteTools(server:McpServer,surface:Surface='remote') {
+export function registerRemoteTools(server:McpServer,surface:Surface='remote',options:{attribution?:boolean}={}) {
   for(const definition of toolsFor(surface)){
     server.registerTool(definition.name,{
       description:definition.description,inputSchema:fromJsonSchema(definition.inputSchema as JsonSchemaType),outputSchema:fromJsonSchema(definition.outputSchema as JsonSchemaType),
       annotations:{readOnlyHint:!definition.mutates,destructiveHint:false,idempotentHint:!definition.mutates,openWorldHint:Boolean(definition.network)}
     },async(input)=>{
       try{
-        const output=await runTool(definition.name,input,surface);
+        const report=await runTool(definition.name,input,surface);
+        const output=options.attribution===false?{result:report.result}:report;
         const requested=(input as {format?:'md'|'html'|'json'})?.format??'json';
-        return {structuredContent:output,content:[{type:'text',text:requested==='json'?JSON.stringify(output):renderReport(output.result,requested,{source:'mcp',medium:'report',content:definition.name})}]};
+        return {structuredContent:output,content:[{type:'text',text:requested==='json'?JSON.stringify(output):renderReport(output.result,requested,{source:'mcp',medium:'report',content:definition.name,attribution:options.attribution})}]};
       }catch(error){return {isError:true,content:[{type:'text',text:error instanceof Error?error.message:'Tool validation failed.'}]};}
     });
   }

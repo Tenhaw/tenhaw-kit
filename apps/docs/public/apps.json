@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "1.0",
+  "status": "unreleased-source",
+  "sourceVersion": "1.1.0",
+  "products": [
+    {
+      "id": "business-case",
+      "slug": "business-case",
+      "kind": "hosted",
+      "status": "unreleased-source",
+      "displayName": "Tenhaw AI Business Case",
+      "description": "Build an AI business case from your explicit operating and cost assumptions. Compare low, base and high scenarios, recovered capacity, cash flow, NPV and payback. Explore editable project-cost assumptions. Results support planning; they are not a quote or financial advice.",
+      "endpoint": "https://business-case.apps.tenhaw.com/mcp/apps/business-case",
+      "uiDomain": "https://business-case.apps.tenhaw.com",
+      "tools": [
+        "estimate_ai_roi",
+        "estimate_ai_project_cost",
+        "show_ai_business_case"
+      ],
+      "requiresLocalExecutor": false,
+      "starterPrompts": [
+        "Build an AI business case from my operating assumptions.",
+        "Compare recovered capacity with actual cash savings.",
+        "Estimate a pilot cost using editable assumptions."
+      ]
+    },
+    {
+      "id": "readiness",
+      "slug": "readiness",
+      "kind": "hosted",
+      "status": "unreleased-source",
+      "displayName": "Tenhaw AI Readiness",
+      "description": "Run an evidence-led AI readiness self-assessment using 30 anchored questions across six dimensions. See scores, response coverage and gaps. Maturity bands require at least 80% response coverage. This supports internal self-assessment, not certification.",
+      "endpoint": "https://readiness.apps.tenhaw.com/mcp/apps/readiness",
+      "uiDomain": "https://readiness.apps.tenhaw.com",
+      "tools": [
+        "assess_ai_readiness",
+        "show_ai_readiness"
+      ],
+      "requiresLocalExecutor": false,
+      "starterPrompts": [
+        "Guide my team through an AI readiness self-assessment.",
+        "Score these readiness answers and show evidence gaps.",
+        "Compare readiness assumptions without inventing missing answers."
+      ]
+    },
+    {
+      "id": "usecase-prioritiser",
+      "slug": "usecase-prioritiser",
+      "kind": "hosted",
+      "status": "unreleased-source",
+      "displayName": "Tenhaw Use-case Prioritiser",
+      "description": "Prioritise supplied AI use cases using explicit value, feasibility, ownership and indicative governance gates. Inspect dependencies and outcome measures before taking an idea forward. The app does not certify legal risk or approve deployment.",
+      "endpoint": "https://usecase-prioritiser.apps.tenhaw.com/mcp/apps/usecase-prioritiser",
+      "uiDomain": "https://usecase-prioritiser.apps.tenhaw.com",
+      "tools": [
+        "generate_usecase_register",
+        "show_ai_usecase_priorities"
+      ],
+      "requiresLocalExecutor": false,
+      "starterPrompts": [
+        "Prioritise these AI ideas with their governance gates.",
+        "Compare value and feasibility without hiding unknown risks.",
+        "Find missing owners and dependencies in my AI use cases."
+      ]
+    },
+    {
+      "id": "delivery-health",
+      "slug": "delivery-health",
+      "kind": "hosted",
+      "status": "unreleased-source",
+      "displayName": "Tenhaw Delivery Health",
+      "description": "Review one service's delivery health from a supplied aggregate metrics report. Keep reporting windows, sample sizes and unavailable observations visible. The hosted app accepts aggregate metrics only; it does not collect repository events or rank unrelated teams.",
+      "endpoint": "https://delivery-health.apps.tenhaw.com/mcp/apps/delivery-health",
+      "uiDomain": "https://delivery-health.apps.tenhaw.com",
+      "tools": [
+        "score_delivery_health",
+        "show_delivery_health"
+      ],
+      "requiresLocalExecutor": false,
+      "starterPrompts": [
+        "Review this aggregate report for one delivery service.",
+        "Explain which delivery measures lack production evidence.",
+        "Turn these aggregate delivery observations into improvement questions."
+      ]
+    },
+    {
+      "id": "operating-model",
+      "slug": "operating-model",
+      "kind": "hosted",
+      "status": "unreleased-source",
+      "displayName": "Tenhaw Operating Model",
+      "description": "Connect supplied teams, OKRs, roadmap outcomes and interactions into an explainable product operating model. Inspect missing ownership and dependency checks. The app supports organisational design conversations; it does not prescribe a reorganisation or fabricate team commitments.",
+      "endpoint": "https://operating-model.apps.tenhaw.com/mcp/apps/operating-model",
+      "uiDomain": "https://operating-model.apps.tenhaw.com",
+      "tools": [
+        "generate_operating_model",
+        "show_product_operating_model"
+      ],
+      "requiresLocalExecutor": false,
+      "starterPrompts": [
+        "Connect these teams, OKRs and roadmap outcomes.",
+        "Find missing ownership and dependency links in this model.",
+        "Review this product operating model without inventing commitments."
+      ]
+    },
+    {
+      "id": "procurement",
+      "slug": "procurement",
+      "kind": "hosted",
+      "status": "unreleased-source",
+      "displayName": "Tenhaw AI Procurement",
+      "description": "Prepare a vendor-neutral AI procurement pack from a defined buying brief. Select evidence questions, must-have criteria and blank supplier response worksheets. Sector prompts support the buyer's own review. No supplier claims, prices, rankings, legal advice or procurement approval are invented.",
+      "endpoint": "https://procurement.apps.tenhaw.com/mcp/apps/procurement",
+      "uiDomain": "https://procurement.apps.tenhaw.com",
+      "tools": [
+        "build_ai_procurement_pack",
+        "show_ai_procurement_pack"
+      ],
+      "requiresLocalExecutor": false,
+      "starterPrompts": [
+        "Prepare an AI supplier evaluation pack from my brief.",
+        "Separate must-have conditions from scored supplier questions.",
+        "Create blank supplier worksheets for an AI procurement."
+      ]
+    },
+    {
+      "id": "developer-kit",
+      "slug": "developer-kit",
+      "kind": "desktop",
+      "status": "unreleased-source",
+      "displayName": "Tenhaw Kit Developer Tools",
+      "description": "Build internal product tools with connected deterministic calculations and local coding workflows. Validate readiness, aggregate delivery evidence, AI business cases, use-case registers and operating models through one remote MCP connection; scaffold projects and integrate the results locally. Desktop execution is required for local work.",
+      "endpoint": "https://mcp.tenhaw.com/mcp",
+      "tools": [
+        "assess_ai_readiness",
+        "score_delivery_health",
+        "estimate_ai_roi",
+        "estimate_ai_project_cost",
+        "generate_usecase_register",
+        "generate_operating_model"
+      ],
+      "requiresLocalExecutor": true,
+      "starterPrompts": [
+        "Validate a portfolio model with the connected tools, then integrate it locally.",
+        "Fetch the readiness questionnaire and build an evidence-aware assessment form.",
+        "Calculate an AI business case and add the validated result to my project."
+      ]
+    }
+  ]
+}

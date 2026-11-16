@@ -1,6 +1,6 @@
 {
   "name": "@tenhaw/ai-roi",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Explicit cash-realisation and capacity modelling for AI investments",
   "type": "module",
   "main": "./dist/index.js",
