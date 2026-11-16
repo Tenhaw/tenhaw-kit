@@ -86,7 +86,7 @@ export async function getRegistryJson(url, { missing = false } = {}) {
   return response.json();
 }
 
-function checkRegistryFiles(pkg, name, version, expected, requireComplete) {
+function checkRegistryFiles(pkg, name, version, expected) {
   if (normalise(pkg?.info?.name ?? '') !== name || pkg?.info?.version !== version || !Array.isArray(pkg?.urls)) throw new Error(`Unexpected PyPI release metadata for ${name}@${version}.`);
   const seen = new Set();
   for (const remote of pkg.urls) {
@@ -96,7 +96,7 @@ function checkRegistryFiles(pkg, name, version, expected, requireComplete) {
     if (remote.yanked) throw new Error(`PyPI distribution is yanked: ${remote.filename}. Review the release before retrying.`);
     seen.add(remote.filename);
   }
-  if (requireComplete && expected.some(file => !seen.has(file.filename))) throw new Error(`PyPI has not exposed both expected distributions for ${name}@${version}.`);
+  return expected.every(file => seen.has(file.filename));
 }
 
 export async function preparePythonRelease({ root = '.', version, project = 'all', getJson = getRegistryJson }) {
@@ -105,7 +105,7 @@ export async function preparePythonRelease({ root = '.', version, project = 'all
   // Finish every registry conflict check before staging any publishable files.
   for (const name of selected) {
     const existing = await getJson(`https://pypi.org/pypi/${name}/${version}/json`, { missing: true });
-    if (existing !== null) checkRegistryFiles(existing, name, version, distributions.filter(file => file.name === name), false);
+    if (existing !== null) checkRegistryFiles(existing, name, version, distributions.filter(file => file.name === name));
   }
   const artifacts = join(resolve(root), 'artifacts');
   const destination = join(artifacts, 'python-publish');
@@ -145,22 +145,47 @@ function checkAttestation(provenance, file) {
   if (!verified) throw new Error(`Missing matching PyPI publish attestation from the protected release publisher for ${file.filename}.`);
 }
 
-export async function verifyPythonRelease({ root = '.', version, project = 'all', getJson = getRegistryJson, retry = operation => operation() }) {
+const visibilityPause = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
+
+export async function verifyPythonRelease({ root = '.', version, project = 'all', getJson = getRegistryJson, timeoutMs = 10 * 60 * 1000, intervalMs = 15 * 1000, now = Date.now, pause = visibilityPause, report = console.log }) {
+  if (typeof getJson !== 'function' || typeof now !== 'function' || typeof pause !== 'function' || typeof report !== 'function' || !Number.isFinite(timeoutMs) || timeoutMs <= 0 || !Number.isFinite(intervalMs) || intervalMs <= 0) throw new Error('Invalid PyPI visibility poll configuration.');
   const distributions = await loadPythonDistributions({ root, version, project });
   const selected = selectedPythonProjects(project);
-  const observations = [];
-  for (const name of selected) {
-    const expected = distributions.filter(file => file.name === name);
-    await retry(async () => {
-      const pkg = await getJson(`https://pypi.org/pypi/${name}/${version}/json`);
-      checkRegistryFiles(pkg, name, version, expected, true);
-      for (const file of expected) {
-        const provenance = await getJson(`https://pypi.org/integrity/${name}/${version}/${encodeURIComponent(file.filename)}/provenance`);
+  const expectedByProject = new Map(selected.map(name => [name, distributions.filter(file => file.name === name)]));
+  const started = now(), deadline = started + timeoutMs;
+  if (!Number.isFinite(started) || !Number.isFinite(deadline)) throw new Error('Invalid PyPI visibility clock or deadline.');
+  let pending = [...selected];
+  const timedOut = () => new Error(`Timed out waiting for PyPI public metadata or publish attestations: ${pending.map(name => `${name}@${version}`).join(', ')}. Verify the same immutable bundle again after registry propagation; do not rebuild or repeat accepted uploads.`);
+  while (pending.length) {
+    const before = now();
+    if (!Number.isFinite(before)) throw new Error('Invalid PyPI visibility clock.');
+    if (before >= deadline) throw timedOut();
+    const waiting = await Promise.all(pending.map(async name => {
+      const expected = expectedByProject.get(name);
+      // The reader returns null only for HTTP 404. Other errors and conflicting
+      // immutable metadata fail immediately; this verifier never uploads files.
+      const pkg = await getJson(`https://pypi.org/pypi/${name}/${version}/json`, { missing: true });
+      if (pkg === null) return name;
+      if (!checkRegistryFiles(pkg, name, version, expected)) return name;
+      const attestations = await Promise.all(expected.map(async file => {
+        const provenance = await getJson(`https://pypi.org/integrity/${name}/${version}/${encodeURIComponent(file.filename)}/provenance`, { missing: true });
+        if (provenance === null) return false;
         checkAttestation(provenance, file);
-      }
-    });
-    observations.push({ name, version, distributions: expected.map(({ filename, sha256 }) => ({ filename, sha256, attestations: true })) });
+        return true;
+      }));
+      return attestations.every(Boolean) ? null : name;
+    }));
+    const observedAt = now();
+    if (!Number.isFinite(observedAt)) throw new Error('Invalid PyPI visibility clock.');
+    if (observedAt > deadline) throw timedOut();
+    pending = waiting.filter(name => name !== null);
+    if (!pending.length) break;
+    const remaining = deadline - observedAt;
+    if (remaining <= 0) throw timedOut();
+    report(`Waiting for PyPI public metadata or publish attestations for ${pending.length} project(s); one shared ${timeoutMs / 60000}-minute deadline, no repeat uploads.`);
+    await pause(Math.min(intervalMs, remaining));
   }
+  const observations = selected.map(name => ({ name, version, distributions: expectedByProject.get(name).map(({ filename, sha256 }) => ({ filename, sha256, attestations: true })) }));
   const evidence = { version, scope: project === 'all' ? 'all' : 'selected-project', selectedProject: project === 'all' ? null : project, allPythonProjectsVerified: project === 'all', attestationCheck: 'PyPI Integrity API publisher and publish statement subject', packages: observations };
   await mkdir(join(resolve(root), 'artifacts'), { recursive: true });
   await writeFile(join(resolve(root), 'artifacts/pypi-verification.json'), `${JSON.stringify(evidence, null, 2)}\n`);

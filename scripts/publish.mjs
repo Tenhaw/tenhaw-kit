@@ -20,14 +20,12 @@ const names=['core','ai-readiness','delivery-metrics','ai-roi','usecase-register
 const pythonNames=['tenhaw','tenhaw-ai-readiness','tenhaw-delivery-metrics','tenhaw-ai-roi'];
 const env={...process.env,npm_config_cache:process.env.npm_config_cache??join(process.env.RUNNER_TEMP??tmpdir(),'tenhaw-kit-release-npm-cache')};delete env.NODE_AUTH_TOKEN;delete env.NPM_TOKEN;
 function run(file,args,cwd=root){try{return execFileSync(file,args,{cwd,env,stdio:'pipe',maxBuffer:8*1024*1024}).toString();}catch(error){const codes=String(error.stderr??'').match(/\bE[A-Z][A-Z0-9_]+\b/g)??[];throw new Error(`${file} ${args[0]} failed (exit ${error.status??'unknown'}${codes.length?`, ${[...new Set(codes)].join(', ')}`:''}). Review tool configuration; child output was suppressed.`);}}
-const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 async function getJson(url,{missing=false}={}){
   const response=await fetch(url,{signal:AbortSignal.timeout(20000),headers:{Accept:'application/json'}});
   if(missing&&response.status===404)return null;
   if(!response.ok)throw new Error(`Public registry returned HTTP ${response.status} for ${new URL(url).pathname}.`);
   return response.json();
 }
-async function retry(operation){let error;for(let i=0;i<6;i++){try{return await operation();}catch(cause){error=cause;if(i<5)await pause(5000);}}throw error;}
 function requireActions(){
   if(process.env.GITHUB_ACTIONS!=='true'||process.env.GITHUB_REPOSITORY!=='Tenhaw/tenhaw-kit'||process.env.GITHUB_REF!=='refs/heads/main')throw new Error('Publishing is restricted to the reviewed Tenhaw/tenhaw-kit main branch in GitHub Actions.');
   if(!process.env.GITHUB_WORKFLOW_REF?.includes('/.github/workflows/release.yml@'))throw new Error('The OIDC publisher must run directly in release.yml.');
@@ -48,7 +46,7 @@ if(preparePython){
   console.log(`Prepared ${result.distributions.length} verified Python archives for ${result.projects.join(', ')} in artifacts/python-publish; existing registry files match. No publication attempted.`);process.exit(0);
 }
 if(verifyPython){
-  await verifyPythonRelease({root,version,project:pythonProject,getJson,retry});
+  await verifyPythonRelease({root,version,project:pythonProject,getJson});
   console.log(pythonProject==='all'?`Verified all four PyPI projects at ${version}, both exact archives and protected publisher attestations.`:`Verified selected PyPI project ${pythonProject}@${version}, both exact archives and protected publisher attestations. Other projects were not verified.`);process.exit(0);
 }
 

@@ -1,7 +1,17 @@
 export const pythonProjects: string[];
 export interface PythonDistribution { name: string; version: string; filename: string; path: string; sha256: string }
 export type RegistryGetter = (url: string, options?: { missing?: boolean }) => Promise<unknown>;
-export interface PythonReleaseOptions { root?: string; version: string; project?: string; getJson?: RegistryGetter; retry?: <T>(operation: () => Promise<T>) => Promise<T> }
+export interface PythonReleaseOptions {
+  root?: string;
+  version: string;
+  project?: string;
+  getJson?: RegistryGetter;
+  timeoutMs?: number;
+  intervalMs?: number;
+  now?: () => number;
+  pause?: (milliseconds: number) => Promise<void>;
+  report?: (message: string) => void;
+}
 export interface PythonReleaseEvidence {
   version: string;
   scope: 'all' | 'selected-project';
