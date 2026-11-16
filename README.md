@@ -10,37 +10,34 @@ Building blocks for agents creating internal product, portfolio, delivery and AI
 
 ## Install the published release
 
-Version **1.0.1** is published on [npm](https://www.npmjs.com/package/tenhaw/v/1.0.1), [PyPI](https://pypi.org/project/tenhaw/1.0.1/) and the [official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers/com.tenhaw%2Fkit/versions/1.0.1) as `com.tenhaw/kit`, verified on 16 November 2026. See [the runbook](docs/RUNBOOK.md) for release evidence.
+Version **1.1.0** is published on [npm](https://www.npmjs.com/package/tenhaw/v/1.1.0), [PyPI](https://pypi.org/project/tenhaw/1.1.0/) and the [official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers/com.tenhaw%2Fkit/versions/1.1.0) as `com.tenhaw/kit`, verified on 16 November 2026. See [the runbook](docs/RUNBOOK.md) for release evidence.
 
 ```sh
-npx -y tenhaw@1.0.1 --help
-npx -y tenhaw@1.0.1 readiness --questionnaire --json
-uvx --from tenhaw==1.0.1 tenhaw-py --help
+npx -y tenhaw@1.1.0 --help
+npx -y tenhaw@1.1.0 readiness --questionnaire --json
+uvx --from tenhaw==1.1.0 tenhaw-py --help
 ```
 
 Node.js 22.14+ is required for npm and local MCP; Python 3.10+ for Python. Core tools require no Tenhaw API key. GitHub and Jira credentials are needed only when you request local collection.
 
 ## Give your coding agent one prompt
 
-> Install Tenhaw Kit 1.0.1 for this project. Identify the coding client and use its documented project MCP configuration with `npx -y @tenhaw/mcp@1.0.1`. Preserve existing servers and instructions. Verify that the connection exposes all eight local tools and run a synthetic readiness calculation. If I ask for a starter, scaffold it into a new directory, install its dependencies and run its build and tests. Ask me to set only missing environment variables needed for GitHub or Jira collection I request. Keep secret values out of prompts, commands, configuration and logs. Report what passed and any remaining host reload or trust step.
+> Install Tenhaw Kit 1.1.0 for this project and continue my requested task. Identify the coding client and project directory, then run npx -y tenhaw@1.1.0 setup --agent CLIENT --directory PROJECT --json using the detected client and project path in place of CLIENT and PROJECT. Inspect the plan, preserve existing servers and instructions, and report conflicting Tenhaw definitions for review. Apply the configuration with the same command plus --yes --verify. Verify the expected eight local tools and a synthetic readiness calculation. If I request a starter, scaffold a new directory, install its dependencies and run its documented build and tests. Ask me to set only missing local environment variables required for GitHub or Jira collection I request. Keep secret values out of chat, command arguments, configuration and logs. Report the checks that passed and any remaining host reload, enablement or trust step; confirm a tool call inside the coding client after that step.
 
 Use [the agent install guide](docs/AGENT_INSTALL.md) for exact configuration paths, credentials and acceptance checks. The local server exposes eight tools; the [remote endpoint](https://mcp.tenhaw.com/mcp) exposes six pure tools and accepts aggregate delivery metrics only.
 
-## Automated setup from source
+## Automated project setup
 
-The new `setup` command in this checkout is **unreleased** and is not included in npm 1.0.1. Build this source to use it:
+Plan the connection, then apply it and verify the pinned MCP server:
 
 ```sh
-corepack pnpm install
-corepack pnpm build
-node packages/cli/dist/index.js readiness --questionnaire --json
-node packages/cli/dist/index.js setup --agent codex --directory /path/to/project --json
-node packages/cli/dist/index.js setup --agent codex --directory /path/to/project --yes --verify --json
+npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --json
+npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --yes --verify --json
 ```
 
-Replace `codex` with `claude`, `cursor`, `vscode` or `gemini`. Setup plans by default; `--yes` writes the selected project configuration, `--check` inspects it and `--verify` probes the selected MCP connection. Use `--transport remote` for pure tools, or `--integration github,jira` with local transport for requested collection. Credentials remain in the local environment.
+Replace `codex` with `claude`, `cursor`, `vscode` or `gemini`. Setup plans by default; `--yes` writes the selected project configuration, `--check` inspects it and `--verify` probes the selected MCP connection. Existing servers and instructions are preserved; conflicting Tenhaw definitions require review. Use `--transport remote` for pure tools, or `--integration github,jira` with local transport for requested collection. Credentials remain in the local environment. After any client reload, enablement or trust step, confirm a tool call inside the client.
 
-For a published starter, run `npm create tenhaw@1.0.1 -- product-operating-model internal-portfolio --yes --json`, then run its documented dependency install, build and test commands. Scaffolding preserves existing directories and never installs dependencies itself. Templates use synthetic examples and browser-local data.
+For a published starter, run `npm create tenhaw@1.1.0 -- product-operating-model internal-portfolio --yes --json`, then run its documented dependency install, build and test commands. Scaffolding preserves existing directories and never installs dependencies itself. Templates use synthetic examples and browser-local data.
 
 ## Compose the packages
 

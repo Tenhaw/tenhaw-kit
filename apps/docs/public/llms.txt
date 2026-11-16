@@ -2,31 +2,32 @@
 
 Local-first agent tools for AI readiness, delivery performance, AI business cases, use-case registers and operating models. MIT code, CC BY 4.0 framework content. No installed-tool telemetry.
 
-Published release: 1.0.1, verified 2026-11-16. [npm](https://www.npmjs.com/package/tenhaw/v/1.0.1), [PyPI](https://pypi.org/project/tenhaw/1.0.1/), [official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers/com.tenhaw%2Fkit/versions/1.0.1), identity com.tenhaw/kit. Core tools require no Tenhaw API key.
+Published release: 1.1.0, verified 2026-11-16. [npm](https://www.npmjs.com/package/tenhaw/v/1.1.0), [PyPI](https://pypi.org/project/tenhaw/1.1.0/), [official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers/com.tenhaw%2Fkit/versions/1.1.0), identity com.tenhaw/kit. Core tools require no Tenhaw API key.
 
 ## Install
 
 ```sh
-npx -y tenhaw@1.0.1 --help
-codex mcp add tenhaw -- npx -y @tenhaw/mcp@1.0.1
-uvx --from tenhaw==1.0.1 tenhaw-py --help
+npx -y tenhaw@1.1.0 --help
+npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --json
+uvx --from tenhaw==1.1.0 tenhaw-py --help
 ```
 
 Remote MCP: https://mcp.tenhaw.com/mcp . Local: eight tools. Remote: six pure tools, aggregate delivery metrics only.
 
 ## One prompt for a coding agent
 
-Install Tenhaw Kit 1.0.1 for this project and continue my requested task. Identify the coding client and use its documented project MCP configuration with npx -y @tenhaw/mcp@1.0.1. Preserve existing servers and instructions; report conflicting Tenhaw definitions for review. Verify the expected eight local tools and a synthetic readiness calculation. If I request a starter, scaffold a new directory, install its dependencies and run its documented build and tests. Ask me to set only missing local environment variables required for GitHub or Jira collection I request. Keep secret values out of chat, command arguments, configuration and logs. Report the checks that passed and any remaining host reload or trust step.
+Install Tenhaw Kit 1.1.0 for this project and continue my requested task. Identify the coding client and project directory, then run npx -y tenhaw@1.1.0 setup --agent CLIENT --directory PROJECT --json using the detected client and project path in place of CLIENT and PROJECT. Inspect the plan, preserve existing servers and instructions, and report conflicting Tenhaw definitions for review. Apply the configuration with the same command plus --yes --verify. Verify the expected eight local tools and a synthetic readiness calculation. If I request a starter, scaffold a new directory, install its dependencies and run its documented build and tests. Ask me to set only missing local environment variables required for GitHub or Jira collection I request. Keep secret values out of chat, command arguments, configuration and logs. Report the checks that passed and any remaining host reload, enablement or trust step; confirm a tool call inside the coding client after that step.
 
-## Automated setup from source
+## Automated project setup
 
-The setup command is unreleased and is not included in npm 1.0.1. Build the source checkout, then run:
+The published CLI includes setup. Plan the project connection, then apply it and verify the selected MCP server:
 
 ```sh
-node packages/cli/dist/index.js setup --agent codex --directory /path/to/project --json
+npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --json
+npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --yes --verify --json
 ```
 
-Setup plans by default. Add --yes to apply, --check to inspect without writing, and --verify to probe the selected MCP server with a synthetic readiness calculation. Agents: codex, claude, cursor, vscode, gemini. Defaults: --transport local --integration none. GitHub/Jira collection requires local transport and only the relevant environment credentials. Report missing variable names, never values. Confirm the tool call inside the selected client after its reload or trust step. [Full agent install guide](https://github.com/Tenhaw/tenhaw-kit/blob/main/docs/AGENT_INSTALL.md).
+Setup plans by default. Add --yes to apply, --check to inspect without writing, and --verify to probe the selected MCP server with a synthetic readiness calculation. Existing servers and instructions are preserved; conflicting Tenhaw definitions require review. Agents: codex, claude, cursor, vscode, gemini. Defaults: --transport local --integration none. GitHub/Jira collection requires local transport and only the relevant environment credentials. Report missing variable names, never values. Confirm the tool call inside the selected client after its reload, enablement or trust step. [Full agent install guide](https://github.com/Tenhaw/tenhaw-kit/blob/main/docs/AGENT_INSTALL.md).
 
 ## References
 

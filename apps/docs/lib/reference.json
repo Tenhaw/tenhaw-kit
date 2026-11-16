@@ -38,11 +38,11 @@
     }
   ],
   "install": {
-    "claude": "claude mcp add --scope project tenhaw -- npx -y @tenhaw/mcp@1.0.1",
-    "codex": "codex mcp add tenhaw -- npx -y @tenhaw/mcp@1.0.1",
-    "gemini": "gemini extensions install https://github.com/Tenhaw/tenhaw-gemini",
-    "cursor": "{\"mcpServers\":{\"tenhaw\":{\"command\":\"npx\",\"args\":[\"-y\",\"@tenhaw/mcp@1.0.1\"]}}}",
-    "vscode": "{\"mcpServers\":{\"tenhaw\":{\"type\":\"stdio\",\"command\":\"npx\",\"args\":[\"-y\",\"@tenhaw/mcp@1.0.1\"],\"tools\":[\"*\"]}}}"
+    "claude": "claude mcp add --scope project tenhaw -- npx -y @tenhaw/mcp@1.1.0",
+    "codex": "codex mcp add tenhaw -- npx -y @tenhaw/mcp@1.1.0",
+    "gemini": "npx -y tenhaw@1.1.0 setup --agent gemini --yes --verify --json",
+    "cursor": "{\"mcpServers\":{\"tenhaw\":{\"command\":\"npx\",\"args\":[\"-y\",\"@tenhaw/mcp@1.1.0\"]}}}",
+    "vscode": "{\"mcpServers\":{\"tenhaw\":{\"type\":\"stdio\",\"command\":\"npx\",\"args\":[\"-y\",\"@tenhaw/mcp@1.1.0\"],\"tools\":[\"*\"]}}}"
   },
   "pages": [
     "install",
@@ -142,17 +142,17 @@
     }
   ],
   "release": {
-    "version": "1.0.1",
+    "version": "1.1.0",
     "verifiedOn": "2026-11-16",
-    "npm": "https://www.npmjs.com/package/tenhaw/v/1.0.1",
-    "pypi": "https://pypi.org/project/tenhaw/1.0.1/",
-    "registry": "https://registry.modelcontextprotocol.io/v0.1/servers/com.tenhaw%2Fkit/versions/1.0.1",
+    "npm": "https://www.npmjs.com/package/tenhaw/v/1.1.0",
+    "pypi": "https://pypi.org/project/tenhaw/1.1.0/",
+    "registry": "https://registry.modelcontextprotocol.io/v0.1/servers/com.tenhaw%2Fkit/versions/1.1.0",
     "mcpName": "com.tenhaw/kit",
     "coreApiKeyRequired": false
   },
   "agentSetup": {
-    "status": "unreleased-source",
-    "availableInPublishedVersion": false,
+    "status": "published",
+    "availableInPublishedVersion": true,
     "guide": "https://github.com/Tenhaw/tenhaw-kit/blob/main/docs/AGENT_INSTALL.md",
     "sourceCommand": "node packages/cli/dist/index.js setup --agent codex --directory /path/to/project --json",
     "applyArguments": [
@@ -194,6 +194,9 @@
       ]
     },
     "secretHandling": "Local environment only. Report missing variable names; never copy values into commands, configuration or logs.",
-    "onePrompt": "Install Tenhaw Kit {version} for this project and continue my requested task. Identify the coding client and use its documented project MCP configuration with npx -y @tenhaw/mcp@{version}. Preserve existing servers and instructions; report conflicting Tenhaw definitions for review. Verify the expected eight local tools and a synthetic readiness calculation. If I request a starter, scaffold a new directory, install its dependencies and run its documented build and tests. Ask me to set only missing local environment variables required for GitHub or Jira collection I request. Keep secret values out of chat, command arguments, configuration and logs. Report the checks that passed and any remaining host reload or trust step."
+    "onePrompt": "Install Tenhaw Kit {version} for this project and continue my requested task. Identify the coding client and project directory, then run npx -y tenhaw@{version} setup --agent CLIENT --directory PROJECT --json using the detected client and project path in place of CLIENT and PROJECT. Inspect the plan, preserve existing servers and instructions, and report conflicting Tenhaw definitions for review. Apply the configuration with the same command plus --yes --verify. Verify the expected eight local tools and a synthetic readiness calculation. If I request a starter, scaffold a new directory, install its dependencies and run its documented build and tests. Ask me to set only missing local environment variables required for GitHub or Jira collection I request. Keep secret values out of chat, command arguments, configuration and logs. Report the checks that passed and any remaining host reload, enablement or trust step; confirm a tool call inside the coding client after that step.",
+    "command": "npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --json",
+    "applyCommand": "npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --yes --verify --json",
+    "checkCommand": "npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --check --verify --json"
   }
 }

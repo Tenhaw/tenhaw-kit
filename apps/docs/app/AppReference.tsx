@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { appProducts } from '../lib/apps';
+import { version } from '../lib/reference';
 
 export function AppIndex() {
   return <>
@@ -28,7 +29,7 @@ export function AppDetail({ slug }: { slug: string }) {
     </> : <>
       <h2>Calculation tools for your project</h2><p>Use the public MCP connection to calculate and validate synthetic or authorised aggregate inputs before integrating the matching library and schemas into your project. No Tenhaw API key is required.</p><ul>{product.tools.map(name => <li key={name}><code>{name}</code></li>)}</ul><pre><code>{product.endpoint}</code></pre>
       <h2>Local execution</h2><p>This developer plugin also requires a local coding environment for scaffolding, installation, builds and source-system collection. It uses the published CLI, your project conventions and credentials configured in your local environment when collection is requested. Generated starters use synthetic examples and browser-local data.</p>
-      <pre><code>{'npx -y tenhaw@1.0.1 init product-operating-model internal-portfolio --yes --json'}</code></pre>
+      <pre><code>{`npx -y tenhaw@${version} init product-operating-model internal-portfolio --yes --json`}</code></pre>
     </>}
     <h2>Review the source</h2><div className="links"><a href={`https://github.com/Tenhaw/tenhaw-kit/tree/main/${product.packagePath}`}>Plugin package</a><a href={`https://github.com/Tenhaw/tenhaw-kit/tree/main/launch/apps/${product.slug}`}>Tests and submission status</a><Link href="/privacy/">Privacy</Link><Link href="/terms/">Service terms</Link></div>
   </>;
