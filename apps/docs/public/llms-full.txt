@@ -2,31 +2,32 @@
 
 Local-first agent tools for AI readiness, delivery performance, AI business cases, use-case registers and operating models. MIT code, CC BY 4.0 framework content. No installed-tool telemetry.
 
-Published release: 1.0.1, verified 2026-11-16. [npm](https://www.npmjs.com/package/tenhaw/v/1.0.1), [PyPI](https://pypi.org/project/tenhaw/1.0.1/), [official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers/com.tenhaw%2Fkit/versions/1.0.1), identity com.tenhaw/kit. Core tools require no Tenhaw API key.
+Published release: 1.1.0, verified 2026-11-16. [npm](https://www.npmjs.com/package/tenhaw/v/1.1.0), [PyPI](https://pypi.org/project/tenhaw/1.1.0/), [official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers/com.tenhaw%2Fkit/versions/1.1.0), identity com.tenhaw/kit. Core tools require no Tenhaw API key.
 
 ## Install
 
 ```sh
-npx -y tenhaw@1.0.1 --help
-codex mcp add tenhaw -- npx -y @tenhaw/mcp@1.0.1
-uvx --from tenhaw==1.0.1 tenhaw-py --help
+npx -y tenhaw@1.1.0 --help
+npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --json
+uvx --from tenhaw==1.1.0 tenhaw-py --help
 ```
 
 Remote MCP: https://mcp.tenhaw.com/mcp . Local: eight tools. Remote: six pure tools, aggregate delivery metrics only.
 
 ## One prompt for a coding agent
 
-Install Tenhaw Kit 1.0.1 for this project and continue my requested task. Identify the coding client and use its documented project MCP configuration with npx -y @tenhaw/mcp@1.0.1. Preserve existing servers and instructions; report conflicting Tenhaw definitions for review. Verify the expected eight local tools and a synthetic readiness calculation. If I request a starter, scaffold a new directory, install its dependencies and run its documented build and tests. Ask me to set only missing local environment variables required for GitHub or Jira collection I request. Keep secret values out of chat, command arguments, configuration and logs. Report the checks that passed and any remaining host reload or trust step.
+Install Tenhaw Kit 1.1.0 for this project and continue my requested task. Identify the coding client and project directory, then run npx -y tenhaw@1.1.0 setup --agent CLIENT --directory PROJECT --json using the detected client and project path in place of CLIENT and PROJECT. Inspect the plan, preserve existing servers and instructions, and report conflicting Tenhaw definitions for review. Apply the configuration with the same command plus --yes --verify. Verify the expected eight local tools and a synthetic readiness calculation. If I request a starter, scaffold a new directory, install its dependencies and run its documented build and tests. Ask me to set only missing local environment variables required for GitHub or Jira collection I request. Keep secret values out of chat, command arguments, configuration and logs. Report the checks that passed and any remaining host reload, enablement or trust step; confirm a tool call inside the coding client after that step.
 
-## Automated setup from source
+## Automated project setup
 
-The setup command is unreleased and is not included in npm 1.0.1. Build the source checkout, then run:
+The published CLI includes setup. Plan the project connection, then apply it and verify the selected MCP server:
 
 ```sh
-node packages/cli/dist/index.js setup --agent codex --directory /path/to/project --json
+npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --json
+npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --yes --verify --json
 ```
 
-Setup plans by default. Add --yes to apply, --check to inspect without writing, and --verify to probe the selected MCP server with a synthetic readiness calculation. Agents: codex, claude, cursor, vscode, gemini. Defaults: --transport local --integration none. GitHub/Jira collection requires local transport and only the relevant environment credentials. Report missing variable names, never values. Confirm the tool call inside the selected client after its reload or trust step. [Full agent install guide](https://github.com/Tenhaw/tenhaw-kit/blob/main/docs/AGENT_INSTALL.md).
+Setup plans by default. Add --yes to apply, --check to inspect without writing, and --verify to probe the selected MCP server with a synthetic readiness calculation. Existing servers and instructions are preserved; conflicting Tenhaw definitions require review. Agents: codex, claude, cursor, vscode, gemini. Defaults: --transport local --integration none. GitHub/Jira collection requires local transport and only the relevant environment credentials. Report missing variable names, never values. Confirm the tool call inside the selected client after its reload, enablement or trust step. [Full agent install guide](https://github.com/Tenhaw/tenhaw-kit/blob/main/docs/AGENT_INSTALL.md).
 
 ## References
 
@@ -58,17 +59,17 @@ Six hosted product profiles and one desktop developer package are implemented in
 {
   "sourceVersion": "1.1.0",
   "release": {
-    "version": "1.0.1",
+    "version": "1.1.0",
     "verifiedOn": "2026-11-16",
-    "npm": "https://www.npmjs.com/package/tenhaw/v/1.0.1",
-    "pypi": "https://pypi.org/project/tenhaw/1.0.1/",
-    "registry": "https://registry.modelcontextprotocol.io/v0.1/servers/com.tenhaw%2Fkit/versions/1.0.1",
+    "npm": "https://www.npmjs.com/package/tenhaw/v/1.1.0",
+    "pypi": "https://pypi.org/project/tenhaw/1.1.0/",
+    "registry": "https://registry.modelcontextprotocol.io/v0.1/servers/com.tenhaw%2Fkit/versions/1.1.0",
     "mcpName": "com.tenhaw/kit",
     "coreApiKeyRequired": false
   },
   "agentSetup": {
-    "status": "unreleased-source",
-    "availableInPublishedVersion": false,
+    "status": "published",
+    "availableInPublishedVersion": true,
     "guide": "https://github.com/Tenhaw/tenhaw-kit/blob/main/docs/AGENT_INSTALL.md",
     "sourceCommand": "node packages/cli/dist/index.js setup --agent codex --directory /path/to/project --json",
     "applyArguments": [
@@ -110,7 +111,10 @@ Six hosted product profiles and one desktop developer package are implemented in
       ]
     },
     "secretHandling": "Local environment only. Report missing variable names; never copy values into commands, configuration or logs.",
-    "onePrompt": "Install Tenhaw Kit 1.0.1 for this project and continue my requested task. Identify the coding client and use its documented project MCP configuration with npx -y @tenhaw/mcp@1.0.1. Preserve existing servers and instructions; report conflicting Tenhaw definitions for review. Verify the expected eight local tools and a synthetic readiness calculation. If I request a starter, scaffold a new directory, install its dependencies and run its documented build and tests. Ask me to set only missing local environment variables required for GitHub or Jira collection I request. Keep secret values out of chat, command arguments, configuration and logs. Report the checks that passed and any remaining host reload or trust step."
+    "onePrompt": "Install Tenhaw Kit 1.1.0 for this project and continue my requested task. Identify the coding client and project directory, then run npx -y tenhaw@1.1.0 setup --agent CLIENT --directory PROJECT --json using the detected client and project path in place of CLIENT and PROJECT. Inspect the plan, preserve existing servers and instructions, and report conflicting Tenhaw definitions for review. Apply the configuration with the same command plus --yes --verify. Verify the expected eight local tools and a synthetic readiness calculation. If I request a starter, scaffold a new directory, install its dependencies and run its documented build and tests. Ask me to set only missing local environment variables required for GitHub or Jira collection I request. Keep secret values out of chat, command arguments, configuration and logs. Report the checks that passed and any remaining host reload, enablement or trust step; confirm a tool call inside the coding client after that step.",
+    "command": "npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --json",
+    "applyCommand": "npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --yes --verify --json",
+    "checkCommand": "npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --check --verify --json"
   }
 }
 ```
@@ -121,41 +125,41 @@ Six hosted product profiles and one desktop developer package are implemented in
 
 Project configuration: .mcp.json.
 
-claude mcp add --scope project tenhaw -- npx -y @tenhaw/mcp@1.0.1
+claude mcp add --scope project tenhaw -- npx -y @tenhaw/mcp@1.1.0
 
 ### codex
 
 Project configuration: .codex/config.toml.
 
-codex mcp add tenhaw -- npx -y @tenhaw/mcp@1.0.1
+codex mcp add tenhaw -- npx -y @tenhaw/mcp@1.1.0
 
 ### gemini
 
 Project configuration: .gemini/settings.json.
 
-gemini extensions install https://github.com/Tenhaw/tenhaw-gemini
+npx -y tenhaw@1.1.0 setup --agent gemini --yes --verify --json
 
 ### cursor
 
 Project configuration: .cursor/mcp.json.
 
-{"mcpServers":{"tenhaw":{"command":"npx","args":["-y","@tenhaw/mcp@1.0.1"]}}}
+{"mcpServers":{"tenhaw":{"command":"npx","args":["-y","@tenhaw/mcp@1.1.0"]}}}
 
 ### vscode
 
 Project configuration: .mcp.json.
 
-{"mcpServers":{"tenhaw":{"type":"stdio","command":"npx","args":["-y","@tenhaw/mcp@1.0.1"],"tools":["*"]}}}
+{"mcpServers":{"tenhaw":{"type":"stdio","command":"npx","args":["-y","@tenhaw/mcp@1.1.0"],"tools":["*"]}}}
 
-[Add to Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=tenhaw&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkB0ZW5oYXcvbWNwQDEuMC4xIl19)
+[Add to Cursor](cursor://anysphere.cursor-deeplink/mcp/install?name=tenhaw&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkB0ZW5oYXcvbWNwQDEuMS4wIl19)
 
 ## AI readiness assessment
 
 When to use: Assess organisational AI readiness from evidence-backed answers across six dimensions.
 
-Install: npm install @tenhaw/ai-readiness@1.0.1
+Install: npm install @tenhaw/ai-readiness@1.1.0
 
-CLI: npx -y tenhaw@1.0.1 readiness --input answers.json --json
+CLI: npx -y tenhaw@1.1.0 readiness --input answers.json --json
 
 API: scoreReadiness({ answers: [{ questionId: 'strategy-1', score: 3 }] })
 
@@ -168,9 +172,9 @@ console.log(scoreReadiness({ answers: [{ questionId: 'strategy-1', score: 3 }] }
 
 When to use: Calculate five DORA metrics and flow observations for one service from linked delivery events.
 
-Install: npm install @tenhaw/delivery-metrics@1.0.1
+Install: npm install @tenhaw/delivery-metrics@1.1.0
 
-CLI: npx -y tenhaw@1.0.1 delivery-metrics --from-file events.json --since 2026-10-01T00:00:00Z --until 2026-11-01T00:00:00Z --json
+CLI: npx -y tenhaw@1.1.0 delivery-metrics --from-file events.json --since 2026-10-01T00:00:00Z --until 2026-11-01T00:00:00Z --json
 
 API: computeMetrics(events, { since, until, service })
 
@@ -184,9 +188,9 @@ console.log(report.metrics.changeFailRate); // value: null
 
 When to use: Compare low, base and high AI business-case assumptions without treating recovered staff capacity as cash by default.
 
-Install: npm install @tenhaw/ai-roi@1.0.1
+Install: npm install @tenhaw/ai-roi@1.1.0
 
-CLI: npx -y tenhaw@1.0.1 roi --input roi.json --json
+CLI: npx -y tenhaw@1.1.0 roi --input roi.json --json
 
 API: calculateRoi(input); estimateProjectCost({ stage: 'poc' })
 
@@ -201,9 +205,9 @@ console.log(report.scenarios.base.npv);
 
 When to use: Keep use-case ownership, value, feasibility and governance review together in a structured register.
 
-Install: npm install @tenhaw/usecase-register@1.0.1
+Install: npm install @tenhaw/usecase-register@1.1.0
 
-CLI: npx -y tenhaw@1.0.1 usecases prioritise --input register.json --json
+CLI: npx -y tenhaw@1.1.0 usecases prioritise --input register.json --json
 
 API: prioritiseUseCases({ useCases }); exportRegister(report, 'csv')
 
@@ -216,9 +220,9 @@ console.log(prioritiseUseCases({ useCases: [] }));
 
 When to use: Validate team ownership, outcome-led roadmaps, OKRs and team interactions.
 
-Install: npm install @tenhaw/opmodel@1.0.1
+Install: npm install @tenhaw/opmodel@1.1.0
 
-CLI: npx -y tenhaw@1.0.1 opmodel validate model.json --json
+CLI: npx -y tenhaw@1.1.0 opmodel validate model.json --json
 
 API: generateOperatingModel({ teams, okrs, roadmap, interactions }); renderMermaid(report)
 

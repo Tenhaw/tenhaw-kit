@@ -2,64 +2,55 @@
 
 Use one prompt to connect the tools, verify them and continue the requested work. Tenhaw Kit's calculations need no API key. Credentials are needed only for optional local GitHub or Jira collection.
 
-## Published release and source changes
+## Published release
 
-Version **1.0.1** is published on [npm](https://www.npmjs.com/package/tenhaw/v/1.0.1), [PyPI](https://pypi.org/project/tenhaw/1.0.1/) and the [official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers/com.tenhaw%2Fkit/versions/1.0.1) as `com.tenhaw/kit`, verified on 16 November 2026. Publication and production evidence live in [RUNBOOK.md](RUNBOOK.md).
+Version **1.1.0** is published on [npm](https://www.npmjs.com/package/tenhaw/v/1.1.0), [PyPI](https://pypi.org/project/tenhaw/1.1.0/) and the [official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers/com.tenhaw%2Fkit/versions/1.1.0) as `com.tenhaw/kit`, verified on 16 November 2026. Publication and production evidence live in [RUNBOOK.md](RUNBOOK.md).
 
-The automated `setup` command described below is **unreleased source work**. It is not included in npm 1.0.1. Until a new version has been published and verified, use the built source command for setup. Public 1.0.1 supports the manual client configuration commands and MCP server shown here.
+The published CLI includes automated project setup for Codex, Claude Code, Cursor, VS Code / Copilot and Gemini CLI. Setup preserves existing servers and instructions, reports conflicts and verifies the selected MCP distribution.
 
 | Route | Command or endpoint | Requirement |
 | --- | --- | --- |
-| Public CLI | `npx -y tenhaw@1.0.1 --help` | Node.js 22.14+ and npm |
-| Local MCP | `npx -y @tenhaw/mcp@1.0.1` | Node.js 22.14+ and npm; eight tools |
+| Public CLI | `npx -y tenhaw@1.1.0 --help` | Node.js 22.14+ and npm |
+| Local MCP | `npx -y @tenhaw/mcp@1.1.0` | Node.js 22.14+ and npm; eight tools |
 | Remote MCP | `https://mcp.tenhaw.com/mcp` | A client supporting Streamable HTTP; six pure tools |
-| Python CLI | `uvx --from tenhaw==1.0.1 tenhaw-py --help` | Python 3.10+ and uv |
-| Python library | `python -m pip install 'tenhaw==1.0.1'` | Python 3.10+ in a virtual environment |
+| Python CLI | `uvx --from tenhaw==1.1.0 tenhaw-py --help` | Python 3.10+ and uv |
+| Python library | `python -m pip install 'tenhaw==1.1.0'` | Python 3.10+ in a virtual environment |
 
 The remote endpoint requires no local Node runtime when configured directly in a client. Running the setup CLI itself requires Node. Remote tools accept calculation inputs and aggregate delivery metrics; collection and scaffolding use local tools.
 
 ## One prompt for the published release
 
-> Install Tenhaw Kit 1.0.1 in this project and continue my requested task. Identify the coding client and consult its current MCP configuration documentation. Use the local server `npx -y @tenhaw/mcp@1.0.1`, or the remote endpoint only if I request pure remote tools. Preserve all existing instructions, servers and settings, and show any conflicting Tenhaw definition for review. Verify MCP initialisation, the expected tool inventory and a synthetic readiness calculation. If I request a starter, choose the matching template, scaffold a new directory, install its dependencies and run its documented build and tests. Ask me to set only missing environment variables needed for GitHub or Jira collection I request, in the local environment that launches the client. Never ask me to paste a secret into chat or include secret values in commands, configuration, reports or logs. Report the checks that passed and any required host reload or trust approval.
+> Install Tenhaw Kit 1.1.0 for this project and continue my requested task. Identify the coding client and project directory, then run npx -y tenhaw@1.1.0 setup --agent CLIENT --directory PROJECT --json using the detected client and project path in place of CLIENT and PROJECT. Inspect the plan, preserve existing servers and instructions, and report conflicting Tenhaw definitions for review. Apply the configuration with the same command plus --yes --verify. Verify the expected eight local tools and a synthetic readiness calculation. If I request a starter, scaffold a new directory, install its dependencies and run its documented build and tests. Ask me to set only missing local environment variables required for GitHub or Jira collection I request. Keep secret values out of chat, command arguments, configuration and logs. Report the checks that passed and any remaining host reload, enablement or trust step; confirm a tool call inside the coding client after that step.
 
 The agent can retrieve the public install snippets with:
 
 ```sh
-npx -y tenhaw@1.0.1 mcp --json --no-attribution
+npx -y tenhaw@1.1.0 mcp --json --no-attribution
 ```
 
-## Automated setup from this source
-
-Build the checkout using its pinned package manager:
-
-```sh
-corepack pnpm install
-corepack pnpm build
-```
+## Automated project setup
 
 Plan a connection for an existing project:
 
 ```sh
-node packages/cli/dist/index.js setup --agent codex --directory /path/to/project --json
+npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --json
 ```
 
 Apply the configuration and verify the selected MCP server:
 
 ```sh
-node packages/cli/dist/index.js setup --agent codex --directory /path/to/project --yes --verify --json
+npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --yes --verify --json
 ```
 
 Inspect a connection without writing:
 
 ```sh
-node packages/cli/dist/index.js setup --agent codex --directory /path/to/project --check --verify --json
+npx -y tenhaw@1.1.0 setup --agent codex --directory /path/to/project --check --verify --json
 ```
 
 Replace `codex` with `claude`, `cursor`, `vscode` or `gemini`. Select `--transport local` or `remote`; the default is local. Select `--integration none`, `github`, `jira` or `github,jira`; the default is none. Collection integrations require local transport.
 
 Planning and `--check` preserve files. `--yes` applies the selected project configuration. A matching existing definition is reusable; a conflicting definition requires review. Setup leaves host instructions in place and returns JSON that the calling agent can inspect for configuration status, missing environment variable names and next actions. Verification may download the pinned MCP package with npm or contact the remote endpoint. A successful protocol probe still needs the host to load and enable the server.
-
-For a source-based one-prompt workflow, replace the manual configuration step in the prompt above with: “Build this checkout; run `setup` for my client and project directory, inspect the JSON plan, then apply it with `--yes --verify --json`. Resolve its next actions and report any remaining blocker.”
 
 ## Client configuration locations
 
@@ -75,11 +66,11 @@ Setup targets the selected project's configuration. Host trust, enablement and o
 
 Codex project configuration requires a trusted project. Claude Code may request approval for project MCP servers. Current VS Code guidance uses portable workspace-root `.mcp.json` for new Copilot integrations. `.vscode/mcp.json` and `code --add-mcp` target the deprecated editor-managed Local harness; use them only when maintaining that client path. See the linked host documentation for loading and trust behaviour.
 
-Public 1.0.1 supports these explicit CLI registrations:
+Manual registration remains available when needed:
 
 ```sh
-claude mcp add --scope project tenhaw -- npx -y @tenhaw/mcp@1.0.1
-codex mcp add tenhaw -- npx -y @tenhaw/mcp@1.0.1
+claude mcp add --scope project tenhaw -- npx -y @tenhaw/mcp@1.1.0
+codex mcp add tenhaw -- npx -y @tenhaw/mcp@1.1.0
 ```
 
 The Codex CLI registration uses the CLI's configured scope; use the project file above when project scope is required. A plugin can also supply the server. Check the host's existing inventory before adding another registration.
@@ -104,7 +95,7 @@ Missing credentials should block only the selected collector. The questionnaire,
 The scaffold command creates a new directory and returns its next steps. The calling agent performs installation and verification as separate actions:
 
 ```sh
-npx -y tenhaw@1.0.1 init product-operating-model internal-portfolio --yes --json
+npx -y tenhaw@1.1.0 init product-operating-model internal-portfolio --yes --json
 cd internal-portfolio
 corepack pnpm install
 corepack pnpm build
